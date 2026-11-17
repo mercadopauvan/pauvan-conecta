@@ -68,6 +68,16 @@ button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-co
 .demo button{background:none;border:1px solid var(--am);border-radius:8px;color:var(--am);font-size:12px;font-weight:700;min-height:30px;padding:0 10px}
 .sep{border-top:1px solid #DDE3DE;padding-top:10px;display:flex;flex-direction:column;gap:6px}
 .load{position:fixed;inset:0;background:rgba(243,245,240,.7);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--g);font-size:16px}
+.moto{background:#fff;border:2px solid var(--l);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;width:100%;text-align:left}
+.moto.on{border-color:var(--g);background:#EEF6EF}
+.moto .n{flex:1;display:flex;flex-direction:column;gap:2px}
+.moto .n b{font-size:15px}
+.moto .n span{font-size:13px;color:var(--m)}
+.moto.on .n span{color:var(--g);font-weight:700}
+.sw{width:52px;height:30px;border-radius:15px;background:#B9C4BB;position:relative;flex:none}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff}
+.moto.on .sw{background:var(--g)}
+.moto.on .sw::after{left:25px}
 .lk{background:none;border:0;color:var(--vm);font-size:13px;font-weight:600;padding:6px 0;text-align:right}
 </style>
 </head>
@@ -81,7 +91,7 @@ const DEMO = !API;
 const TOKEN = new URLSearchParams(location.search).get('f') || '';
 const CH = 'conecta_auth' + (TOKEN ? '_f' : '');
 const el = document.getElementById('app');
-const S = { pin: '', erro: '', load: false, est: null, tela: 'pin', forn: null, aba: 'pedir', q: {}, d: 1, ped: null, coleta: 'MERCADO', motivo: 'Vencido', mes: null, feito: null, nomeF: '' };
+const S = { pin: '', erro: '', load: false, est: null, tela: 'pin', forn: null, aba: 'pedir', q: {}, d: 1, ped: null, coleta: 'MERCADO', busca: true, motivo: 'Vencido', mes: null, feito: null, nomeF: '' };
 
 /* ---------- utilidades ---------- */
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -122,6 +132,9 @@ function des(k, w) {
   return '<svg width="' + w + '" height="' + Math.round(w * 0.69) + '" viewBox="-50 -25 100 69" role="img" aria-label="Produto"><rect x="-30" y="-14" width="60" height="46" rx="8" fill="#C9D3CB"/></svg>';
 }
 const desForn = f => { const p = S.est.produtos.filter(x => x.fornecedor === f.id); return des(p.length ? (p.find(x => x.desenho === 'bolo_cobertura') || p[0]).desenho : '', 66); };
+
+const MOTO = c => '<svg width="46" height="34" viewBox="0 0 46 34" aria-hidden="true"><circle cx="9" cy="25" r="6.5" fill="none" stroke="' + c + '" stroke-width="3"/><circle cx="37" cy="25" r="6.5" fill="none" stroke="' + c + '" stroke-width="3"/><path d="M9 25h13l6-11h6l3 11M28 14l-3-7h-5M14 16h10" fill="none" stroke="' + c + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="5" y="8" width="11" height="9" rx="2" fill="' + c + '"/></svg>';
+const coletaTxt = (p, f) => p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Mercado busca · taxa de coleta ' + brl(f.taxa);
 
 /* ---------- servidor ---------- */
 function aparelho() {
@@ -173,7 +186,7 @@ function demo(req) {
   if (a === 'pedido_salvar') {
     const itens = PR.filter(p => m[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: m[p.codigo], enviada: null, recebida: null }));
     if (!itens.length) return { ok: false, erro: 'Informe a quantidade de pelo menos um produto.' };
-    db.pedidos.push({ id: 'P' + Date.now(), fornecedor: 'helia', dia: req.dia, status: 'PEDIDO', criado_em: agora, criado_por: quem.nome, enviado_em: '', recebido_em: '', recebido_por: '', coleta: '', taxa: 0, itens: itens });
+    db.pedidos.push({ id: 'P' + Date.now(), fornecedor: 'helia', dia: req.dia, status: 'PEDIDO', criado_em: agora, criado_por: quem.nome, enviado_em: '', recebido_em: '', recebido_por: '', coleta: req.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO', taxa: 0, itens: itens });
   } else if (a === 'pedido_cancelar') { db.pedidos = db.pedidos.filter(p => p.id !== req.id);
   } else if (a === 'pedido_enviar') { const p = ped(req.id); p.itens.forEach(i => { i.enviada = m[i.codigo] || 0; }); p.status = 'ENVIADO'; p.enviado_em = agora;
   } else if (a === 'pedido_receber') { const p = ped(req.id); p.itens.forEach(i => { i.recebida = m[i.codigo] || 0; }); p.status = 'RECEBIDO'; p.recebido_em = agora; p.recebido_por = quem.nome; p.coleta = req.coleta === 'MERCADO' ? 'MERCADO' : 'FORNECEDOR'; p.taxa = p.coleta === 'MERCADO' ? 5 : 0;
@@ -204,7 +217,7 @@ function statusChip(p) {
 }
 function textoZap(p) {
   const f = S.est.fornecedores.find(x => x.id === p.fornecedor), tot = p.itens.reduce((a, i) => a + i.pedida, 0);
-  let t = '*PEDIDO MERCADO PAUVAN*\n' + f.nome + '\nPara: ' + diaTxt(p.dia) + '\n\n' + p.itens.map(i => i.pedida + ' × ' + i.nome).join('\n') + '\n\nTotal: ' + tot + ' unidades';
+  let t = '*PEDIDO MERCADO PAUVAN*\n' + f.nome + '\nPara: ' + diaTxt(p.dia) + '\n\n' + p.itens.map(i => i.pedida + ' × ' + i.nome).join('\n') + '\n\nTotal: ' + tot + ' unidades\n' + coletaTxt(p, f);
   if (f.token) t += '\n\nVer o pedido e informar o envio:\n' + location.origin + location.pathname + '?f=' + f.token;
   return t;
 }
@@ -270,12 +283,13 @@ function telaForn() {
     const dia = mais(S.est.hoje, S.d);
     o += '<div class="card"><div class="lab">PEDIDO PARA</div><div class="dia"><button class="sq" aria-label="Dia anterior" data-a="d" data-d="-1"' + (S.d <= 0 ? ' disabled' : '') + '>‹</button><b>' + diaTxt(dia) + '</b><button class="sq" aria-label="Próximo dia" data-a="d" data-d="1"' + (S.d >= 7 ? ' disabled' : '') + '>›</button></div></div>';
     prods().forEach(p => { o += linhaProd(p); });
+    if (f.taxa) o += '<button class="moto' + (S.busca ? ' on' : '') + '" data-a="busca" aria-pressed="' + S.busca + '">' + MOTO(S.busca ? '#1E5B2F' : '#8A938C') + '<span class="n"><b>Nós vamos buscar</b><span>' + (S.busca ? 'Taxa de coleta ' + brl(f.taxa) : 'Desligado · ela entrega, sem taxa') + '</span></span><span class="sw"></span></button>';
     o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total do pedido</b><b>' + somaQ() + ' unidades</b></div></div>';
     o += '<button class="btn" data-a="pedir"' + (somaQ() ? '' : ' disabled') + '>ENVIAR PEDIDO</button>';
   } else if (S.aba === 'receber' || S.aba === 'pedidos') {
     if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">Nenhum pedido aberto</div><div class="s">' + (merc ? 'Faça o pedido na aba PEDIR.' : 'Quando o mercado fizer um pedido, ele aparece aqui.') + '</div></div>';
     ab.forEach(p => {
-      o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="s">Pedido: ' + itensTxt(p, 'pedida') + '</div>' +
+      o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="s">Pedido: ' + itensTxt(p, 'pedida') + '</div><div class="s" style="font-weight:600">' + coletaTxt(p, f) + '</div>' +
         (p.status === 'ENVIADO' ? '<div class="s" style="color:var(--g);font-weight:600">Enviado: ' + (itensTxt(p, 'enviada') || 'nada') + '</div>' : '') +
         '<div class="s">Feito por ' + esc(p.criado_por) + ' em ' + dm(p.criado_em) + ' às ' + esc(p.criado_em.slice(11)) + '</div>';
       if (merc) o += '<button class="btn" data-a="abrir" data-k="' + esc(p.id) + '">RECEBER E CONFERIR</button><button class="btn zap" data-a="zap" data-k="' + esc(p.id) + '">ENVIAR NO WHATSAPP</button><button class="btn pg" data-a="cancelar" data-k="' + esc(p.id) + '">Cancelar pedido</button>';
@@ -294,7 +308,7 @@ function telaFeito() {
   const p = S.est.pedidos.find(x => x.id === S.feito), f = fornAtual();
   let o = hdr('Pedido registrado', f.nome) + '<div class="w"><div class="card"><div class="lab">PEDIDO PARA</div><div style="font-size:19px;font-weight:700">' + diaTxt(p.dia) + '</div><div class="sep">';
   p.itens.forEach(i => { o += '<div class="kv"><span>' + esc(i.nome) + '</span><b>' + i.pedida + '</b></div>'; });
-  o += '</div></div><button class="btn zap" data-a="zap" data-k="' + esc(p.id) + '">ENVIAR NO WHATSAPP</button><div class="s">O botão copia o pedido e abre o WhatsApp. É só escolher a conversa e enviar.</div><button class="btn b2" data-a="voltar">VOLTAR</button></div>';
+  o += '</div><div class="s" style="font-weight:600">' + coletaTxt(p, f) + '</div></div><button class="btn zap" data-a="zap" data-k="' + esc(p.id) + '">ENVIAR NO WHATSAPP</button><div class="s">O botão copia o pedido e abre o WhatsApp. É só escolher a conversa e enviar.</div><button class="btn b2" data-a="voltar">VOLTAR</button></div>';
   return o;
 }
 function telaAbrir() {
@@ -335,13 +349,14 @@ const AC = {
   q(k, b) { S.q[k] = Math.max(0, Math.min(999, (S.q[k] || 0) + Number(b.dataset.d))); render(); },
   d(k, b) { S.d = Math.max(0, Math.min(7, S.d + Number(b.dataset.d))); render(); },
   motivo(k) { S.motivo = k; render(); },
+  busca() { S.busca = !S.busca; render(); },
   coleta(k) { S.coleta = k; render(); },
   mes(k) { S.mes = k; render(); },
   async pedir() {
     const antes = S.est.pedidos.map(p => p.id);
-    if (await chamar('pedido_salvar', { fornecedor: S.forn, dia: mais(S.est.hoje, S.d), itens: itensReq() })) {
+    if (await chamar('pedido_salvar', { fornecedor: S.forn, dia: mais(S.est.hoje, S.d), coleta: S.busca ? 'MERCADO' : 'FORNECEDOR', itens: itensReq() })) {
       const novo = S.est.pedidos.find(p => antes.indexOf(p.id) < 0);
-      S.q = {}; S.d = 1; S.feito = novo && novo.id; S.tela = novo ? 'feito' : 'forn'; S.aba = 'receber'; render(); window.scrollTo(0, 0);
+      S.q = {}; S.d = 1; S.busca = true; S.feito = novo && novo.id; S.tela = novo ? 'feito' : 'forn'; S.aba = 'receber'; render(); window.scrollTo(0, 0);
     }
   },
   zap(k) {
@@ -353,7 +368,7 @@ const AC = {
   voltar() { S.tela = 'forn'; S.q = {}; S.erro = ''; render(); },
   abrir(k) {
     const p = S.est.pedidos.find(x => x.id === k);
-    S.ped = k; S.q = {}; S.coleta = 'MERCADO'; S.erro = '';
+    S.ped = k; S.q = {}; S.coleta = p.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO'; S.erro = '';
     p.itens.forEach(i => { S.q[i.codigo] = sou() === 'mercado' ? (i.enviada != null ? i.enviada : i.pedida) : (i.enviada != null ? i.enviada : i.pedida); });
     S.tela = 'abrir'; render(); window.scrollTo(0, 0);
   },

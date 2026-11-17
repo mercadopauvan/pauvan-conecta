@@ -210,7 +210,7 @@ function agir_(a, req, quem) {
       if (sim_(p.ativo) && txt_(p.fornecedor) === txt_(f.id) && q > 0) linhas.push({ pedido: id, codigo: txt_(p.codigo), nome: txt_(p.nome), custo: num_(p.custo), pedida: q, enviada: '', recebida: '' });
     });
     if (!linhas.length) throw new Error('Informe a quantidade de pelo menos um produto.');
-    incluir_('PEDIDOS', [{ id: id, fornecedor: txt_(f.id), dia: String(req.dia), status: 'PEDIDO', criado_em: agora_(), criado_por: quem.nome }]);
+    incluir_('PEDIDOS', [{ id: id, fornecedor: txt_(f.id), dia: String(req.dia), status: 'PEDIDO', criado_em: agora_(), criado_por: quem.nome, coleta: req.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO' }]);
     incluir_('ITENS', linhas);
   } else if (a === 'pedido_cancelar') {
     soMercado_(quem);
@@ -248,4 +248,10 @@ function agir_(a, req, quem) {
   } else {
     throw new Error('Ação desconhecida.');
   }
+}
+
+/* Teste: confere se o servidor consegue falar com o App Pauvan (nao usa PIN de verdade). */
+function testePin() {
+  var r = UrlFetchApp.fetch(PIN_URL, { method: 'post', contentType: 'text/plain', payload: JSON.stringify({ acao: 'conectaPin', pin: 'ab', aparelho: 'teste-conecta' }), muteHttpExceptions: true });
+  Logger.log(r.getResponseCode() + ' ' + r.getContentText().slice(0, 300));
 }
