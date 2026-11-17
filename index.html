@@ -134,7 +134,7 @@ function des(k, w) {
 const desForn = f => { const p = S.est.produtos.filter(x => x.fornecedor === f.id); return des(p.length ? (p.find(x => x.desenho === 'bolo_cobertura') || p[0]).desenho : '', 66); };
 
 const MOTO = c => '<svg width="46" height="34" viewBox="0 0 46 34" aria-hidden="true"><circle cx="9" cy="25" r="6.5" fill="none" stroke="' + c + '" stroke-width="3"/><circle cx="37" cy="25" r="6.5" fill="none" stroke="' + c + '" stroke-width="3"/><path d="M9 25h13l6-11h6l3 11M28 14l-3-7h-5M14 16h10" fill="none" stroke="' + c + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="5" y="8" width="11" height="9" rx="2" fill="' + c + '"/></svg>';
-const coletaTxt = (p, f) => p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Mercado busca · taxa de coleta ' + brl(f.taxa);
+const coletaTxt = (p, f) => p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Coleta nossa · taxa ' + brl(f.taxa);
 
 /* ---------- servidor ---------- */
 function aparelho() {
@@ -283,7 +283,7 @@ function telaForn() {
     const dia = mais(S.est.hoje, S.d);
     o += '<div class="card"><div class="lab">PEDIDO PARA</div><div class="dia"><button class="sq" aria-label="Dia anterior" data-a="d" data-d="-1"' + (S.d <= 0 ? ' disabled' : '') + '>‹</button><b>' + diaTxt(dia) + '</b><button class="sq" aria-label="Próximo dia" data-a="d" data-d="1"' + (S.d >= 7 ? ' disabled' : '') + '>›</button></div></div>';
     prods().forEach(p => { o += linhaProd(p); });
-    if (f.taxa) o += '<button class="moto' + (S.busca ? ' on' : '') + '" data-a="busca" aria-pressed="' + S.busca + '">' + MOTO(S.busca ? '#1E5B2F' : '#8A938C') + '<span class="n"><b>Nós vamos buscar</b><span>' + (S.busca ? 'Taxa de coleta ' + brl(f.taxa) : 'Desligado · ela entrega, sem taxa') + '</span></span><span class="sw"></span></button>';
+    if (f.taxa) o += '<button class="moto' + (S.busca ? ' on' : '') + '" data-a="busca" aria-pressed="' + S.busca + '">' + MOTO(S.busca ? '#1E5B2F' : '#8A938C') + '<span class="n"><b>Coleta nossa</b><span>' + (S.busca ? 'Taxa ' + brl(f.taxa) : 'Desligado · sem taxa') + '</span></span><span class="sw"></span></button>';
     o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total do pedido</b><b>' + somaQ() + ' unidades</b></div></div>';
     o += '<button class="btn" data-a="pedir"' + (somaQ() ? '' : ' disabled') + '>ENVIAR PEDIDO</button>';
   } else if (S.aba === 'receber' || S.aba === 'pedidos') {
