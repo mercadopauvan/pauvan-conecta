@@ -322,7 +322,7 @@ function telaAbrir() {
   const p = S.est.pedidos.find(x => x.id === S.ped), f = fornAtual(), merc = sou() === 'mercado';
   let o = hdr(merc ? 'Receber e conferir' : 'Informar o envio', f.nome + ' · ' + diaTxt(p.dia).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
-  o += '<div class="s">' + (merc ? 'Confira o que chegou e ajuste a quantidade se vier diferente.' : 'Confirme quantos de cada você vai mandar.') + '</div>';
+  o += '<div class="s">' + (merc ? 'Confira o que chegou e ajuste a quantidade se vier diferente.' : 'Marque a quantidade exata que você está enviando. Começa em zero.') + '</div>';
   p.itens.forEach(i => {
     const pr = S.est.produtos.find(x => x.codigo === i.codigo) || { desenho: '' };
     o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, 'Pedido ' + i.pedida + (merc && i.enviada != null ? ' · enviado ' + i.enviada : ''));
@@ -331,7 +331,11 @@ function telaAbrir() {
     o += '<div class="card"><div class="lab">QUEM TROUXE</div><div class="seg"><button class="' + (S.coleta === 'MERCADO' ? 'on' : '') + '" data-a="coleta" data-k="MERCADO">Nós buscamos</button><button class="' + (S.coleta === 'FORNECEDOR' ? 'on' : '') + '" data-a="coleta" data-k="FORNECEDOR">Ela entregou</button></div>' +
       '<div class="kv"><span>Taxa de coleta</span><b>' + (S.coleta === 'MERCADO' && f.taxa ? brl(f.taxa) : 'sem taxa') + '</b></div></div>';
     o += '<button class="btn" data-a="receber">CONFIRMAR RECEBIMENTO</button>';
-  } else o += '<button class="btn" data-a="enviar">CONFIRMAR ENVIO</button>';
+  } else {
+    const ped = p.itens.reduce((a, i) => a + i.pedida, 0), env = somaQ();
+    o += '<div class="card"' + (env !== ped ? ' style="background:var(--amb)"' : '') + '><div class="kv" style="font-size:17px"><b>Enviando</b><b>' + env + ' de ' + ped + ' pedidos</b></div>' + (env && env !== ped ? '<div class="s" style="color:var(--am);font-weight:600">Diferente do pedido. Confira antes de confirmar.</div>' : '') + '</div>';
+    o += '<button class="btn" data-a="enviar"' + (env ? '' : ' disabled') + '>CONFIRMAR ENVIO</button>';
+  }
   return o + '</div>';
 }
 function render() {
@@ -376,7 +380,7 @@ const AC = {
   abrir(k) {
     const p = S.est.pedidos.find(x => x.id === k);
     S.ped = k; S.q = {}; S.coleta = p.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO'; S.erro = '';
-    p.itens.forEach(i => { S.q[i.codigo] = sou() === 'mercado' ? (i.enviada != null ? i.enviada : i.pedida) : (i.enviada != null ? i.enviada : i.pedida); });
+    p.itens.forEach(i => { S.q[i.codigo] = sou() === 'mercado' ? (i.enviada != null ? i.enviada : i.pedida) : (i.enviada != null ? i.enviada : 0); });
     S.tela = 'abrir'; render(); window.scrollTo(0, 0);
   },
   async receber() { if (await chamar('pedido_receber', { id: S.ped, coleta: S.coleta, itens: itensReq() })) { S.q = {}; S.tela = 'forn'; S.aba = 'extrato'; S.mes = null; render(); window.scrollTo(0, 0); } },
