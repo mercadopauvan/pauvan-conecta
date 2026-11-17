@@ -1,7 +1,7 @@
 {
   "name": "Pauvan Conecta",
   "short_name": "Conecta",
-  "description": "Parceiros conectados, processos organizados.",
+  "description": "Entrega, conferência e controle.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

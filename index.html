@@ -267,7 +267,7 @@ function extrato() {
 
 /* ---------- telas ---------- */
 function telaPin() {
-  let o = marca('Parceiros conectados, processos organizados.') + '<div class="w">';
+  let o = marca('Entrega, conferência e controle.') + '<div class="w">';
   o += '<div style="font-size:19px;font-weight:700">' + (TOKEN ? esc(S.nomeF || 'Acesso do parceiro') : 'Acesso do Mercado Pauvan') + '</div><div class="s">' + (TOKEN ? 'Digite seu PIN de 4 números.' : 'Use o mesmo PIN do App Pauvan.') + '</div>';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
   o += '<div class="pin">' + [0, 1, 2, 3].map(i => '<i class="' + (i < S.pin.length ? 'on' : '') + '"></i>').join('') + '</div><div class="kp">';
