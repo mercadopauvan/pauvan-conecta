@@ -2,19 +2,380 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E5B2F">
+<meta name="robots" content="noindex">
 <title>Pauvan Conecta</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#F3F5F0;color:#1B211C;font-family:system-ui,Arial,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
-h1{margin:0;color:#1E5B2F;font-size:30px;letter-spacing:1px}
-p{margin:0;font-size:16px;color:#4A554C}
-.b{margin-top:14px;background:#1E5B2F;color:#fff;padding:10px 18px;border-radius:10px;font-weight:700}
+:root{--g:#1E5B2F;--bg:#F3F5F0;--t:#1B211C;--m:#4A554C;--l:#B9C4BB;--am:#8A4200;--amb:#FDEBD3;--bl:#1D4E89;--blb:#E3EDF9;--vm:#9B1C1C}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--t);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-text-size-adjust:100%}
+button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent}
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.hdr{background:var(--g);color:#fff;padding:14px 20px 16px;display:flex;flex-direction:column;gap:4px}
+.hdr .bk{background:none;border:0;color:#DCEBDD;font-size:14px;min-height:32px;text-align:left;padding:0}
+.hdr h1{font-size:20px;margin:0;font-weight:700}
+.hdr p{font-size:14px;margin:0;color:#DCEBDD;line-height:1.4}
+.marca{background:var(--g);color:#fff;padding:16px 20px;display:flex;align-items:center;gap:14px}
+.marca .dv{width:2px;align-self:stretch;background:rgba(255,255,255,.75);border-radius:1px}
+.marca .tx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.marca b{font-size:23px;line-height:1.15;letter-spacing:.2px}
+.marca b i{font-style:normal;color:#A9E824}
+.marca span{font-size:13px;color:#DCEBDD;line-height:1.35}
+.marca .sr{background:none;border:1px solid rgba(255,255,255,.5);border-radius:8px;color:#fff;font-size:12px;font-weight:600;min-height:32px;padding:0 10px;flex:none}
+.w{padding:18px 20px 28px;display:flex;flex-direction:column;gap:14px}
+.lab{font-size:12px;font-weight:700;color:var(--m);letter-spacing:1px}
+.card{background:#fff;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.kv b{text-align:right}
+.s{font-size:13px;color:var(--m);line-height:1.45}
+.btn{background:var(--g);color:#fff;border:0;border-radius:12px;min-height:56px;font-size:16px;font-weight:700;padding:0 12px;width:100%}
+.btn.b2{background:#fff;color:var(--g);border:1px solid var(--g);min-height:52px;font-size:15px}
+.btn.zap{background:#128C4B}
+.btn.pg{background:#fff;color:var(--vm);border:1px solid #E3B5B5;min-height:48px;font-size:14px}
+.btn:disabled{opacity:.45}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:12px 20px 0}
+.tabs.t2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tab{min-height:46px;border-radius:10px;border:1px solid var(--l);background:#fff;font-size:12px;font-weight:700;padding:0 2px}
+.tab.on{background:var(--g);color:#fff;border-color:var(--g)}
+.dia{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dia b{font-size:18px;text-align:center;flex:1}
+.sq{width:48px;height:48px;border-radius:10px;font-size:24px;border:1px solid var(--l);background:#fff;flex:none}
+.sq.p{border:0;background:var(--g);color:#fff}
+.sq:disabled{opacity:.35}
+.pr{background:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.pr .n{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pr .n b{font-size:15px;line-height:1.25}
+.pr .n span{font-size:12px;color:var(--m)}
+.st{display:flex;align-items:center;gap:8px}
+.st span{width:36px;text-align:center;font-size:22px;font-weight:700}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.seg button{min-height:52px;border-radius:10px;border:1px solid var(--l);background:#fff;font-size:14px;font-weight:600}
+.seg button.on{background:var(--bl);border-color:var(--bl);color:#fff;font-weight:700}
+.chip{font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;white-space:nowrap;background:var(--blb);color:var(--bl)}
+.chip.a{background:var(--amb);color:var(--am)}
+.chip.v{background:#DCEBDD;color:var(--g)}
+.fb{background:#fff;border:0;border-radius:14px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px;font-weight:700;min-height:120px;justify-content:center;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pin{display:flex;justify-content:center;gap:14px;margin:6px 0}
+.pin i{width:18px;height:18px;border-radius:50%;border:2px solid var(--g)}
+.pin i.on{background:var(--g)}
+.kp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kp button{min-height:62px;border-radius:12px;border:1px solid var(--l);background:#fff;font-size:24px;font-weight:600}
+.err{background:#FBE4E4;color:var(--vm);border-radius:10px;padding:12px 14px;font-size:14px;font-weight:600}
+.demo{background:var(--amb);color:var(--am);font-size:12px;font-weight:700;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.demo button{background:none;border:1px solid var(--am);border-radius:8px;color:var(--am);font-size:12px;font-weight:700;min-height:30px;padding:0 10px}
+.sep{border-top:1px solid #DDE3DE;padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.load{position:fixed;inset:0;background:rgba(243,245,240,.7);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--g);font-size:16px}
+.lk{background:none;border:0;color:var(--vm);font-size:13px;font-weight:600;padding:6px 0;text-align:right}
 </style>
 </head>
 <body>
-<h1>PAUVAN CONECTA</h1>
-<p>Parceiros conectados, processos organizados.</p>
-<div class="b">Em breve</div>
-<p>Mercado Pauvan · Colniza-MT</p>
+<div id="app"></div>
+<script>
+/* Endereço do servidor (Apps Script). Vazio = modo demonstração, nada é gravado na planilha. */
+const API = '';
+
+const DEMO = !API;
+const TOKEN = new URLSearchParams(location.search).get('f') || '';
+const CH = 'conecta_auth' + (TOKEN ? '_f' : '');
+const el = document.getElementById('app');
+const S = { pin: '', erro: '', load: false, est: null, tela: 'pin', forn: null, aba: 'pedir', q: {}, d: 1, ped: null, coleta: 'MERCADO', motivo: 'Vencido', mes: null, feito: null, nomeF: '' };
+
+/* ---------- utilidades ---------- */
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const brl = v => 'R$ ' + Number(v || 0).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const dt = s => { const p = String(s).slice(0, 10).split('-'); return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])); };
+const iso = d => d.toISOString().slice(0, 10);
+const mais = (s, n) => { const d = dt(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
+const SEM = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+const MES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+const dm = s => String(s).slice(8, 10) + '/' + String(s).slice(5, 7);
+function diaTxt(s) {
+  const h = S.est.hoje, w = SEM[dt(s).getUTCDay()];
+  if (s === h) return 'Hoje, ' + w.slice(0, 3) + ' ' + dm(s);
+  if (s === mais(h, 1)) return 'Amanhã, ' + w.slice(0, 3) + ' ' + dm(s);
+  return w.charAt(0).toUpperCase() + w.slice(1) + ', ' + dm(s);
+}
+const sou = () => S.est.quem.tipo;
+const fornAtual = () => S.est.fornecedores.find(f => f.id === S.forn);
+const prods = () => S.est.produtos.filter(p => p.fornecedor === S.forn);
+const abertos = () => S.est.pedidos.filter(p => p.fornecedor === S.forn && (p.status === 'PEDIDO' || p.status === 'ENVIADO')).sort((a, b) => a.dia < b.dia ? -1 : 1);
+const somaQ = () => Object.values(S.q).reduce((a, b) => a + b, 0);
+
+/* ---------- desenhos ---------- */
+function bolo(cob, mini, w) {
+  const m1 = cob ? '#8E5A34' : '#E09A3A', m2 = cob ? '#744423' : '#C9822A';
+  let b = '<ellipse cx="0" cy="30" rx="48" ry="12" fill="#2A2A2A"/><ellipse cx="0" cy="28" rx="40" ry="9" fill="#3D3D3D"/>' +
+    '<path d="M-36 -8v26a36 12 0 0 0 72 0v-26z" fill="' + m1 + '"/><path d="M-36 -8v26a36 12 0 0 0 14 9.5v-26z" fill="' + m2 + '"/>';
+  b += cob
+    ? '<path d="M-36 -8c0 8 4 14 8 14s5 -6 8 -6s4 12 9 12s5 -9 9 -9s5 15 10 15s5 -10 9 -10s5 9 9 9s10 -8 10 -25a36 12 0 0 1 -72 0z" fill="#3F1E0C"/><ellipse cx="0" cy="-8" rx="36" ry="12" fill="#4E2710"/><ellipse cx="0" cy="-8" rx="11" ry="4" fill="#2A1206"/><path d="M-24 -12c6 -4 16 -6 26 -6" stroke="#7A4420" stroke-width="2.5" fill="none" stroke-linecap="round"/>'
+    : '<ellipse cx="0" cy="-8" rx="36" ry="12" fill="#F4BE62"/><ellipse cx="0" cy="-8" rx="11" ry="4" fill="#B8741F"/><path d="M-24 -12c6 -4 16 -6 26 -6" stroke="#FBD98F" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+  if (mini) b = '<g transform="translate(-10 8) scale(0.7)">' + b + '</g><rect x="12" y="-24" width="38" height="17" rx="8.5" fill="#1E5B2F"/><text x="31" y="-11.5" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#FFFFFF">MINI</text>';
+  return '<svg width="' + w + '" height="' + Math.round(w * 0.69) + '" viewBox="-50 -25 100 69" role="img" aria-label="Desenho do produto">' + b + '</svg>';
+}
+function des(k, w) {
+  if (k === 'bolo_simples') return bolo(false, false, w);
+  if (k === 'bolo_cobertura') return bolo(true, false, w);
+  if (k === 'bolo_mini') return bolo(true, true, w);
+  return '<svg width="' + w + '" height="' + Math.round(w * 0.69) + '" viewBox="-50 -25 100 69" role="img" aria-label="Produto"><rect x="-30" y="-14" width="60" height="46" rx="8" fill="#C9D3CB"/></svg>';
+}
+const desForn = f => { const p = S.est.produtos.filter(x => x.fornecedor === f.id); return des(p.length ? (p.find(x => x.desenho === 'bolo_cobertura') || p[0]).desenho : '', 66); };
+
+/* ---------- servidor ---------- */
+function auth() { return TOKEN ? { token: TOKEN, pin: S.pin } : { pin: S.pin }; }
+async function chamar(acao, dados) {
+  S.load = true; S.erro = ''; render();
+  let r;
+  try {
+    const req = Object.assign({ acao: acao }, auth(), dados || {});
+    if (DEMO) r = demo(req);
+    else r = await (await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(req) })).json();
+  } catch (e) { r = { ok: false, erro: 'Sem conexão. Tente de novo.' }; }
+  S.load = false;
+  if (!r.ok) { S.erro = r.erro || 'Não deu certo. Tente de novo.'; render(); return false; }
+  if (r.precisaPin) { S.nomeF = r.nome; S.erro = r.erro || ''; S.pin = ''; S.tela = 'pin'; render(); return false; }
+  S.est = r.estado;
+  try { localStorage.setItem(CH, S.pin); } catch (e) {}
+  return true;
+}
+async function entrar() {
+  if (await chamar('estado')) {
+    if (sou() === 'fornecedor') { S.forn = S.est.quem.fornecedor; S.aba = 'pedidos'; S.tela = 'forn'; }
+    else S.tela = 'forns';
+    render();
+  } else if (!TOKEN) { S.pin = ''; S.tela = 'pin'; render(); }
+}
+
+/* ---------- modo demonstração ---------- */
+function demo(req) {
+  const K = 'conecta_demo';
+  let db; try { db = JSON.parse(localStorage.getItem(K)); } catch (e) {}
+  db = db || { pedidos: [], percas: [] };
+  const hoje = iso(new Date(Date.now() - 4 * 3600000)), agora = hoje + ' ' + new Date(Date.now() - 4 * 3600000).toISOString().slice(11, 16);
+  const quem = req.token ? { tipo: 'fornecedor', nome: 'Caseirinho da Hélia', fornecedor: 'helia' } : { tipo: 'mercado', nome: 'Ney', perfil: 'GESTAO' };
+  if (!req.token && !/^\d{4}$/.test(req.pin || '')) return { ok: false, erro: 'Digite o PIN de 4 números.' };
+  const PR = [
+    { codigo: '38715', fornecedor: 'helia', nome: 'Mini bolo com cobertura', desenho: 'bolo_mini', custo: 13, ordem: 1 },
+    { codigo: '45221', fornecedor: 'helia', nome: 'Bolo simples', desenho: 'bolo_simples', custo: 13, ordem: 2 },
+    { codigo: '45222', fornecedor: 'helia', nome: 'Bolo com cobertura', desenho: 'bolo_cobertura', custo: 16, ordem: 3 }];
+  const m = {}; (req.itens || []).forEach(i => { m[i.codigo] = Math.max(0, Math.floor(i.qtd)); });
+  const ped = id => db.pedidos.find(p => p.id === id);
+  const a = req.acao;
+  if (a === 'pedido_salvar') {
+    const itens = PR.filter(p => m[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: m[p.codigo], enviada: null, recebida: null }));
+    if (!itens.length) return { ok: false, erro: 'Informe a quantidade de pelo menos um produto.' };
+    db.pedidos.push({ id: 'P' + Date.now(), fornecedor: 'helia', dia: req.dia, status: 'PEDIDO', criado_em: agora, criado_por: quem.nome, enviado_em: '', recebido_em: '', recebido_por: '', coleta: '', taxa: 0, itens: itens });
+  } else if (a === 'pedido_cancelar') { db.pedidos = db.pedidos.filter(p => p.id !== req.id);
+  } else if (a === 'pedido_enviar') { const p = ped(req.id); p.itens.forEach(i => { i.enviada = m[i.codigo] || 0; }); p.status = 'ENVIADO'; p.enviado_em = agora;
+  } else if (a === 'pedido_receber') { const p = ped(req.id); p.itens.forEach(i => { i.recebida = m[i.codigo] || 0; }); p.status = 'RECEBIDO'; p.recebido_em = agora; p.recebido_por = quem.nome; p.coleta = req.coleta === 'MERCADO' ? 'MERCADO' : 'FORNECEDOR'; p.taxa = p.coleta === 'MERCADO' ? 5 : 0;
+  } else if (a === 'perca_lancar') {
+    const n = PR.filter(p => m[p.codigo] > 0);
+    if (!n.length) return { ok: false, erro: 'Informe a quantidade da perca.' };
+    n.forEach((p, i) => db.percas.push({ id: 'X' + Date.now() + i, data: hoje, fornecedor: 'helia', codigo: p.codigo, nome: p.nome, qtd: m[p.codigo], custo: p.custo, motivo: req.motivo, por: quem.nome }));
+  } else if (a === 'perca_excluir') { db.percas = db.percas.filter(p => p.id !== req.id); }
+  localStorage.setItem(K, JSON.stringify(db));
+  return { ok: true, estado: { quem: quem, hoje: hoje, fornecedores: [{ id: 'helia', nome: 'Caseirinho da Hélia', grupo: 'COM PEDIDO ANTES', tem_pedido: true, taxa: 5, fechamento: 'MENSAL', whatsapp: '', token: 'demo' }], produtos: PR, pedidos: db.pedidos, percas: db.percas } };
+}
+
+/* ---------- peças de tela ---------- */
+const hdr = (t, sub, volta) => '<div class="hdr">' + (volta ? '<button class="bk" data-a="' + volta[0] + '">‹ ' + volta[1] + '</button>' : '') + '<h1>' + esc(t) + '</h1>' + (sub ? '<p>' + esc(sub) + '</p>' : '') + '</div>';
+const LOGO = '<svg width="74" height="60" viewBox="0 0 100 81" role="img" aria-label="Pauvan Conecta">' +
+  '<path d="M31 12a34 34 0 0 1 38 0M31 70a34 34 0 0 0 38 0" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="22" cy="27" r="8.5" fill="#fff"/><path d="M12.5 23.5l22-5.5" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M14 28.5l15.5-4" stroke="#1E5B2F" stroke-width="1.8" stroke-linecap="round"/>' +
+  '<path d="M9 62V47c0-6 4-9 9-9h5c4 0 6 3 6 7v17z" fill="#fff"/>' +
+  '<ellipse cx="31" cy="40.5" rx="4.2" ry="5.5" fill="#A9E824" transform="rotate(-28 31 40.5)"/><ellipse cx="39" cy="38" rx="3.6" ry="6.5" fill="#A9E824" transform="rotate(22 39 38)"/><ellipse cx="45" cy="42" rx="3.8" ry="4.6" fill="#A9E824" transform="rotate(48 45 42)"/>' +
+  '<rect x="26" y="44" width="23" height="13" rx="2" fill="#fff" stroke="#1E5B2F" stroke-width="1.6"/><path d="M33 49h9" stroke="#1E5B2F" stroke-width="2" stroke-linecap="round"/>' +
+  '<path d="M15 48c0 6 1 9 5 9h12" stroke="#1E5B2F" stroke-width="5.5" fill="none" stroke-linecap="round"/><path d="M15 48c0 6 1 9 5 9h12" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="77" cy="27" r="8.5" fill="#fff"/><path d="M91 62V47c0-6-4-9-9-9h-6c-4 0-6 3-6 7v17z" fill="#fff"/>' +
+  '<g transform="rotate(-10 61 48)"><rect x="53" y="38" width="16" height="21" rx="2" fill="#1E5B2F" stroke="#A9E824" stroke-width="2"/><rect x="57.5" y="35" width="7" height="4.5" rx="1.5" fill="#A9E824"/>' +
+  '<path d="M56.5 45l1.6 1.6 2.6-3M56.5 52l1.6 1.6 2.6-3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M63 45h3.5M63 52h3.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></g>' +
+  '<path d="M86 47c0 7-2 10-7 10h-9" stroke="#1E5B2F" stroke-width="5.5" fill="none" stroke-linecap="round"/><path d="M86 47c0 7-2 10-7 10h-9" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
+  '<path d="M71.5 55l5-8" stroke="#A9E824" stroke-width="2.4" stroke-linecap="round"/></svg>';
+const marca = (sub, sair) => '<div class="marca">' + LOGO + '<div class="dv"></div><div class="tx"><b>Pauvan <i>Conecta</i></b><span>' + esc(sub) + '</span></div>' + (sair ? '<button class="sr" data-a="sair">Sair</button>' : '') + '</div>';
+const dataLonga = s => { const w = SEM[dt(s).getUTCDay()]; return w.charAt(0).toUpperCase() + w.slice(1, 3) + ', ' + s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4); };
+function linhaProd(p, sub) {
+  const q = S.q[p.codigo] || 0;
+  return '<div class="pr">' + des(p.desenho, 62) + '<div class="n"><b>' + esc(p.nome) + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div><div class="st">' +
+    '<button class="sq" aria-label="Diminuir" data-a="q" data-k="' + esc(p.codigo) + '" data-d="-1"' + (q ? '' : ' disabled') + '>−</button><span>' + q + '</span>' +
+    '<button class="sq p" aria-label="Aumentar" data-a="q" data-k="' + esc(p.codigo) + '" data-d="1">+</button></div></div>';
+}
+const itensTxt = (p, campo) => p.itens.filter(i => (i[campo] == null ? i.pedida : i[campo]) > 0).map(i => (i[campo] == null ? i.pedida : i[campo]) + ' ' + esc(i.nome)).join(' · ');
+function statusChip(p) {
+  if (p.status === 'ENVIADO') return '<span class="chip v">ENVIO INFORMADO</span>';
+  return '<span class="chip a">' + (sou() === 'mercado' ? 'AGUARDANDO' : 'NOVO PEDIDO') + '</span>';
+}
+function textoZap(p) {
+  const f = S.est.fornecedores.find(x => x.id === p.fornecedor), tot = p.itens.reduce((a, i) => a + i.pedida, 0);
+  let t = '*PEDIDO MERCADO PAUVAN*\n' + f.nome + '\nPara: ' + diaTxt(p.dia) + '\n\n' + p.itens.map(i => i.pedida + ' × ' + i.nome).join('\n') + '\n\nTotal: ' + tot + ' unidades';
+  if (f.token) t += '\n\nVer o pedido e informar o envio:\n' + location.origin + location.pathname + '?f=' + f.token;
+  return t;
+}
+function extrato() {
+  const h = S.est.hoje, mes = S.mes || h.slice(0, 7), lin = [];
+  let rec = 0, taxa = 0, perc = 0;
+  S.est.pedidos.filter(p => p.fornecedor === S.forn && p.status === 'RECEBIDO' && p.recebido_em.slice(0, 7) === mes).forEach(p => {
+    const v = p.itens.reduce((a, i) => a + (i.recebida || 0) * i.custo, 0);
+    rec += v; taxa += p.taxa || 0;
+    lin.push({ d: p.recebido_em.slice(0, 10), t: 'Recebido' + (p.coleta === 'MERCADO' ? ' · mercado buscou' : ' · entregue no mercado'), s: itensTxt(p, 'recebida') || 'nada recebido', v: v, x: p.taxa ? 'Taxa de coleta − ' + brl(p.taxa) : '' });
+  });
+  S.est.percas.filter(p => p.fornecedor === S.forn && p.data.slice(0, 7) === mes).forEach(p => {
+    perc += p.qtd * p.custo;
+    lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo), s: p.qtd + ' ' + esc(p.nome), v: -p.qtd * p.custo, id: p.id });
+  });
+  lin.sort((a, b) => a.d < b.d ? 1 : -1);
+  const min = mais(h.slice(0, 8) + '01', -40).slice(0, 7);
+  const ant = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7) - 2, 1))).slice(0, 7), prox = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7), 1))).slice(0, 7);
+  let o = '<div class="card"><div class="dia"><button class="sq" aria-label="Mês anterior" data-a="mes" data-k="' + ant + '"' + (ant < min ? ' disabled' : '') + '>‹</button><b>' + MES[+mes.slice(5, 7) - 1] + ' de ' + mes.slice(0, 4) + '</b><button class="sq" aria-label="Próximo mês" data-a="mes" data-k="' + prox + '"' + (prox > h.slice(0, 7) ? ' disabled' : '') + '>›</button></div></div>';
+  o += '<div class="card"><div class="kv"><span>Produtos recebidos</span><b>' + brl(rec) + '</b></div><div class="kv"><span>Taxa de coleta</span><b>− ' + brl(taxa) + '</b></div><div class="kv"><span>Percas</span><b>− ' + brl(perc) + '</b></div>' +
+    '<div class="sep"><div class="kv" style="font-size:18px"><b>' + (sou() === 'mercado' ? 'A pagar' : 'A receber') + '</b><b style="color:var(--g)">' + brl(rec - taxa - perc) + '</b></div></div><div class="s">Mês em aberto. O fechamento e a nota entram na próxima etapa.</div></div>';
+  o += '<div class="lab">LANÇAMENTOS</div>';
+  if (!lin.length) o += '<div class="card"><div class="s">Nenhum lançamento neste mês.</div></div>';
+  lin.forEach(l => {
+    o += '<div class="card" style="gap:6px"><div class="kv"><span style="font-weight:700">' + dm(l.d) + ' · ' + l.t + '</span><b style="white-space:nowrap' + (l.v < 0 ? ';color:var(--vm)' : '') + '">' + (l.v < 0 ? '− ' + brl(-l.v) : brl(l.v)) + '</b></div><div class="s">' + l.s + '</div>' + (l.x ? '<div class="s" style="color:var(--am);font-weight:600">' + l.x + '</div>' : '') +
+      (l.id && sou() === 'mercado' && l.d === h ? '<button class="lk" data-a="xperca" data-k="' + esc(l.id) + '">Excluir esta perca</button>' : '') + '</div>';
+  });
+  return o;
+}
+
+/* ---------- telas ---------- */
+function telaPin() {
+  let o = marca('Parceiros conectados, processos organizados.') + '<div class="w">';
+  o += '<div style="font-size:19px;font-weight:700">' + (TOKEN ? esc(S.nomeF || 'Acesso do parceiro') : 'Acesso do Mercado Pauvan') + '</div><div class="s">Digite seu PIN de 4 números.</div>';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  o += '<div class="pin">' + [0, 1, 2, 3].map(i => '<i class="' + (i < S.pin.length ? 'on' : '') + '"></i>').join('') + '</div><div class="kp">';
+  '123456789'.split('').forEach(n => { o += '<button data-a="pin" data-k="' + n + '">' + n + '</button>'; });
+  o += '<span></span><button data-a="pin" data-k="0">0</button><button data-a="pin" data-k="x" aria-label="Apagar">⌫</button></div>';
+  if (DEMO) o += '<div class="s">Demonstração: qualquer PIN de 4 números entra.</div>';
+  return o + '</div>';
+}
+function telaForns() {
+  let o = marca('Gestão de produtores · ' + dataLonga(S.est.hoje), true) + '<div class="w"><div style="font-size:19px;font-weight:700">Olá, ' + esc(S.est.quem.nome) + '</div>';
+  const grupos = [];
+  S.est.fornecedores.forEach(f => { if (grupos.indexOf(f.grupo) < 0) grupos.push(f.grupo); });
+  grupos.forEach(g => {
+    o += '<div class="lab">' + esc(g) + '</div><div class="grid">';
+    S.est.fornecedores.filter(f => f.grupo === g).forEach(f => {
+      const n = S.est.pedidos.filter(p => p.fornecedor === f.id && (p.status === 'PEDIDO' || p.status === 'ENVIADO')).length;
+      o += '<button class="fb" data-a="forn" data-k="' + esc(f.id) + '">' + desForn(f) + '<span>' + esc(f.nome) + '</span>' + (n ? '<span class="chip a">' + n + (n > 1 ? ' pedidos abertos' : ' pedido aberto') + '</span>' : '') + '</button>';
+    });
+    o += '</div>';
+  });
+  return o + '</div>';
+}
+function telaForn() {
+  const f = fornAtual(), merc = sou() === 'mercado', ab = abertos();
+  let o = merc ? hdr(f.nome, '', ['forns', 'Fornecedores']) : marca(f.nome + ' · ' + dataLonga(S.est.hoje));
+  const tabs = merc ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : [['pedidos', 'PEDIDOS' + (ab.length ? ' (' + ab.length + ')' : '')], ['extrato', 'EXTRATO']];
+  o += '<div class="tabs' + (merc ? '' : ' t2') + '">' + tabs.map(t => '<button class="tab' + (S.aba === t[0] ? ' on' : '') + '" data-a="aba" data-k="' + t[0] + '">' + t[1] + '</button>').join('') + '</div><div class="w">';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (S.aba === 'pedir') {
+    const dia = mais(S.est.hoje, S.d);
+    o += '<div class="card"><div class="lab">PEDIDO PARA</div><div class="dia"><button class="sq" aria-label="Dia anterior" data-a="d" data-d="-1"' + (S.d <= 0 ? ' disabled' : '') + '>‹</button><b>' + diaTxt(dia) + '</b><button class="sq" aria-label="Próximo dia" data-a="d" data-d="1"' + (S.d >= 7 ? ' disabled' : '') + '>›</button></div></div>';
+    prods().forEach(p => { o += linhaProd(p); });
+    o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total do pedido</b><b>' + somaQ() + ' unidades</b></div></div>';
+    o += '<button class="btn" data-a="pedir"' + (somaQ() ? '' : ' disabled') + '>ENVIAR PEDIDO</button>';
+  } else if (S.aba === 'receber' || S.aba === 'pedidos') {
+    if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">Nenhum pedido aberto</div><div class="s">' + (merc ? 'Faça o pedido na aba PEDIR.' : 'Quando o mercado fizer um pedido, ele aparece aqui.') + '</div></div>';
+    ab.forEach(p => {
+      o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="s">Pedido: ' + itensTxt(p, 'pedida') + '</div>' +
+        (p.status === 'ENVIADO' ? '<div class="s" style="color:var(--g);font-weight:600">Enviado: ' + (itensTxt(p, 'enviada') || 'nada') + '</div>' : '') +
+        '<div class="s">Feito por ' + esc(p.criado_por) + ' em ' + dm(p.criado_em) + ' às ' + esc(p.criado_em.slice(11)) + '</div>';
+      if (merc) o += '<button class="btn" data-a="abrir" data-k="' + esc(p.id) + '">RECEBER E CONFERIR</button><button class="btn zap" data-a="zap" data-k="' + esc(p.id) + '">ENVIAR NO WHATSAPP</button><button class="btn pg" data-a="cancelar" data-k="' + esc(p.id) + '">Cancelar pedido</button>';
+      else o += '<button class="btn" data-a="abrir" data-k="' + esc(p.id) + '">' + (p.status === 'ENVIADO' ? 'CORRIGIR O ENVIO' : 'INFORMAR O ENVIO') + '</button>';
+      o += '</div>';
+    });
+  } else if (S.aba === 'perca') {
+    o += '<div class="s">Lance aqui o bolo vencido ou com avaria. O valor é descontado no pagamento.</div>';
+    prods().forEach(p => { o += linhaProd(p, brl(p.custo) + ' cada'); });
+    o += '<div class="card"><div class="lab">MOTIVO</div><div class="seg">' + ['Vencido', 'Avaria'].map(m => '<button class="' + (S.motivo === m ? 'on' : '') + '" data-a="motivo" data-k="' + m + '">' + m + '</button>').join('') + '</div></div>';
+    o += '<button class="btn" data-a="perca"' + (somaQ() ? '' : ' disabled') + '>LANÇAR PERCA</button>';
+  } else o += extrato();
+  return o + '</div>';
+}
+function telaFeito() {
+  const p = S.est.pedidos.find(x => x.id === S.feito), f = fornAtual();
+  let o = hdr('Pedido registrado', f.nome) + '<div class="w"><div class="card"><div class="lab">PEDIDO PARA</div><div style="font-size:19px;font-weight:700">' + diaTxt(p.dia) + '</div><div class="sep">';
+  p.itens.forEach(i => { o += '<div class="kv"><span>' + esc(i.nome) + '</span><b>' + i.pedida + '</b></div>'; });
+  o += '</div></div><button class="btn zap" data-a="zap" data-k="' + esc(p.id) + '">ENVIAR NO WHATSAPP</button><div class="s">O botão copia o pedido e abre o WhatsApp. É só escolher a conversa e enviar.</div><button class="btn b2" data-a="voltar">VOLTAR</button></div>';
+  return o;
+}
+function telaAbrir() {
+  const p = S.est.pedidos.find(x => x.id === S.ped), f = fornAtual(), merc = sou() === 'mercado';
+  let o = hdr(merc ? 'Receber e conferir' : 'Informar o envio', f.nome + ' · ' + diaTxt(p.dia).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  o += '<div class="s">' + (merc ? 'Confira o que chegou e ajuste a quantidade se vier diferente.' : 'Confirme quantos de cada você vai mandar.') + '</div>';
+  p.itens.forEach(i => {
+    const pr = S.est.produtos.find(x => x.codigo === i.codigo) || { desenho: '' };
+    o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, 'Pedido ' + i.pedida + (merc && i.enviada != null ? ' · enviado ' + i.enviada : ''));
+  });
+  if (merc) {
+    o += '<div class="card"><div class="lab">QUEM TROUXE</div><div class="seg"><button class="' + (S.coleta === 'MERCADO' ? 'on' : '') + '" data-a="coleta" data-k="MERCADO">Nós buscamos</button><button class="' + (S.coleta === 'FORNECEDOR' ? 'on' : '') + '" data-a="coleta" data-k="FORNECEDOR">Ela entregou</button></div>' +
+      '<div class="kv"><span>Taxa de coleta</span><b>' + (S.coleta === 'MERCADO' && f.taxa ? brl(f.taxa) : 'sem taxa') + '</b></div></div>';
+    o += '<button class="btn" data-a="receber">CONFIRMAR RECEBIMENTO</button>';
+  } else o += '<button class="btn" data-a="enviar">CONFIRMAR ENVIO</button>';
+  return o + '</div>';
+}
+function render() {
+  let o = DEMO ? '<div class="demo"><span>DEMONSTRAÇÃO · nada é gravado na planilha</span><button data-a="zerar">Zerar teste</button></div>' : '';
+  if (!S.est || S.tela === 'pin') o += telaPin();
+  else if (S.tela === 'forns') o += telaForns();
+  else if (S.tela === 'feito') o += telaFeito();
+  else if (S.tela === 'abrir') o += telaAbrir();
+  else o += telaForn();
+  if (S.load) o += '<div class="load">Carregando…</div>';
+  el.innerHTML = o;
+}
+
+/* ---------- ações ---------- */
+const itensReq = () => Object.keys(S.q).map(k => ({ codigo: k, qtd: S.q[k] }));
+const AC = {
+  pin(k) { S.erro = ''; if (k === 'x') S.pin = S.pin.slice(0, -1); else if (S.pin.length < 4) S.pin += k; render(); if (S.pin.length === 4) entrar(); },
+  sair() { try { localStorage.removeItem(CH); } catch (e) {} S.pin = ''; S.est = null; S.tela = 'pin'; render(); },
+  forns() { S.tela = 'forns'; S.erro = ''; render(); },
+  forn(k) { S.forn = k; S.aba = fornAtual().tem_pedido ? 'pedir' : 'receber'; S.q = {}; S.d = 1; S.erro = ''; S.tela = 'forn'; render(); window.scrollTo(0, 0); },
+  aba(k) { S.aba = k; S.q = {}; S.erro = ''; render(); },
+  q(k, b) { S.q[k] = Math.max(0, Math.min(999, (S.q[k] || 0) + Number(b.dataset.d))); render(); },
+  d(k, b) { S.d = Math.max(0, Math.min(7, S.d + Number(b.dataset.d))); render(); },
+  motivo(k) { S.motivo = k; render(); },
+  coleta(k) { S.coleta = k; render(); },
+  mes(k) { S.mes = k; render(); },
+  async pedir() {
+    const antes = S.est.pedidos.map(p => p.id);
+    if (await chamar('pedido_salvar', { fornecedor: S.forn, dia: mais(S.est.hoje, S.d), itens: itensReq() })) {
+      const novo = S.est.pedidos.find(p => antes.indexOf(p.id) < 0);
+      S.q = {}; S.d = 1; S.feito = novo && novo.id; S.tela = novo ? 'feito' : 'forn'; S.aba = 'receber'; render(); window.scrollTo(0, 0);
+    }
+  },
+  zap(k) {
+    const p = S.est.pedidos.find(x => x.id === k), f = S.est.fornecedores.find(x => x.id === p.fornecedor), t = textoZap(p);
+    try { navigator.clipboard.writeText(t); } catch (e) {}
+    const n = f.whatsapp ? (f.whatsapp.length <= 11 ? '55' + f.whatsapp : f.whatsapp) : '';
+    window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(t), '_blank');
+  },
+  voltar() { S.tela = 'forn'; S.q = {}; S.erro = ''; render(); },
+  abrir(k) {
+    const p = S.est.pedidos.find(x => x.id === k);
+    S.ped = k; S.q = {}; S.coleta = 'MERCADO'; S.erro = '';
+    p.itens.forEach(i => { S.q[i.codigo] = sou() === 'mercado' ? (i.enviada != null ? i.enviada : i.pedida) : (i.enviada != null ? i.enviada : i.pedida); });
+    S.tela = 'abrir'; render(); window.scrollTo(0, 0);
+  },
+  async receber() { if (await chamar('pedido_receber', { id: S.ped, coleta: S.coleta, itens: itensReq() })) { S.q = {}; S.tela = 'forn'; S.aba = 'extrato'; S.mes = null; render(); window.scrollTo(0, 0); } },
+  async enviar() { if (await chamar('pedido_enviar', { id: S.ped, itens: itensReq() })) { S.q = {}; S.tela = 'forn'; S.aba = 'pedidos'; render(); window.scrollTo(0, 0); } },
+  async cancelar(k) { if (confirm('Cancelar este pedido?')) { await chamar('pedido_cancelar', { id: k }); render(); } },
+  async perca() { if (await chamar('perca_lancar', { fornecedor: S.forn, motivo: S.motivo, itens: itensReq() })) { S.q = {}; S.aba = 'extrato'; S.mes = null; render(); window.scrollTo(0, 0); } },
+  async xperca(k) { if (confirm('Excluir esta perca?')) { await chamar('perca_excluir', { id: k }); render(); } },
+  zerar() { if (confirm('Apagar os lançamentos de teste deste aparelho?')) { localStorage.removeItem('conecta_demo'); if (S.est) entrar(); } }
+};
+el.addEventListener('click', e => {
+  const b = e.target.closest('[data-a]');
+  if (b && !b.disabled && AC[b.dataset.a]) AC[b.dataset.a](b.dataset.k, b);
+});
+
+/* ---------- início ---------- */
+try { S.pin = localStorage.getItem(CH) || ''; } catch (e) {}
+if (TOKEN || S.pin.length === 4) entrar(); else render();
+</script>
 </body>
 </html>
