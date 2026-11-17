@@ -277,7 +277,7 @@ function telaPin() {
   return o + '</div>';
 }
 function telaForns() {
-  let o = marca('Gestão de produtores · ' + dataLonga(S.est.hoje), true) + '<div class="w"><div style="font-size:19px;font-weight:700">Olá, ' + esc(S.est.quem.nome) + '</div>';
+  let o = marca('Gestão de fornecedores locais · ' + dataLonga(S.est.hoje), true) + '<div class="w"><div style="font-size:19px;font-weight:700">Olá, ' + esc(S.est.quem.nome) + '</div>';
   const grupos = [];
   S.est.fornecedores.forEach(f => { if (grupos.indexOf(f.grupo) < 0) grupos.push(f.grupo); });
   grupos.forEach(g => {
