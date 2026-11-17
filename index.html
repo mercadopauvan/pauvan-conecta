@@ -219,7 +219,7 @@ function demo(req) {
 /* ---------- peças de tela ---------- */
 const hdr = (t, sub, volta) => '<div class="hdr">' + (volta ? '<button class="bk" data-a="' + volta[0] + '">‹ ' + volta[1] + '</button>' : '') + '<h1>' + esc(t) + '</h1>' + (sub ? '<p>' + esc(sub) + '</p>' : '') + '</div>';
 const LOGO = '<img src="logo.png" width="88" height="69" alt="Pauvan Conecta" style="flex:none">';
-const marca = (sub, sair) => '<div class="marca">' + LOGO + '<div class="dv"></div><div class="tx"><b>Pauvan <i>Conecta</i></b><span>' + esc(sub) + '</span></div>' + (sair ? '<button class="sr" data-a="sair">Sair</button>' : '') + '</div>';
+const marca = (sub, sair) => '<div class="marca">' + LOGO + '<div class="dv"></div><div class="tx"><b>Pauvan <i>Conecta</i></b>' + String(sub).split(' · ').map(t => '<span>' + esc(t) + '</span>').join('') + '</div>' + (sair ? '<button class="sr" data-a="sair">Sair</button>' : '') + '</div>';
 const dataLonga = s => { const w = SEM[dt(s).getUTCDay()]; return w.charAt(0).toUpperCase() + w.slice(1, 3) + ', ' + s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4); };
 function linhaProd(p, sub) {
   const q = S.q[p.codigo] || 0;
