@@ -124,7 +124,14 @@ function des(k, w) {
 const desForn = f => { const p = S.est.produtos.filter(x => x.fornecedor === f.id); return des(p.length ? (p.find(x => x.desenho === 'bolo_cobertura') || p[0]).desenho : '', 66); };
 
 /* ---------- servidor ---------- */
-function auth() { return TOKEN ? { token: TOKEN, pin: S.pin } : { pin: S.pin }; }
+function aparelho() {
+  try {
+    let a = localStorage.getItem('conecta_aparelho');
+    if (!a) { a = (crypto.randomUUID ? crypto.randomUUID() : 'a' + Date.now() + Math.random().toString(36).slice(2)); localStorage.setItem('conecta_aparelho', a); }
+    return a;
+  } catch (e) { return ''; }
+}
+function auth() { return TOKEN ? { token: TOKEN, pin: S.pin } : { pin: S.pin, aparelho: aparelho() }; }
 async function chamar(acao, dados) {
   S.load = true; S.erro = ''; render();
   let r;
@@ -231,7 +238,7 @@ function extrato() {
 /* ---------- telas ---------- */
 function telaPin() {
   let o = marca('Parceiros conectados, processos organizados.') + '<div class="w">';
-  o += '<div style="font-size:19px;font-weight:700">' + (TOKEN ? esc(S.nomeF || 'Acesso do parceiro') : 'Acesso do Mercado Pauvan') + '</div><div class="s">Digite seu PIN de 4 números.</div>';
+  o += '<div style="font-size:19px;font-weight:700">' + (TOKEN ? esc(S.nomeF || 'Acesso do parceiro') : 'Acesso do Mercado Pauvan') + '</div><div class="s">' + (TOKEN ? 'Digite seu PIN de 4 números.' : 'Use o mesmo PIN do App Pauvan.') + '</div>';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
   o += '<div class="pin">' + [0, 1, 2, 3].map(i => '<i class="' + (i < S.pin.length ? 'on' : '') + '"></i>').join('') + '</div><div class="kp">';
   '123456789'.split('').forEach(n => { o += '<button data-a="pin" data-k="' + n + '">' + n + '</button>'; });

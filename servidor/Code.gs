@@ -7,6 +7,8 @@
 var SS_ID = '1Gps3J5uFACgOT-icPzTE6zJqSdI607lrquiCvKrKSJo';
 var TZ = 'America/Cuiaba';
 var DIAS_HISTORICO = 75;
+/* Consulta de PIN do App Pauvan: o mesmo PIN vale nos dois aplicativos. */
+var PIN_URL = 'https://script.google.com/macros/s/AKfycby5E_gkrNjAOsBgpYbrfJvXaKcHqMbTwH8Jb5ma_U-ThOhAFnVstqabM8bbnbJOB4DA/exec';
 
 function doGet() {
   return saida_({ ok: true, app: 'PAUVAN CONECTA' });
@@ -100,9 +102,30 @@ function entrar_(req) {
     return { tipo: 'fornecedor', nome: txt_(f.nome), fornecedor: txt_(f.id) };
   }
   if (!/^\d{4}$/.test(pin)) throw new Error('Digite o PIN de 4 números.');
-  var ps = ler_('PESSOAS').filter(function (p) { return sim_(p.ativo) && txt_(p.pin) === pin; });
-  if (!ps.length) { falhou_(); throw new Error('PIN incorreto.'); }
+  var nome = nomeDoPin_(pin, txt_(req.aparelho).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 60));
+  var ps = ler_('PESSOAS').filter(function (p) { return sim_(p.ativo) && chave_(p.nome) === chave_(nome); });
+  if (!ps.length) throw new Error(nome + ' ainda não tem acesso ao Conecta.');
   return { tipo: 'mercado', nome: txt_(ps[0].nome), perfil: txt_(ps[0].perfil) };
+}
+function chave_(v) {
+  return txt_(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+/* Pergunta ao App Pauvan de quem é o PIN. Guarda a resposta certa por 6 horas (sem guardar o PIN). */
+function nomeDoPin_(pin, aparelho) {
+  var c = CacheService.getScriptCache();
+  var k = 'pin_' + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, 'conecta|' + pin + '|' + aparelho));
+  var nome = c.get(k);
+  if (nome) return nome;
+  var r;
+  try {
+    var resp = UrlFetchApp.fetch(PIN_URL, { method: 'post', contentType: 'text/plain', payload: JSON.stringify({ acao: 'conectaPin', pin: pin, aparelho: aparelho }), muteHttpExceptions: true });
+    r = JSON.parse(resp.getContentText());
+  } catch (e) {
+    throw new Error('Não consegui conferir o PIN no App Pauvan. Tente de novo.');
+  }
+  if (!r || !r.ok || !r.nome) throw new Error((r && r.erro) || 'PIN incorreto.');
+  c.put(k, String(r.nome), 21600);
+  return String(r.nome);
 }
 
 /* ---------- dados ---------- */
