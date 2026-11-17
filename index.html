@@ -141,7 +141,7 @@ const MOTO = c => {
     '<circle cx="30.5" cy="6.5" r="3.8" fill="' + c + '"/><path d="M28.5 13.5L25 26.5"/><path d="M29 16l9.5 1.5"/><path d="M25 27h8l3 8"/></g>' +
     '<rect x="3.5" y="11" width="15" height="12.5" rx="2.8" fill="' + b + '"/></g><path d="M1 15h6M0 22h5M1 29h4" stroke="' + b + '" stroke-width="2.6" stroke-linecap="round"/></svg>';
 };
-const coletaTxt = (p, f) => p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Coleta nossa · taxa ' + brl(f.taxa);
+const coletaTxt = (p, f) => p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Coleta Pauvan · taxa ' + brl(f.taxa);
 
 /* ---------- servidor ---------- */
 function aparelho() {
@@ -290,7 +290,7 @@ function telaForn() {
     const dia = mais(S.est.hoje, S.d);
     o += '<div class="card"><div class="lab">PEDIDO PARA</div><div class="dia"><button class="sq" aria-label="Dia anterior" data-a="d" data-d="-1"' + (S.d <= 0 ? ' disabled' : '') + '>‹</button><b>' + diaTxt(dia) + '</b><button class="sq" aria-label="Próximo dia" data-a="d" data-d="1"' + (S.d >= 7 ? ' disabled' : '') + '>›</button></div></div>';
     prods().forEach(p => { o += linhaProd(p); });
-    if (f.taxa) o += '<button class="moto' + (S.busca ? ' on' : '') + '" data-a="busca" aria-pressed="' + S.busca + '">' + MOTO(S.busca ? '#1E5B2F' : '#8A938C') + '<span class="n"><b>Coleta nossa</b><span>' + (S.busca ? 'Taxa ' + brl(f.taxa) : 'Desligado · sem taxa') + '</span></span><span class="sw"></span></button>';
+    if (f.taxa) o += '<button class="moto' + (S.busca ? ' on' : '') + '" data-a="busca" aria-pressed="' + S.busca + '">' + MOTO(S.busca ? '#1E5B2F' : '#8A938C') + '<span class="n"><b>Coleta Pauvan</b><span>' + (S.busca ? 'Taxa ' + brl(f.taxa) : 'Desligado · sem taxa') + '</span></span><span class="sw"></span></button>';
     o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total do pedido</b><b>' + somaQ() + ' unidades</b></div></div>';
     o += '<button class="btn" data-a="pedir"' + (somaQ() ? '' : ' disabled') + '>ENVIAR PEDIDO</button>';
   } else if (S.aba === 'receber' || S.aba === 'pedidos') {
@@ -328,7 +328,7 @@ function telaAbrir() {
     o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, 'Pedido ' + i.pedida + (merc && i.enviada != null ? ' · enviado ' + i.enviada : ''));
   });
   if (merc) {
-    o += '<div class="card"><div class="lab">QUEM TROUXE</div><div class="seg"><button class="' + (S.coleta === 'MERCADO' ? 'on' : '') + '" data-a="coleta" data-k="MERCADO">Nós buscamos</button><button class="' + (S.coleta === 'FORNECEDOR' ? 'on' : '') + '" data-a="coleta" data-k="FORNECEDOR">Ela entregou</button></div>' +
+    o += '<div class="card"><div class="lab">QUEM TROUXE</div><div class="seg"><button class="' + (S.coleta === 'MERCADO' ? 'on' : '') + '" data-a="coleta" data-k="MERCADO">Coleta Pauvan</button><button class="' + (S.coleta === 'FORNECEDOR' ? 'on' : '') + '" data-a="coleta" data-k="FORNECEDOR">Ela entregou</button></div>' +
       '<div class="kv"><span>Taxa de coleta</span><b>' + (S.coleta === 'MERCADO' && f.taxa ? brl(f.taxa) : 'sem taxa') + '</b></div></div>';
     const inf = p.itens.some(i => i.enviada != null), esp = p.itens.reduce((a, i) => a + (inf ? (i.enviada || 0) : i.pedida), 0), rec = somaQ();
     o += '<div class="card"' + (rec !== esp ? ' style="background:var(--amb)"' : '') + '><div class="kv" style="font-size:17px"><b>Recebendo</b><b>' + rec + ' de ' + esp + (inf ? ' enviados' : ' pedidos') + '</b></div>' + (rec && rec !== esp ? '<div class="s" style="color:var(--am);font-weight:600">Diferente do ' + (inf ? 'que ela informou' : 'pedido') + '. Confira antes de confirmar.</div>' : '') + '</div>';
