@@ -16,6 +16,7 @@ function doGet() {
 
 function doPost(e) {
   var r;
+  SS_ = null; ABAS_ = {}; LIDO_ = {}; CAB_ = {};
   try {
     var req = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     r = rotear_(req);
@@ -29,12 +30,29 @@ function saida_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
-/* ---------- planilha ---------- */
-function aba_(nome) {
-  var s = SpreadsheetApp.openById(SS_ID).getSheetByName(nome);
-  if (!s) throw new Error('Aba ' + nome + ' não encontrada');
-  return s;
+/* ---------- planilha ----------
+ * Regras de velocidade (valem para todo código novo ou alterado):
+ * 1) a planilha é aberta uma vez só e cada aba é lida uma vez só por chamada, em bloco (getValues);
+ * 2) abas que mudam pouco (fornecedores, produtos, pessoas) ficam em cache por CACHE_SEG segundos;
+ * 3) ao celular vai só o que a tela mostra (ver estado_).
+ */
+var CACHE_ABAS = { FORNECEDORES: true, PRODUTOS: true, PESSOAS: true };
+var CACHE_SEG = 600;
+var SS_ = null, ABAS_ = {}, LIDO_ = {}, CAB_ = {};
+function ss_() {
+  if (!SS_) SS_ = SpreadsheetApp.openById(SS_ID);
+  return SS_;
 }
+function aba_(nome) {
+  if (!ABAS_[nome]) {
+    var s = ss_().getSheetByName(nome);
+    if (!s) throw new Error('Aba ' + nome + ' não encontrada');
+    ABAS_[nome] = s;
+  }
+  return ABAS_[nome];
+}
+/* Depois de gravar numa aba, a próxima leitura da mesma chamada busca de novo. */
+function sujo_(nome) { delete LIDO_[nome]; }
 function txt_(v) {
   if (v instanceof Date) {
     var comHora = v.getHours() || v.getMinutes();
@@ -50,26 +68,37 @@ function num_(v) {
   return isNaN(n) ? 0 : n;
 }
 function ler_(nome) {
-  var s = aba_(nome), n = s.getLastRow();
-  if (n < 2) return [];
-  var v = s.getRange(1, 1, n, s.getLastColumn()).getValues(), cab = v[0], out = [];
+  if (LIDO_[nome]) return LIDO_[nome];
+  var cache = CACHE_ABAS[nome] ? CacheService.getScriptCache() : null, chave = 'aba_v1_' + nome;
+  if (cache) {
+    var j = cache.get(chave);
+    if (j) return (LIDO_[nome] = JSON.parse(j));
+  }
+  var v = aba_(nome).getDataRange().getValues(), cab = v[0] || [], out = [];
+  CAB_[nome] = cab.map(txt_);
   for (var i = 1; i < v.length; i++) {
     if (txt_(v[i][0]) === '') continue;
     var o = { _lin: i + 1 };
     for (var c = 0; c < cab.length; c++) o[txt_(cab[c])] = v[i][c];
     out.push(o);
   }
+  LIDO_[nome] = out;
+  if (cache) { try { cache.put(chave, JSON.stringify(out), CACHE_SEG); } catch (e) {} }
   return out;
 }
 function cab_(nome) {
-  var s = aba_(nome);
-  return s.getRange(1, 1, 1, s.getLastColumn()).getValues()[0].map(txt_);
+  if (!CAB_[nome]) {
+    var s = aba_(nome);
+    CAB_[nome] = s.getRange(1, 1, 1, s.getLastColumn()).getValues()[0].map(txt_);
+  }
+  return CAB_[nome];
 }
 function incluir_(nome, objs) {
   if (!objs.length) return;
   var s = aba_(nome), cab = cab_(nome);
   var linhas = objs.map(function (o) { return cab.map(function (k) { return o[k] === undefined ? '' : o[k]; }); });
   s.getRange(s.getLastRow() + 1, 1, linhas.length, cab.length).setValues(linhas);
+  sujo_(nome);
 }
 function gravar_(nome, lin, campos) {
   var s = aba_(nome), cab = cab_(nome);
@@ -77,6 +106,7 @@ function gravar_(nome, lin, campos) {
     var c = cab.indexOf(k);
     if (c > -1) s.getRange(lin, c + 1).setValue(campos[k]);
   });
+  sujo_(nome);
 }
 function agora_() { return Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd HH:mm'); }
 function hoje_() { return Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'); }
@@ -245,6 +275,7 @@ function agir_(a, req, quem) {
     if (!x) throw new Error('Perca não encontrada.');
     if (txt_(x.data) !== hoje_() && quem.perfil !== 'GESTAO') throw new Error('Só a gestão exclui perca de outro dia.');
     aba_('PERCAS').deleteRow(x._lin);
+    sujo_('PERCAS');
   } else {
     throw new Error('Ação desconhecida.');
   }
