@@ -360,16 +360,48 @@ function render() {
   else o += telaForn();
   if (S.load) o += '<div class="load">Carregando…</div>';
   el.innerHTML = o;
+  navSync();
 }
+
+/* ---------- botão voltar do celular ----------
+ * Cada tela nova entra no histórico do navegador; o voltar do celular volta uma tela.
+ * Na tela inicial (lista de fornecedores, ou a tela da parceira) o voltar sai do aplicativo. */
+let NAV_KEY = '', NAV_POP = false, NAV_REPLACE = false, NAV_OVER = null;
+const navKey = () => (!S.est || S.tela === 'pin') ? 'pin' : [S.tela, S.forn, S.tela === 'forn' ? '' : S.ped, S.tela === 'feito' ? S.feito : ''].join('|');
+const navProf = () => (history.state && history.state.conecta && history.state.d) || 0;
+function navSync() {
+  const k = navKey();
+  if (NAV_POP) { NAV_POP = false; NAV_KEY = k; return; }
+  const st = { conecta: 1, tela: S.tela, forn: S.forn, aba: S.aba, ped: S.ped, feito: S.feito };
+  if (k === NAV_KEY && !NAV_REPLACE) { if (history.state && history.state.conecta) history.replaceState(Object.assign(st, { d: navProf() }), ''); return; }
+  if (!NAV_KEY || NAV_KEY === 'pin' || k === 'pin' || NAV_REPLACE) history.replaceState(Object.assign(st, { d: k === 'pin' ? 0 : navProf() }), '');
+  else history.pushState(Object.assign(st, { d: navProf() + 1 }), '');
+  NAV_KEY = k; NAV_REPLACE = false;
+}
+/* Volta uma tela pelo histórico; "over" ajusta a tela de chegada (ex.: abrir o extrato depois de receber). */
+function navVoltar(over, semHistorico) {
+  if (navProf() > 0) { NAV_OVER = over || null; history.back(); }
+  else { Object.assign(S, over || semHistorico || {}); NAV_REPLACE = true; S.q = {}; S.erro = ''; render(); window.scrollTo(0, 0); }
+}
+window.addEventListener('popstate', e => {
+  const st = e.state;
+  if (!st || !st.conecta || !S.est) return;
+  S.tela = st.tela; S.forn = st.forn; S.aba = st.aba; S.ped = st.ped; S.feito = st.feito; S.q = {}; S.erro = '';
+  if (NAV_OVER) { Object.assign(S, NAV_OVER); NAV_OVER = null; NAV_REPLACE = true; } else NAV_POP = true;
+  const p = S.est.pedidos.find(x => x.id === (S.tela === 'feito' ? S.feito : S.ped));
+  if ((S.tela === 'abrir' && (!p || p.status === 'RECEBIDO' || p.status === 'CANCELADO')) || (S.tela === 'feito' && !p)) { S.tela = 'forn'; if (NAV_POP) { NAV_POP = false; NAV_REPLACE = true; } }
+  if (S.tela === 'abrir') { AC.abrir(S.ped, null, true); return; }
+  render(); window.scrollTo(0, 0);
+});
 
 /* ---------- ações ---------- */
 const itensReq = () => Object.keys(S.q).map(k => ({ codigo: k, qtd: S.q[k] }));
 const AC = {
   pin(k) { S.erro = ''; if (k === 'x') S.pin = S.pin.slice(0, -1); else if (S.pin.length < 4) S.pin += k; render(); if (S.pin.length === 4) entrar(); },
-  sair() { try { localStorage.removeItem(CH); } catch (e) {} S.pin = ''; S.est = null; S.tela = 'pin'; render(); },
-  forns() { S.tela = 'forns'; S.erro = ''; render(); },
+  sair() { const d = navProf(); try { localStorage.removeItem(CH); } catch (e) {} S.pin = ''; S.est = null; S.tela = 'pin'; render(); if (d) history.go(-d); },
+  forns() { navVoltar(null, { tela: 'forns' }); },
   forn(k) { S.forn = k; S.aba = fornAtual().tem_pedido ? 'pedir' : 'receber'; S.q = {}; S.d = 1; S.erro = ''; S.tela = 'forn'; render(); window.scrollTo(0, 0); },
-  aba(k) { S.aba = k; S.q = {}; S.erro = ''; render(); },
+  aba(k) { S.aba = k; S.q = {}; S.erro = ''; NAV_REPLACE = true; render(); },
   q(k, b) { S.q[k] = Math.max(0, Math.min(999, (S.q[k] || 0) + Number(b.dataset.d))); render(); },
   d(k, b) { S.d = Math.max(0, Math.min(7, S.d + Number(b.dataset.d))); render(); },
   motivo(k) { S.motivo = k; render(); },
@@ -389,15 +421,16 @@ const AC = {
     const n = f.whatsapp ? (f.whatsapp.length <= 11 ? '55' + f.whatsapp : f.whatsapp) : '';
     window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(t), '_blank');
   },
-  voltar() { S.tela = 'forn'; S.q = {}; S.erro = ''; render(); },
-  abrir(k) {
+  voltar() { if (S.tela === 'feito') navVoltar({ tela: 'forn', aba: 'receber' }); else navVoltar(null, { tela: 'forn' }); },
+  abrir(k, b, doHistorico) {
     const p = S.est.pedidos.find(x => x.id === k);
+    if (doHistorico) NAV_POP = !NAV_REPLACE;
     S.ped = k; S.q = {}; S.coleta = p.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO'; S.erro = '';
     p.itens.forEach(i => { S.q[i.codigo] = sou() === 'mercado' ? 0 : (i.enviada != null ? i.enviada : 0); });
     S.tela = 'abrir'; render(); window.scrollTo(0, 0);
   },
-  async receber() { if (await chamar('pedido_receber', { id: S.ped, coleta: S.coleta, itens: itensReq() })) { S.q = {}; S.tela = 'forn'; S.aba = 'extrato'; S.mes = null; render(); window.scrollTo(0, 0); } },
-  async enviar() { if (await chamar('pedido_enviar', { id: S.ped, itens: itensReq() })) { S.q = {}; S.tela = 'forn'; S.aba = 'pedidos'; render(); window.scrollTo(0, 0); } },
+  async receber() { if (await chamar('pedido_receber', { id: S.ped, coleta: S.coleta, itens: itensReq() })) { S.q = {}; S.mes = null; navVoltar({ tela: 'forn', aba: 'extrato' }); } },
+  async enviar() { if (await chamar('pedido_enviar', { id: S.ped, itens: itensReq() })) { S.q = {}; navVoltar({ tela: 'forn', aba: 'pedidos' }); } },
   async cancelar(k) { if (confirm('Cancelar este pedido?')) { await chamar('pedido_cancelar', { id: k }); render(); } },
   async perca() { if (await chamar('perca_lancar', { fornecedor: S.forn, motivo: S.motivo, itens: itensReq() })) { S.q = {}; S.aba = 'extrato'; S.mes = null; render(); window.scrollTo(0, 0); } },
   async xperca(k) { if (confirm('Excluir esta perca?')) { await chamar('perca_excluir', { id: k }); render(); } },
