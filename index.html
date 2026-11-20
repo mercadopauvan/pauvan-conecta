@@ -89,6 +89,21 @@ button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-co
 .sw::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff}
 .moto.on .sw{background:var(--g)}
 .moto.on .sw::after{left:25px}
+.tabs.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.lgS{border-radius:50%;background:#000;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.lgS i{display:block;background:url(data:image/jpeg;base64,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) center/contain no-repeat}
+.hdr h1{display:flex;align-items:center;gap:10px}
+.vista{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px 20px;background:#fff;border-bottom:1px solid #DDE3DE}
+.vista button{min-height:38px;border-radius:9px;border:1px solid var(--l);background:#fff;font-size:12px;font-weight:700;color:var(--t)}
+.vista button.on{background:var(--g);border-color:var(--g);color:#fff}
+.tg{background:#fff;border:2px solid var(--l);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;width:100%;text-align:left}
+.tg.on{border-color:var(--g);background:#EEF6EF}
+.tg .n{flex:1;display:flex;flex-direction:column;gap:2px;font-size:14px}
+.tg.on .sw{background:var(--g)}
+.tg.on .sw::after{left:25px}
+.pr{flex-wrap:wrap}
+.vl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--m);flex-basis:100%;border-top:1px solid #EEF1ED;padding-top:8px}
+.vl input{font-family:inherit;font-size:13px;border:1px solid var(--l);border-radius:8px;padding:4px 6px;background:#fff;color:var(--t);min-height:32px}
 .lk{background:none;border:0;color:var(--vm);font-size:13px;font-weight:600;padding:6px 0;text-align:right}
 </style>
 </head>
@@ -102,7 +117,7 @@ const DEMO = !API;
 const TOKEN = new URLSearchParams(location.search).get('f') || '';
 const CH = 'conecta_auth' + (TOKEN ? '_f' : '');
 const el = document.getElementById('app');
-const S = { pin: '', erro: '', load: false, est: null, tela: 'pin', forn: null, aba: 'pedir', q: {}, d: 1, ped: null, coleta: 'MERCADO', busca: true, motivo: 'Vencido', mes: null, feito: null, nomeF: '' };
+const S = { pin: '', erro: '', load: false, est: null, tela: 'pin', forn: null, aba: 'pedir', q: {}, d: 1, ped: null, coleta: 'MERCADO', busca: true, motivo: 'Vencido', mes: null, feito: null, nomeF: '', trocaOk: false, vista: 'm', qt: {}, val: {} };
 
 /* ---------- utilidades ---------- */
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -136,13 +151,25 @@ function bolo(cob, mini, w) {
   if (mini) b = '<g transform="translate(-10 8) scale(0.7)">' + b + '</g><rect x="12" y="-24" width="38" height="17" rx="8.5" fill="#1E5B2F"/><text x="31" y="-11.5" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#FFFFFF">MINI</text>';
   return '<svg width="' + w + '" height="' + Math.round(w * 0.69) + '" viewBox="-50 -25 100 69" role="img" aria-label="Desenho do produto">' + b + '</svg>';
 }
+const LAB = (x, y, w, h) => '<svg x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" viewBox="0 0 32 40"><rect width="32" height="40" rx="3" fill="#141414"/><circle cx="16" cy="11" r="6.5" fill="#E8692B"/><ellipse cx="16" cy="9.5" rx="4" ry="3" fill="#fff"/><ellipse cx="16" cy="12.5" rx="3" ry="2.2" fill="#E8692B" stroke="#fff" stroke-width=".6"/><text x="16" y="24" text-anchor="middle" font-size="6.5" font-style="italic" fill="#fff" font-family="serif">Soares</text><rect x="3" y="27" width="26" height="4" rx="1" fill="#E8692B"/><g fill="#fff"><rect x="9" y="33" width="1" height="5"/><rect x="11" y="33" width="2" height="5"/><rect x="14" y="33" width="1" height="5"/><rect x="16" y="33" width="2" height="5"/><rect x="19" y="33" width="1" height="5"/><rect x="21" y="33" width="2" height="5"/></g></svg>';
+const TAMPA = '<ellipse cx="40" cy="50" rx="30" ry="8" fill="#E9ECE8" stroke="#9AA39C" stroke-width="1.5"/><ellipse cx="40" cy="49" rx="17" ry="5" fill="#141414"/><circle cx="40" cy="48" r="2.6" fill="#E8692B"/><rect x="30" y="50.5" width="20" height="1.6" rx=".8" fill="#E8692B"/>';
+function iog(k, w) {
+  const c = k.indexOf('gourmet') > 0 ? '#F2A3BC' : '#FAF6EC', h = Math.round(w * 0.9);
+  if (k === 'iog_trad_1l' || k === 'iog_gourmet_1l') return '<svg width="' + Math.round(w * 0.5) + '" height="' + h + '" viewBox="0 0 60 120" role="img" aria-label="Garrafa de 1 litro"><rect x="22" y="2" width="16" height="12" rx="2" fill="#141414"/><path d="M24 14h12v8c0 6 12 10 12 22v66a6 6 0 0 1-6 6H18a6 6 0 0 1-6-6V44c0-12 12-16 12-22z" fill="' + c + '" stroke="#9AA39C" stroke-width="1.5"/>' + LAB(14, 56, 32, 40) + '</svg>';
+  if (k === 'iog_trad_300' || k === 'iog_gourmet_300') return '<svg width="' + Math.round(w * 0.5) + '" height="' + h + '" viewBox="8 40 44 80" role="img" aria-label="Garrafa de 300 ml"><rect x="23" y="44" width="14" height="10" rx="2" fill="#141414"/><path d="M25 54h10v4c0 4 11 6 11 14v40a5 5 0 0 1-5 5H19a5 5 0 0 1-5-5V72c0-8 11-10 11-14z" fill="' + c + '" stroke="#9AA39C" stroke-width="1.5"/>' + LAB(17, 74, 26, 33) + '</svg>';
+  if (k === 'iog_grego_fruta') return '<svg width="' + w + '" height="' + h + '" viewBox="8 38 64 61" role="img" aria-label="Pote de grego com polpa de fruta"><path d="M12 50h56l-4 42a6 6 0 0 1-6 5H22a6 6 0 0 1-6-5z" fill="#FBF8F1" stroke="#9AA39C" stroke-width="1.5"/><path d="M13.5 66h53l-1.6 18H15.1z" fill="#E7547E"/><path d="M14.6 78h50.8l-.9 6H15.1z" fill="#B83A63"/>' + TAMPA + '</svg>';
+  return '<svg width="' + w + '" height="' + h + '" viewBox="8 38 64 61" role="img" aria-label="Pote de grego especial"><path d="M12 50h56l-4 42a6 6 0 0 1-6 5H22a6 6 0 0 1-6-5z" fill="#F7D35A" stroke="#9AA39C" stroke-width="1.5"/><path d="M13.5 58h53l-1.3 14H14.8z" fill="#F6EFE4"/><path d="M12.6 50h54.8l-.9 8H13.5z" fill="#5A3420"/>' + TAMPA + '</svg>';
+}
+const logoS = s => '<span class="lgS" style="width:' + s + 'px;height:' + s + 'px"><i style="width:' + Math.round(s * 0.7) + 'px;height:' + s + 'px"></i></span>';
+const semPed = f => f && !f.tem_pedido;
 function des(k, w) {
+  if (String(k).indexOf('iog_') === 0) return iog(k, w);
   if (k === 'bolo_simples') return bolo(false, false, w);
   if (k === 'bolo_cobertura') return bolo(true, false, w);
   if (k === 'bolo_mini') return bolo(true, true, w);
   return '<svg width="' + w + '" height="' + Math.round(w * 0.69) + '" viewBox="-50 -25 100 69" role="img" aria-label="Produto"><rect x="-30" y="-14" width="60" height="46" rx="8" fill="#C9D3CB"/></svg>';
 }
-const desForn = f => { const p = S.est.produtos.filter(x => x.fornecedor === f.id); return des(p.length ? (p.find(x => x.desenho === 'bolo_cobertura') || p[0]).desenho : '', 66); };
+const desForn = f => { if (f.id === 'soares') return logoS(66); const p = S.est.produtos.filter(x => x.fornecedor === f.id); return des(p.length ? (p.find(x => x.desenho === 'bolo_cobertura') || p[0]).desenho : '', 66); };
 
 const MOTO = c => {
   const b = c === '#1E5B2F' ? '#A9E824' : '#C9D0CA';
@@ -152,7 +179,7 @@ const MOTO = c => {
     '<circle cx="30.5" cy="6.5" r="3.8" fill="' + c + '"/><path d="M28.5 13.5L25 26.5"/><path d="M29 16l9.5 1.5"/><path d="M25 27h8l3 8"/></g>' +
     '<rect x="3.5" y="11" width="15" height="12.5" rx="2.8" fill="' + b + '"/></g><path d="M1 15h6M0 22h5M1 29h4" stroke="' + b + '" stroke-width="2.6" stroke-linecap="round"/></svg>';
 };
-const coletaTxt = (p, f) => p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Coleta Pauvan · taxa ' + brl(f.taxa);
+const coletaTxt = (p, f) => semPed(f) ? 'Entrega da Soares no mercado · sem taxa de coleta' : p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Coleta Pauvan · taxa ' + brl(f.taxa);
 
 /* ---------- servidor ---------- */
 function aparelho() {
@@ -188,16 +215,31 @@ async function entrar() {
 
 /* ---------- modo demonstração ---------- */
 function demo(req) {
-  const K = 'conecta_demo';
+  const K = 'conecta_demo_soares';
   let db; try { db = JSON.parse(localStorage.getItem(K)); } catch (e) {}
-  db = db || { pedidos: [], percas: [] };
+  db = db || window.__db || { pedidos: [], percas: [] }; window.__db = db;
+  db.percas.forEach(x => { if (x.fornecedor === 'soares' && x.troca === undefined) x.troca = 'PENDENTE'; if (x.troca === 'PENDENTE' && x.pend == null) x.pend = x.qtd; });
   const hoje = iso(new Date(Date.now() - 4 * 3600000)), agora = hoje + ' ' + new Date(Date.now() - 4 * 3600000).toISOString().slice(11, 16);
-  const quem = req.token ? { tipo: 'fornecedor', nome: 'Caseirinho da Hélia', fornecedor: 'helia' } : { tipo: 'mercado', nome: 'Ney', perfil: 'GESTAO' };
+  const quem = req.token === 'soares' ? { tipo: 'fornecedor', nome: 'Iogurte Soares', fornecedor: 'soares' } : req.token ? { tipo: 'fornecedor', nome: 'Caseirinho da Hélia', fornecedor: 'helia' } : { tipo: 'mercado', nome: 'Ney', perfil: 'GESTAO' };
   if (!req.token && !/^\d{4}$/.test(req.pin || '')) return { ok: false, erro: 'Digite o PIN de 4 números.' };
   const PR = [
     { codigo: '38715', fornecedor: 'helia', nome: 'Mini bolo com cobertura', desenho: 'bolo_mini', custo: 13, ordem: 1 },
     { codigo: '45221', fornecedor: 'helia', nome: 'Bolo simples', desenho: 'bolo_simples', custo: 13, ordem: 2 },
-    { codigo: '45222', fornecedor: 'helia', nome: 'Bolo com cobertura', desenho: 'bolo_cobertura', custo: 16, ordem: 3 }];
+    { codigo: '45222', fornecedor: 'helia', nome: 'Bolo com cobertura', desenho: 'bolo_cobertura', custo: 16, ordem: 3 },
+    { codigo: '7899521641273', fornecedor: 'soares', nome: 'Tradicional 1 litro', desenho: 'iog_trad_1l', custo: 16, ordem: 1 },
+    { codigo: '7894439164630', fornecedor: 'soares', nome: 'Gourmet com frutas 1 litro', desenho: 'iog_gourmet_1l', custo: 21, ordem: 2 },
+    { codigo: '7893582839914', fornecedor: 'soares', nome: 'Tradicional 300 ml', desenho: 'iog_trad_300', custo: 6, ordem: 3 },
+    { codigo: '7895461427793', fornecedor: 'soares', nome: 'Gourmet com frutas 300 ml', desenho: 'iog_gourmet_300', custo: 8, ordem: 4 },
+    { codigo: '7892106664414', fornecedor: 'soares', nome: 'Grego polpa de fruta 300 g', desenho: 'iog_grego_fruta', custo: 12, ordem: 5 },
+    { codigo: '7899348029773', fornecedor: 'soares', nome: 'Grego especial 300 g', desenho: 'iog_grego_especial', custo: 15, ordem: 6 }];
+  if (!db.seed) {
+    db.seed = 1;
+    const it = (q, env, rec) => PR.filter(p => p.fornecedor === 'soares').map((p, i) => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: q[i], enviada: env ? q[i] : null, recebida: rec ? q[i] : null, validade: mais(hoje, 12 + i) }));
+    const d5 = mais(hoje, -5), d2 = mais(hoje, -2);
+    db.pedidos.push({ id: 'S1', fornecedor: 'soares', dia: d5, status: 'RECEBIDO', criado_em: d5 + ' 07:35', criado_por: 'Iogurte Soares', enviado_em: d5 + ' 07:35', recebido_em: d5 + ' 07:55', recebido_por: 'Regiane', coleta: 'FORNECEDOR', taxa: 0, itens: it([6, 4, 10, 10, 6, 4], 1, 1) });
+    db.pedidos.push({ id: 'S2', fornecedor: 'soares', dia: hoje, status: 'ENVIADO', criado_em: hoje + ' 07:40', criado_por: 'Iogurte Soares', enviado_em: hoje + ' 07:40', recebido_em: '', recebido_por: '', coleta: 'FORNECEDOR', taxa: 0, itens: it([6, 4, 12, 12, 6, 4], 1, 0) });
+    db.percas.push({ id: 'XS1', data: d2, fornecedor: 'soares', codigo: '7899348029773', nome: 'Grego especial 300 g', qtd: 2, custo: 15, motivo: 'Vencido', por: 'Ney', troca: 'PENDENTE', pend: 2 });
+  }
   const m = {}; (req.itens || []).forEach(i => { m[i.codigo] = Math.max(0, Math.floor(i.qtd)); });
   const ped = id => db.pedidos.find(p => p.id === id);
   const a = req.acao;
@@ -205,31 +247,41 @@ function demo(req) {
     const itens = PR.filter(p => m[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: m[p.codigo], enviada: null, recebida: null }));
     if (!itens.length) return { ok: false, erro: 'Informe a quantidade de pelo menos um produto.' };
     db.pedidos.push({ id: 'P' + Date.now(), fornecedor: 'helia', dia: req.dia, status: 'PEDIDO', criado_em: agora, criado_por: quem.nome, enviado_em: '', recebido_em: '', recebido_por: '', coleta: req.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO', taxa: 0, itens: itens });
+  } else if (a === 'entrega_lancar') {
+    const itens = PR.filter(p => p.fornecedor === 'soares' && m[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: m[p.codigo], enviada: m[p.codigo], recebida: null, validade: (req.validades || {})[p.codigo] || '' }));
+    if (!itens.length) return { ok: false, erro: 'Informe a quantidade de pelo menos um produto.' };
+    db.pedidos.push({ id: 'S' + Date.now(), fornecedor: 'soares', dia: hoje, status: 'ENVIADO', criado_em: agora, criado_por: quem.nome, enviado_em: agora, recebido_em: '', recebido_por: '', coleta: 'FORNECEDOR', taxa: 0, itens: itens });
   } else if (a === 'pedido_cancelar') { db.pedidos = db.pedidos.filter(p => p.id !== req.id);
-  } else if (a === 'pedido_enviar') { const p = ped(req.id); p.itens.forEach(i => { i.enviada = m[i.codigo] || 0; }); p.status = 'ENVIADO'; p.enviado_em = agora;
-  } else if (a === 'pedido_receber') { const p = ped(req.id); p.itens.forEach(i => { i.recebida = m[i.codigo] || 0; }); p.status = 'RECEBIDO'; p.recebido_em = agora; p.recebido_por = quem.nome; p.coleta = req.coleta === 'MERCADO' ? 'MERCADO' : 'FORNECEDOR'; p.taxa = p.coleta === 'MERCADO' ? 5 : 0;
+  } else if (a === 'pedido_enviar') { const p = ped(req.id); p.itens.forEach(i => { i.enviada = m[i.codigo] || 0; if (p.fornecedor === 'soares') { i.pedida = i.enviada; if (req.validades && req.validades[i.codigo]) i.validade = req.validades[i.codigo]; } }); p.status = 'ENVIADO'; p.enviado_em = agora;
+  } else if (a === 'pedido_receber') { const p = ped(req.id); p.itens.forEach(i => { i.recebida = m[i.codigo] || 0; }); p.status = 'RECEBIDO'; p.recebido_em = agora; p.recebido_por = quem.nome; p.coleta = req.coleta === 'MERCADO' && p.fornecedor !== 'soares' ? 'MERCADO' : 'FORNECEDOR'; p.taxa = p.coleta === 'MERCADO' ? 5 : 0; if (p.fornecedor === 'soares') {
+      p.itens.forEach(i => { if (req.validades && req.validades[i.codigo]) i.validade = req.validades[i.codigo]; });
+      p.trocas = [];
+      Object.keys(req.trocas || {}).forEach(c => { let n = Math.max(0, Math.floor(req.trocas[c] || 0)); if (n) p.trocas.push({ codigo: c, qtd: n });
+        db.percas.filter(x => x.fornecedor === 'soares' && x.troca === 'PENDENTE' && x.codigo === c).sort((a, b) => a.data < b.data ? -1 : 1).forEach(x => { const u = Math.min(n, x.pend); x.pend -= u; n -= u; if (!x.pend) { x.troca = 'ENTREGUE'; x.troca_em = agora; } }); });
+    }
   } else if (a === 'perca_lancar') {
-    const n = PR.filter(p => m[p.codigo] > 0);
+    const fo = req.fornecedor || 'helia', n = PR.filter(p => p.fornecedor === fo && m[p.codigo] > 0);
     if (!n.length) return { ok: false, erro: 'Informe a quantidade da perca.' };
-    n.forEach((p, i) => db.percas.push({ id: 'X' + Date.now() + i, data: hoje, fornecedor: 'helia', codigo: p.codigo, nome: p.nome, qtd: m[p.codigo], custo: p.custo, motivo: req.motivo, por: quem.nome }));
+    n.forEach((p, i) => db.percas.push({ id: 'X' + Date.now() + i, data: hoje, fornecedor: fo, codigo: p.codigo, nome: p.nome, qtd: m[p.codigo], custo: p.custo, motivo: req.motivo, por: quem.nome, troca: fo === 'soares' ? 'PENDENTE' : '', pend: fo === 'soares' ? m[p.codigo] : 0 }));
   } else if (a === 'perca_excluir') { db.percas = db.percas.filter(p => p.id !== req.id); }
-  localStorage.setItem(K, JSON.stringify(db));
-  return { ok: true, estado: { quem: quem, hoje: hoje, fornecedores: [{ id: 'helia', nome: 'Caseirinho da Hélia', grupo: 'COM PEDIDO ANTES', tem_pedido: true, taxa: 5, fechamento: 'MENSAL', whatsapp: '', token: 'demo' }], produtos: PR, pedidos: db.pedidos, percas: db.percas } };
+  try { localStorage.setItem(K, JSON.stringify(db)); } catch (e) {}
+  return { ok: true, estado: { quem: quem, hoje: hoje, fornecedores: [{ id: 'helia', nome: 'Caseirinho da Hélia', grupo: 'COM PEDIDO ANTES', tem_pedido: true, taxa: 5, fechamento: 'MENSAL', whatsapp: '', token: 'demo' }, { id: 'soares', nome: 'Iogurte Soares', grupo: 'ENTREGA PRÓPRIA', tem_pedido: false, taxa: 0, fechamento: 'MENSAL', whatsapp: '', token: 'soares' }], produtos: PR, pedidos: db.pedidos, percas: db.percas } };
 }
 
 /* ---------- peças de tela ---------- */
-const hdr = (t, sub, volta) => '<div class="hdr">' + (volta ? '<button class="bk" data-a="' + volta[0] + '">‹ ' + volta[1] + '</button>' : '') + '<h1>' + esc(t) + '</h1>' + (sub ? '<p>' + esc(sub) + '</p>' : '') + '</div>';
+const hdr = (t, sub, volta) => '<div class="hdr">' + (volta ? '<button class="bk" data-a="' + volta[0] + '">‹ ' + volta[1] + '</button>' : '') + '<h1>' + (t === 'Iogurte Soares' ? logoS(40) : '') + esc(t) + '</h1>' + (sub ? '<p>' + esc(sub) + '</p>' : '') + '</div>';
 const LOGO = '<img src="logo.png" width="88" height="69" alt="Pauvan Conecta" style="flex:none">';
 const marca = (sub, sair) => '<div class="marca">' + LOGO + '<div class="dv"></div><div class="tx"><b>Pauvan <i>Conecta</i></b>' + String(sub).split(' · ').map(t => '<span>' + esc(t) + '</span>').join('') + '</div>' + (sair ? '<button class="sr" data-a="sair">Sair</button>' : '') + '</div>';
 const dataLonga = s => { const w = SEM[dt(s).getUTCDay()]; return w.charAt(0).toUpperCase() + w.slice(1, 3) + ', ' + s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4); };
-function linhaProd(p, sub) {
+function linhaProd(p, sub, alerta, extra) {
   const q = S.q[p.codigo] || 0;
-  return '<div class="pr">' + des(p.desenho, 62) + '<div class="n"><b>' + esc(p.nome) + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div><div class="st">' +
+  return '<div class="pr"' + (alerta ? ' style="background:var(--amb);box-shadow:inset 0 0 0 2px #E7B26B"' : '') + '>' + des(p.desenho, 62) + '<div class="n"><b>' + esc(p.nome) + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div><div class="st">' +
     '<button class="sq" aria-label="Diminuir" data-a="q" data-k="' + esc(p.codigo) + '" data-d="-1"' + (q ? '' : ' disabled') + '>−</button><span>' + q + '</span>' +
-    '<button class="sq p" aria-label="Aumentar" data-a="q" data-k="' + esc(p.codigo) + '" data-d="1">+</button></div></div>';
+    '<button class="sq p" aria-label="Aumentar" data-a="q" data-k="' + esc(p.codigo) + '" data-d="1">+</button></div>' + (extra || '') + '</div>';
 }
 const itensTxt = (p, campo) => p.itens.filter(i => (i[campo] == null ? i.pedida : i[campo]) > 0).map(i => (i[campo] == null ? i.pedida : i[campo]) + ' ' + esc(i.nome)).join(' · ');
 function statusChip(p) {
+  if (p.status === 'ENVIADO' && semPed(S.est.fornecedores.find(x => x.id === p.fornecedor))) return '<span class="chip a">' + (sou() === 'mercado' ? 'PARA CONFERIR' : 'AGUARDANDO CONFERÊNCIA') + '</span>';
   if (p.status === 'ENVIADO') return '<span class="chip v">ENVIO INFORMADO</span>';
   return '<span class="chip a">' + (sou() === 'mercado' ? 'AGUARDANDO' : 'NOVO PEDIDO') + '</span>';
 }
@@ -247,20 +299,51 @@ function extrato() {
     rec += v; taxa += p.taxa || 0;
     lin.push({ d: p.recebido_em.slice(0, 10), t: 'Recebido' + (p.coleta === 'MERCADO' ? ' · mercado buscou' : ' · entregue no mercado'), s: itensTxt(p, 'recebida') || 'nada recebido', v: v, x: p.taxa ? 'Taxa de coleta − ' + brl(p.taxa) : '' });
   });
+  let trp = 0;
   S.est.percas.filter(p => p.fornecedor === S.forn && p.data.slice(0, 7) === mes).forEach(p => {
+    if (p.troca) { if (p.troca === 'PENDENTE') trp += p.pend; lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo) + ' · troca', s: p.qtd + ' ' + esc(p.nome) + (p.troca === 'PENDENTE' ? (p.pend < p.qtd ? ' · ' + (p.qtd - p.pend) + ' já trocado, ' + p.pend + ' pendente' : ' · troca pendente') : ' · trocado em ' + dm(p.troca_em)), v: 0, id: p.id }); return; }
     perc += p.qtd * p.custo;
     lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo), s: p.qtd + ' ' + esc(p.nome), v: -p.qtd * p.custo, id: p.id });
   });
+  const fS = semPed(fornAtual()), fimMes = mes + '-31', porProd = {};
+  let pendVal = 0, pendUn = 0;
+  let viag = 0;
+  S.est.pedidos.filter(p => p.fornecedor === S.forn && p.status === 'RECEBIDO' && p.recebido_em.slice(0, 7) === mes).forEach(p => { if (p.taxa) viag++; p.itens.forEach(i => { const r = porProd[i.codigo] || (porProd[i.codigo] = { nome: i.nome, custo: i.custo, rec: 0, tr: 0 }); r.rec += i.recebida || 0; }); });
+  if (!fS) S.est.percas.filter(x => x.fornecedor === S.forn && !x.troca && x.data.slice(0, 7) === mes).forEach(x => { const r = porProd[x.codigo] || (porProd[x.codigo] = { nome: x.nome, custo: x.custo, rec: 0, tr: 0 }); r.tr += x.qtd; });
+  if (fS) {
+    S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE' && x.data <= fimMes).forEach(x => { const r = porProd[x.codigo] || (porProd[x.codigo] = { nome: x.nome, custo: x.custo, rec: 0, tr: 0 }); r.tr += x.pend; pendUn += x.pend; pendVal += x.pend * x.custo; });
+    perc = pendVal;
+  }
   lin.sort((a, b) => a.d < b.d ? 1 : -1);
   const min = mais(h.slice(0, 8) + '01', -40).slice(0, 7);
   const ant = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7) - 2, 1))).slice(0, 7), prox = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7), 1))).slice(0, 7);
   let o = '<div class="card"><div class="dia"><button class="sq" aria-label="Mês anterior" data-a="mes" data-k="' + ant + '"' + (ant < min ? ' disabled' : '') + '>‹</button><b>' + MES[+mes.slice(5, 7) - 1] + ' de ' + mes.slice(0, 4) + '</b><button class="sq" aria-label="Próximo mês" data-a="mes" data-k="' + prox + '"' + (prox > h.slice(0, 7) ? ' disabled' : '') + '>›</button></div></div>';
-  o += '<div class="card"><div class="kv"><span>Produtos recebidos</span><b>' + brl(rec) + '</b></div><div class="kv"><span>Taxa de coleta</span><b>− ' + brl(taxa) + '</b></div><div class="kv"><span>Percas</span><b>− ' + brl(perc) + '</b></div>' +
-    '<div class="sep"><div class="kv" style="font-size:18px"><b>' + (sou() === 'mercado' ? 'A pagar' : 'A receber') + '</b><b style="color:var(--g)">' + brl(rec - taxa - perc) + '</b></div></div><div class="s">Mês em aberto. O fechamento e a nota entram na próxima etapa.</div></div>';
+  o += '<div class="card"><div class="kv"><span>Produtos recebidos</span><b>' + brl(rec) + '</b></div>' + (fS ? '<div class="kv"><span>Trocas pendentes · abatidas da nota (' + pendUn + ' un.)</span><b style="white-space:nowrap">− ' + brl(pendVal) + '</b></div>' : '<div class="kv"><span>Taxa de coleta</span><b>− ' + brl(taxa) + '</b></div><div class="kv"><span>Percas</span><b>− ' + brl(perc) + '</b></div>') +
+    '<div class="sep"><div class="kv" style="font-size:18px"><b>' + (sou() === 'mercado' ? 'A pagar' : 'A receber') + '</b><b style="color:var(--g)">' + brl(rec - taxa - perc) + '</b></div></div><div class="s">' + (fS ? 'Acerto mensal. Vencido ou avaria é trocado pelo mesmo produto; se a troca não vier até o fechamento, ela sai da nota em quantidade e valor.' : 'Acerto mensal. Perca descontada pelo produto; taxa de coleta descontada no pagamento.') + '</div></div>';
+  {
+    const cods = Object.keys(porProd).filter(c => porProd[c].rec || porProd[c].tr);
+    let un = 0, val = 0;
+    o += '<div class="card"><div class="lab">FECHAMENTO DO MÊS · QUANTIDADES PARA A NOTA</div><div class="kv"><span>Nota fiscal do mês</span><span class="chip a">AGUARDANDO</span></div>';
+    const zl = [];
+    cods.forEach(c => { const r = porProd[c], q = Math.max(0, r.rec - r.tr); un += q; val += q * r.custo; if (q) zl.push(q + ' × ' + r.nome + ' — ' + brl(q * r.custo));
+      o += '<div class="sep" style="gap:2px"><div class="kv"><b style="text-align:left">' + esc(r.nome) + '</b><b style="white-space:nowrap">' + q + ' un. · ' + brl(q * r.custo) + '</b></div><div class="s">Recebido ' + r.rec + (r.tr ? (fS ? ' − troca pendente ' : ' − perca ') + r.tr : '') + '</div></div>'; });
+    o += '<div class="sep"><div class="kv" style="font-size:17px"><b>Total da nota</b><b style="color:var(--g)">' + un + ' un. · ' + brl(val) + '</b></div></div>';
+    if (!fS && taxa) o += '<div class="sep"><div class="kv"><span>Desconto das coletas Pauvan (' + viag + (viag > 1 ? ' viagens' : ' viagem') + ')</span><b style="white-space:nowrap">− ' + brl(taxa) + '</b></div><div class="kv" style="font-size:17px"><b>A pagar no boleto ou Pix</b><b style="color:var(--g)">' + brl(val - taxa) + '</b></div><div class="s">A taxa de coleta não entra na nota: é descontada no pagamento.</div></div>';
+    if (sou() === 'mercado' && un) {
+      const f = fornAtual(), nm = MES[+mes.slice(5, 7) - 1];
+      let t = '*FECHAMENTO ' + nm.toUpperCase() + '/' + mes.slice(0, 4) + ' · MERCADO PAUVAN*\n' + f.nome + '\n\n*Itens para a nota fiscal:*\n' + zl.join('\n') + '\n\n*Total da nota: ' + un + ' unidades · ' + brl(val) + '*';
+      const ab = cods.filter(c => porProd[c].tr).map(c => porProd[c].tr + ' × ' + porProd[c].nome);
+      if (ab.length) t += '\n\n' + (fS ? 'Já descontadas as trocas que não vieram: ' : 'Já descontadas as percas: ') + ab.join(', ');
+      if (!fS && taxa) t += '\n\nDesconto das coletas Pauvan (' + viag + (viag > 1 ? ' viagens' : ' viagem') + '): − ' + brl(taxa) + '\n*Valor a pagar (boleto ou Pix): ' + brl(val - taxa) + '*';
+      const num = w => w ? (w.length <= 11 ? '55' + w : w) : '', zb = (w, rot) => '<a class="btn zap" style="display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center" target="_blank" href="https://wa.me/' + num(w) + '?text=' + encodeURIComponent(t) + '">' + rot + '</a>';
+      o += zb(f.whatsapp, 'ENVIAR PARA ' + (f.id === 'helia' ? 'A HÉLIA' : 'A SOARES')) + zb(f.contador, 'ENVIAR PARA O CONTADOR') + '<button class="btn b2" data-a="copiar" data-k="' + esc(t) + '">COPIAR TEXTO</button>';
+    }
+    o += '<div class="s">' + (fS ? 'A Soares' : 'A fornecedora') + ' emite a nota com essas quantidades: entregue menos ' + (fS ? 'troca que não veio.' : 'perca.') + ' Quando a nota chegar, o valor dela é conferido com este total.</div></div>';
+  }
   o += '<div class="lab">LANÇAMENTOS</div>';
   if (!lin.length) o += '<div class="card"><div class="s">Nenhum lançamento neste mês.</div></div>';
   lin.forEach(l => {
-    o += '<div class="card" style="gap:6px"><div class="kv"><span style="font-weight:700">' + dm(l.d) + ' · ' + l.t + '</span><b style="white-space:nowrap' + (l.v < 0 ? ';color:var(--vm)' : '') + '">' + (l.v < 0 ? '− ' + brl(-l.v) : brl(l.v)) + '</b></div><div class="s">' + l.s + '</div>' + (l.x ? '<div class="s" style="color:var(--am);font-weight:600">' + l.x + '</div>' : '') +
+    o += '<div class="card" style="gap:6px"><div class="kv"><span style="font-weight:700">' + dm(l.d) + ' · ' + l.t + '</span><b style="white-space:nowrap' + (l.v < 0 ? ';color:var(--vm)' : '') + '">' + (l.v < 0 ? '− ' + brl(-l.v) : l.v === 0 ? 'troca' : brl(l.v)) + '</b></div><div class="s">' + l.s + '</div>' + (l.x ? '<div class="s" style="color:var(--am);font-weight:600">' + l.x + '</div>' : '') +
       (l.id && sou() === 'mercado' && l.d === h ? '<button class="lk" data-a="xperca" data-k="' + esc(l.id) + '">Excluir esta perca</button>' : '') + '</div>';
   });
   return o;
@@ -285,7 +368,7 @@ function telaForns() {
     o += '<div class="lab">' + esc(g) + '</div><div class="grid">';
     S.est.fornecedores.filter(f => f.grupo === g).forEach(f => {
       const n = S.est.pedidos.filter(p => p.fornecedor === f.id && (p.status === 'PEDIDO' || p.status === 'ENVIADO')).length;
-      o += '<button class="fb" data-a="forn" data-k="' + esc(f.id) + '">' + desForn(f) + '<span>' + esc(f.nome) + '</span>' + (n ? '<span class="chip a">' + n + (n > 1 ? ' pedidos abertos' : ' pedido aberto') + '</span>' : '') + '</button>';
+      o += '<button class="fb" data-a="forn" data-k="' + esc(f.id) + '">' + desForn(f) + '<span>' + esc(f.nome) + '</span>' + (n ? '<span class="chip a">' + n + (semPed(f) ? (n > 1 ? ' entregas para conferir' : ' entrega para conferir') : (n > 1 ? ' pedidos abertos' : ' pedido aberto')) + '</span>' : '') + '</button>';
     });
     o += '</div>';
   });
@@ -293,9 +376,9 @@ function telaForns() {
 }
 function telaForn() {
   const f = fornAtual(), merc = sou() === 'mercado', ab = abertos();
-  let o = merc ? hdr(f.nome, '', ['forns', 'Fornecedores']) : marca(f.nome + ' · ' + dataLonga(S.est.hoje));
-  const tabs = merc ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : [['pedidos', 'PEDIDOS' + (ab.length ? ' (' + ab.length + ')' : '')], ['extrato', 'EXTRATO']];
-  o += '<div class="tabs' + (merc ? '' : ' t2') + '">' + tabs.map(t => '<button class="tab' + (S.aba === t[0] ? ' on' : '') + '" data-a="aba" data-k="' + t[0] + '">' + t[1] + '</button>').join('') + '</div><div class="w">';
+  let o = merc ? hdr(f.nome, semPed(f) ? 'Entrega própria · sem taxa de coleta' : '', ['forns', 'Fornecedores']) : marca(f.nome + ' · ' + dataLonga(S.est.hoje));
+  const tabs = merc && semPed(f) ? [['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : !merc && semPed(f) ? [['pedidos', 'ENTREGAS'], ['extrato', 'EXTRATO']] : merc ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : [['pedidos', 'PEDIDOS' + (ab.length ? ' (' + ab.length + ')' : '')], ['extrato', 'EXTRATO']];
+  o += '<div class="tabs' + (tabs.length === 3 ? ' t3' : tabs.length === 2 ? ' t2' : '') + '">' + tabs.map(t => '<button class="tab' + (S.aba === t[0] ? ' on' : '') + '" data-a="aba" data-k="' + t[0] + '">' + t[1] + '</button>').join('') + '</div><div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
   if (S.aba === 'pedir') {
     const dia = mais(S.est.hoje, S.d);
@@ -304,6 +387,16 @@ function telaForn() {
     if (f.taxa) o += '<button class="moto' + (S.busca ? ' on' : '') + '" data-a="busca" aria-pressed="' + S.busca + '">' + MOTO(S.busca ? '#1E5B2F' : '#8A938C') + '<span class="n"><b>Coleta Pauvan</b><span>' + (S.busca ? 'Taxa ' + brl(f.taxa) : 'Desligado · sem taxa') + '</span></span><span class="sw"></span></button>';
     o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total do pedido</b><b>' + somaQ() + ' unidades</b></div></div>';
     o += '<button class="btn" data-a="pedir"' + (somaQ() ? '' : ' disabled') + '>ENVIAR PEDIDO</button>';
+  } else if (semPed(f) && (S.aba === 'receber' || S.aba === 'pedidos')) {
+    const tp = S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE');
+    if (tp.length) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">' + (merc ? 'TROCA PENDENTE' : 'LEVAR DE TROCA NA PRÓXIMA ENTREGA') + '</div>' + tp.map(x => { const pr = S.est.produtos.find(y => y.codigo === x.codigo) || {}; return '<div class="kv" style="align-items:center"><span style="display:flex;align-items:center;gap:10px">' + des(pr.desenho, 40) + esc(x.nome) + '</span><b>' + x.pend + ' · ' + esc(x.motivo.toLowerCase()) + '</b></div>'; }).join('') + '</div>';
+    if (!merc) o += '<button class="btn" data-a="nova">LANÇAR ENTREGA DE HOJE</button>';
+    if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">' + (merc ? 'Nenhuma entrega para conferir' : 'Nenhuma entrega aguardando conferência') + '</div><div class="s">' + (merc ? 'Quando a Soares lançar a entrega, ela aparece aqui.' : 'Depois que o mercado confere, a entrega vai para o EXTRATO.') + '</div></div>';
+    ab.forEach(p => {
+      const v = p.itens.reduce((a, i) => a + (i.enviada || 0) * i.custo, 0), u = p.itens.reduce((a, i) => a + (i.enviada || 0), 0);
+      o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="s">Entrega: ' + itensTxt(p, 'enviada') + '</div><div class="kv"><span>' + u + ' unidades</span><b>' + brl(v) + '</b></div><div class="s">Lançada às ' + esc(p.enviado_em.slice(11)) + '</div>' +
+        '<button class="btn" data-a="abrir" data-k="' + esc(p.id) + '">' + (merc ? 'RECEBER E CONFERIR' : 'CORRIGIR A ENTREGA') + '</button></div>';
+    });
   } else if (S.aba === 'receber' || S.aba === 'pedidos') {
     if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">Nenhum pedido aberto</div><div class="s">' + (merc ? 'Faça o pedido na aba PEDIR.' : 'Quando o mercado fizer um pedido, ele aparece aqui.') + '</div></div>';
     ab.forEach(p => {
@@ -315,10 +408,10 @@ function telaForn() {
       o += '</div>';
     });
   } else if (S.aba === 'perca') {
-    o += '<div class="s">Lance aqui o bolo vencido ou com avaria. O valor é descontado no pagamento.</div>';
-    prods().forEach(p => { o += linhaProd(p, brl(p.custo) + ' cada'); });
+    o += '<div class="s">' + (semPed(f) ? 'Lance aqui o iogurte vencido ou com avaria. A Soares troca pelo mesmo produto na próxima entrega.' : 'Lance aqui o bolo vencido ou com avaria. O valor é descontado no pagamento.') + '</div>';
+    prods().forEach(p => { o += linhaProd(p, semPed(f) ? 'troca pelo mesmo produto' : brl(p.custo) + ' cada'); });
     o += '<div class="card"><div class="lab">MOTIVO</div><div class="seg">' + ['Vencido', 'Avaria'].map(m => '<button class="' + (S.motivo === m ? 'on' : '') + '" data-a="motivo" data-k="' + m + '">' + m + '</button>').join('') + '</div></div>';
-    o += '<button class="btn" data-a="perca"' + (somaQ() ? '' : ' disabled') + '>LANÇAR PERCA</button>';
+    o += '<button class="btn" data-a="perca"' + (somaQ() ? '' : ' disabled') + '>' + (semPed(f) ? 'LANÇAR PERCA PARA TROCA' : 'LANÇAR PERCA') + '</button>';
   } else o += extrato();
   return o + '</div>';
 }
@@ -329,27 +422,63 @@ function telaFeito() {
   o += '</div><div class="s" style="font-weight:600">' + coletaTxt(p, f) + '</div></div><button class="btn zap" data-a="zap" data-k="' + esc(p.id) + '">ENVIAR NO WHATSAPP</button><div class="s">O botão copia o pedido e abre o WhatsApp. É só escolher a conversa e enviar.</div><button class="btn b2" data-a="voltar">VOLTAR</button></div>';
   return o;
 }
+const valIn = (c, padrao) => '<label class="vl">Validade <input type="date" data-v="' + esc(c) + '" value="' + esc(S.val[c] || padrao || '') + '"></label>';
+const trocasPend = () => { const m = {}; S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE').forEach(x => { m[x.codigo] = (m[x.codigo] || 0) + x.pend; }); return m; };
+function divs(p, ref, verbo) {
+  return p.itens.map(i => { const r = ref(i), q = S.q[i.codigo] || 0; return q === r ? '' : '<div>• ' + esc(i.nome) + ': ' + verbo + ' ' + q + ' de ' + r + (q < r ? ' (' + (r - q) + ' a menos)' : ' (' + (q - r) + ' a mais)') + '</div>'; }).filter(x => x);
+}
+function quadroConf(p, ref, verbo, rotulo, okTxt) {
+  const esp = p.itens.reduce((a, i) => a + ref(i), 0), rec = somaQ(), dv = rec ? divs(p, ref, verbo) : [];
+  let o = '<div class="card"' + (dv.length ? ' style="background:var(--amb)"' : rec ? ' style="background:#E4F0E6"' : '') + '><div class="kv" style="font-size:17px"><b>' + rotulo + '</b><b>' + rec + ' de ' + esp + '</b></div>';
+  if (dv.length) o += '<div class="s" style="color:var(--am);font-weight:700">Divergência em ' + dv.length + (dv.length > 1 ? ' produtos' : ' produto') + '. Confira antes de confirmar:</div><div class="s" style="color:var(--am);font-weight:600">' + dv.join('') + '</div>';
+  else if (rec) o += '<div class="s" style="color:var(--g);font-weight:700">' + okTxt + '</div>';
+  return o;
+}
 function telaAbrir() {
   const p = S.est.pedidos.find(x => x.id === S.ped), f = fornAtual(), merc = sou() === 'mercado';
-  let o = hdr(merc ? 'Receber e conferir' : 'Informar o envio', f.nome + ' · ' + diaTxt(p.dia).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  let o = hdr(merc ? 'Receber e conferir' : semPed(f) ? 'Corrigir a entrega' : 'Informar o envio', f.nome + ' · ' + diaTxt(p.dia).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
-  o += '<div class="s">' + (merc ? 'Conte o que chegou e marque a quantidade exata. Começa em zero.' : 'Marque a quantidade exata que você está enviando. Começa em zero.') + '</div>';
+  o += '<div class="s">' + (merc ? 'Conte o que chegou e marque a quantidade exata. Começa em zero.' : semPed(f) ? 'Corrija a quantidade ou a validade do que você está levando.' : 'Marque a quantidade exata que você está enviando. Começa em zero.') + '</div>';
   p.itens.forEach(i => {
     const pr = S.est.produtos.find(x => x.codigo === i.codigo) || { desenho: '' };
-    o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, 'Pedido ' + i.pedida + (merc && i.enviada != null ? ' · enviado ' + i.enviada : ''));
+    const ref = merc ? (i.enviada != null ? i.enviada : i.pedida) : i.pedida, al = somaQ() > 0 && (S.q[i.codigo] || 0) !== ref;
+    if (semPed(f)) { o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, merc ? 'Ela enviou ' + i.enviada : brl(i.custo) + ' cada', merc && al, valIn(i.codigo, i.validade)); return; }
+    o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, semPed(f) ? (merc ? 'Ela enviou ' + i.enviada : 'Lançado ' + i.enviada) : 'Pedido ' + i.pedida + (merc && i.enviada != null ? ' · enviado ' + i.enviada : ''), al);
   });
-  if (merc) {
+  if (merc && semPed(f)) {
+    const tp = S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE'), esp = p.itens.reduce((a, i) => a + (i.enviada || 0), 0), rec = somaQ();
+    const tm = trocasPend(), tc = Object.keys(tm);
+    if (tc.length) {
+      o += '<div class="card" style="background:var(--amb);gap:8px"><div class="lab" style="color:var(--am)">TROCA · CONTE SEPARADO DA ENTREGA</div><div class="s" style="color:var(--am)">Conte aqui só o que veio de troca pelos vencidos ou avariados.</div></div>';
+      tc.forEach(c => { const pr = S.est.produtos.find(y => y.codigo === c) || {}, q = S.qt[c] || 0;
+        o += '<div class="pr" style="border:2px dashed #E7B26B">' + des(pr.desenho, 62) + '<div class="n"><b>' + esc(pr.nome) + '</b><span>Troca de ' + tm[c] + (q && q < tm[c] ? ' · faltou ' + (tm[c] - q) + ', continua pendente' : q > tm[c] ? ' · veio ' + (q - tm[c]) + ' a mais' : '') + '</span></div><div class="st"><button class="sq" aria-label="Diminuir" data-a="qt" data-k="' + esc(c) + '" data-d="-1"' + (q ? '' : ' disabled') + '>−</button><span>' + q + '</span><button class="sq p" aria-label="Aumentar" data-a="qt" data-k="' + esc(c) + '" data-d="1">+</button></div></div>'; });
+    }
+    o += quadroConf(p, i => i.enviada || 0, 'chegou', 'Recebendo', 'Tudo certo: cada produto bate com o que ela lançou.') + '<div class="kv"><span>Valor</span><b>' + brl(p.itens.reduce((a, i) => a + (S.q[i.codigo] || 0) * i.custo, 0)) + '</b></div></div>';
+    o += '<button class="btn" data-a="receber"' + (rec ? '' : ' disabled') + '>CONFIRMAR RECEBIMENTO</button><div class="s" style="text-align:center">A confirmação fica registrada com o seu nome, dia e hora, no lugar da assinatura na folha de entrega.</div>';
+  } else if (merc) {
     o += '<div class="card"><div class="lab">QUEM TROUXE</div><div class="seg"><button class="' + (S.coleta === 'MERCADO' ? 'on' : '') + '" data-a="coleta" data-k="MERCADO">Coleta Pauvan</button><button class="' + (S.coleta === 'FORNECEDOR' ? 'on' : '') + '" data-a="coleta" data-k="FORNECEDOR">Ela entregou</button></div>' +
       '<div class="kv"><span>Taxa de coleta</span><b>' + (S.coleta === 'MERCADO' && f.taxa ? brl(f.taxa) : 'sem taxa') + '</b></div></div>';
     const inf = p.itens.some(i => i.enviada != null), esp = p.itens.reduce((a, i) => a + (inf ? (i.enviada || 0) : i.pedida), 0), rec = somaQ();
-    o += '<div class="card"' + (rec !== esp ? ' style="background:var(--amb)"' : '') + '><div class="kv" style="font-size:17px"><b>Recebendo</b><b>' + rec + ' de ' + esp + (inf ? ' enviados' : ' pedidos') + '</b></div>' + (rec && rec !== esp ? '<div class="s" style="color:var(--am);font-weight:600">Diferente do ' + (inf ? 'que ela informou' : 'pedido') + '. Confira antes de confirmar.</div>' : '') + '</div>';
+    o += quadroConf(p, i => inf ? (i.enviada || 0) : i.pedida, 'chegou', 'Recebendo', 'Tudo certo: cada produto bate com o ' + (inf ? 'que ela informou.' : 'pedido.')) + '</div>';
     o += '<button class="btn" data-a="receber"' + (rec ? '' : ' disabled') + '>CONFIRMAR RECEBIMENTO</button>';
   } else {
     const ped = p.itens.reduce((a, i) => a + i.pedida, 0), env = somaQ();
-    o += '<div class="card"' + (env !== ped ? ' style="background:var(--amb)"' : '') + '><div class="kv" style="font-size:17px"><b>Enviando</b><b>' + env + ' de ' + ped + ' pedidos</b></div>' + (env && env !== ped ? '<div class="s" style="color:var(--am);font-weight:600">Diferente do pedido. Confira antes de confirmar.</div>' : '') + '</div>';
-    o += '<button class="btn" data-a="enviar"' + (env ? '' : ' disabled') + '>CONFIRMAR ENVIO</button>';
+    if (semPed(f)) { const v = p.itens.reduce((a, i) => a + (S.q[i.codigo] || 0) * i.custo, 0); o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total</b><b>' + somaQ() + ' unidades · ' + brl(v) + '</b></div></div>'; }
+    else o += quadroConf(p, i => i.pedida, 'enviando', 'Enviando', 'Tudo certo: cada produto bate com o pedido.') + '</div>';
+    o += '<button class="btn" data-a="enviar"' + (env ? '' : ' disabled') + '>' + (semPed(f) ? 'SALVAR CORREÇÃO' : 'CONFIRMAR ENVIO') + '</button>';
   }
   return o + '</div>';
+}
+function telaNova() {
+  const f = fornAtual(), tp = S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE');
+  let o = hdr('Entrega de hoje', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  o += '<div class="s">Marque a quantidade exata que você está levando. Começa em zero.</div>';
+  prods().forEach(p => { o += linhaProd(p, brl(p.custo) + ' cada', false, (S.q[p.codigo] || 0) ? valIn(p.codigo, mais(S.est.hoje, 15)) : ''); });
+  if (tp.length) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">LEVE TAMBÉM DE TROCA</div><div class="s" style="color:var(--am);font-weight:600">' + tp.map(x => x.pend + ' ' + esc(x.nome)).join(' · ') + '</div></div>';
+  const v = prods().reduce((a, p) => a + (S.q[p.codigo] || 0) * p.custo, 0);
+  o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total</b><b>' + somaQ() + ' unidades · ' + brl(v) + '</b></div></div>';
+  return o + '<button class="btn" data-a="entregar"' + (somaQ() ? '' : ' disabled') + '>CONFIRMAR ENTREGA</button></div>';
 }
 function render() {
   let o = DEMO ? '<div class="demo"><span>DEMONSTRAÇÃO · nada é gravado na planilha</span><button data-a="zerar">Zerar teste</button></div>' : '';
@@ -357,6 +486,7 @@ function render() {
   else if (S.tela === 'forns') o += telaForns();
   else if (S.tela === 'feito') o += telaFeito();
   else if (S.tela === 'abrir') o += telaAbrir();
+  else if (S.tela === 'nova') o += telaNova();
   else o += telaForn();
   if (S.load) o += '<div class="load">Carregando…</div>';
   el.innerHTML = o;
@@ -421,27 +551,33 @@ const AC = {
     const n = f.whatsapp ? (f.whatsapp.length <= 11 ? '55' + f.whatsapp : f.whatsapp) : '';
     window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(t), '_blank');
   },
+  nova() { S.q = {}; S.val = {}; S.erro = ''; S.tela = 'nova'; render(); window.scrollTo(0, 0); },
+  async entregar() { if (await chamar('entrega_lancar', { itens: itensReq(), validades: (() => { const v = {}; Object.keys(S.q).forEach(c => { if (S.q[c]) v[c] = S.val[c] || mais(S.est.hoje, 15); }); return v; })() })) { S.q = {}; navVoltar({ tela: 'forn', aba: 'pedidos' }); } },
+  copiar(k, b) { try { navigator.clipboard.writeText(k).then(() => { b.textContent = 'COPIADO'; }, () => { b.textContent = 'NÃO DEU PARA COPIAR'; }); } catch (e) { b.textContent = 'NÃO DEU PARA COPIAR'; } },
+  qt(k, b) { S.qt[k] = Math.max(0, Math.min(999, (S.qt[k] || 0) + Number(b.dataset.d))); render(); },
   voltar() { if (S.tela === 'feito') navVoltar({ tela: 'forn', aba: 'receber' }); else navVoltar(null, { tela: 'forn' }); },
   abrir(k, b, doHistorico) {
     const p = S.est.pedidos.find(x => x.id === k);
     if (doHistorico) NAV_POP = !NAV_REPLACE;
-    S.ped = k; S.q = {}; S.coleta = p.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO'; S.erro = '';
+    S.ped = k; S.q = {}; S.qt = {}; S.val = {}; p.itens.forEach(i => { if (i.validade) S.val[i.codigo] = i.validade; }); S.trocaOk = false; S.coleta = p.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO'; S.erro = '';
     p.itens.forEach(i => { S.q[i.codigo] = sou() === 'mercado' ? 0 : (i.enviada != null ? i.enviada : 0); });
     S.tela = 'abrir'; render(); window.scrollTo(0, 0);
   },
-  async receber() { if (await chamar('pedido_receber', { id: S.ped, coleta: S.coleta, itens: itensReq() })) { S.q = {}; S.mes = null; navVoltar({ tela: 'forn', aba: 'extrato' }); } },
-  async enviar() { if (await chamar('pedido_enviar', { id: S.ped, itens: itensReq() })) { S.q = {}; navVoltar({ tela: 'forn', aba: 'pedidos' }); } },
+  async receber() { if (await chamar('pedido_receber', { id: S.ped, coleta: S.coleta, trocas: S.qt, validades: S.val, itens: itensReq() })) { S.q = {}; S.mes = null; navVoltar({ tela: 'forn', aba: 'extrato' }); } },
+  async enviar() { if (await chamar('pedido_enviar', { id: S.ped, validades: S.val, itens: itensReq() })) { S.q = {}; navVoltar({ tela: 'forn', aba: 'pedidos' }); } },
   async cancelar(k) { if (confirm('Cancelar este pedido?')) { await chamar('pedido_cancelar', { id: k }); render(); } },
-  async perca() { if (await chamar('perca_lancar', { fornecedor: S.forn, motivo: S.motivo, itens: itensReq() })) { S.q = {}; S.aba = 'extrato'; S.mes = null; render(); window.scrollTo(0, 0); } },
+  async perca() { if (await chamar('perca_lancar', { fornecedor: S.forn, motivo: S.motivo, itens: itensReq() })) { S.q = {}; S.aba = semPed(fornAtual()) ? 'receber' : 'extrato'; S.mes = null; render(); window.scrollTo(0, 0); } },
   async xperca(k) { if (confirm('Excluir esta perca?')) { await chamar('perca_excluir', { id: k }); render(); } },
-  zerar() { if (confirm('Apagar os lançamentos de teste deste aparelho?')) { localStorage.removeItem('conecta_demo'); if (S.est) entrar(); } }
+  zerar() { if (confirm('Apagar os lançamentos de teste deste aparelho?')) { try { localStorage.removeItem('conecta_demo_soares'); } catch (e) {} window.__db = null; if (S.est) entrar(); } }
 };
+el.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.v) S.val[t.dataset.v] = t.value; });
 el.addEventListener('click', e => {
   const b = e.target.closest('[data-a]');
   if (b && !b.disabled && AC[b.dataset.a]) AC[b.dataset.a](b.dataset.k, b);
 });
 
 /* ---------- início ---------- */
+try { S.pin = localStorage.getItem(CH) || ''; } catch (e) {}
 try { S.pin = localStorage.getItem(CH) || ''; } catch (e) {}
 if (TOKEN || S.pin.length === 4) entrar(); else render();
 </script>

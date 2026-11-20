@@ -69,7 +69,7 @@ function num_(v) {
 }
 function ler_(nome) {
   if (LIDO_[nome]) return LIDO_[nome];
-  var cache = CACHE_ABAS[nome] ? CacheService.getScriptCache() : null, chave = 'aba_v1_' + nome;
+  var cache = CACHE_ABAS[nome] ? CacheService.getScriptCache() : null, chave = 'aba_v2_' + nome;
   if (cache) {
     var j = cache.get(chave);
     if (j) return (LIDO_[nome] = JSON.parse(j));
@@ -164,7 +164,7 @@ function estado_(quem) {
   var meu = quem.tipo === 'fornecedor' ? quem.fornecedor : null;
   var forn = ler_('FORNECEDORES').filter(function (f) { return sim_(f.ativo) && (!meu || txt_(f.id) === meu); }).map(function (f) {
     var o = { id: txt_(f.id), nome: txt_(f.nome), grupo: txt_(f.grupo), tem_pedido: sim_(f.tem_pedido), taxa: num_(f.taxa_coleta), fechamento: txt_(f.fechamento) };
-    if (!meu) { o.whatsapp = txt_(f.whatsapp).replace(/\D/g, ''); o.token = txt_(f.token); }
+    if (!meu) { o.whatsapp = txt_(f.whatsapp).replace(/\D/g, ''); o.contador = txt_(f.contador).replace(/\D/g, ''); o.token = txt_(f.token); }
     return o;
   });
   var prod = ler_('PRODUTOS').filter(function (p) { return sim_(p.ativo) && (!meu || txt_(p.fornecedor) === meu); }).map(function (p) {
@@ -173,15 +173,16 @@ function estado_(quem) {
   var itens = {};
   ler_('ITENS').forEach(function (i) {
     var k = txt_(i.pedido);
-    (itens[k] = itens[k] || []).push({ codigo: txt_(i.codigo), nome: txt_(i.nome), custo: num_(i.custo), pedida: num_(i.pedida), enviada: txt_(i.enviada) === '' ? null : num_(i.enviada), recebida: txt_(i.recebida) === '' ? null : num_(i.recebida) });
+    (itens[k] = itens[k] || []).push({ codigo: txt_(i.codigo), nome: txt_(i.nome), custo: num_(i.custo), pedida: num_(i.pedida), enviada: txt_(i.enviada) === '' ? null : num_(i.enviada), recebida: txt_(i.recebida) === '' ? null : num_(i.recebida), validade: txt_(i.validade) });
   });
   var ped = ler_('PEDIDOS').filter(function (p) {
     return (!meu || txt_(p.fornecedor) === meu) && txt_(p.status) !== 'CANCELADO' && (txt_(p.dia) >= corte || txt_(p.status) !== 'RECEBIDO');
   }).map(function (p) {
     return { id: txt_(p.id), fornecedor: txt_(p.fornecedor), dia: txt_(p.dia), status: txt_(p.status), criado_em: txt_(p.criado_em), criado_por: txt_(p.criado_por), enviado_em: txt_(p.enviado_em), recebido_em: txt_(p.recebido_em), recebido_por: txt_(p.recebido_por), coleta: txt_(p.coleta), taxa: num_(p.taxa), itens: itens[txt_(p.id)] || [] };
   });
-  var perc = ler_('PERCAS').filter(function (p) { return (!meu || txt_(p.fornecedor) === meu) && txt_(p.data) >= corte; }).map(function (p) {
-    return { id: txt_(p.id), data: txt_(p.data), fornecedor: txt_(p.fornecedor), codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: num_(p.qtd), custo: num_(p.custo), motivo: txt_(p.motivo), por: txt_(p.lancado_por) };
+  var perc = ler_('PERCAS').filter(function (p) { return (!meu || txt_(p.fornecedor) === meu) && (txt_(p.data) >= corte || txt_(p.troca) === 'PENDENTE'); }).map(function (p) {
+    var tr = txt_(p.troca);
+    return { id: txt_(p.id), data: txt_(p.data), fornecedor: txt_(p.fornecedor), codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: num_(p.qtd), custo: num_(p.custo), motivo: txt_(p.motivo), por: txt_(p.lancado_por), troca: tr, pend: tr === 'PENDENTE' ? (txt_(p.pend) === '' ? num_(p.qtd) : num_(p.pend)) : 0, troca_em: txt_(p.troca_em) };
   });
   return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc };
 }
@@ -203,6 +204,20 @@ function pedido_(id, quem) {
   if (!p) throw new Error('Pedido não encontrado.');
   if (quem.tipo === 'fornecedor' && txt_(p.fornecedor) !== quem.fornecedor) throw new Error('Pedido de outro fornecedor.');
   return p;
+}
+function forn_(id) {
+  return ler_('FORNECEDORES').filter(function (x) { return txt_(x.id) === String(id); })[0];
+}
+/* Fornecedor que entrega por conta própria, sem pedido do mercado (ex.: Iogurte Soares). */
+function semPedido_(f) { return f && !sim_(f.tem_pedido); }
+function data_(v) { var t = String(v || ''); return /^\d{4}-\d{2}-\d{2}$/.test(t) ? t : ''; }
+function gravarValidades_(id, val) {
+  if (!val) return;
+  ler_('ITENS').forEach(function (i) {
+    if (txt_(i.pedido) !== String(id)) return;
+    var d = data_(val[txt_(i.codigo)]);
+    if (d) gravar_('ITENS', i._lin, { validade: d });
+  });
 }
 function gravarItens_(id, campo, m) {
   ler_('ITENS').forEach(function (i) {
@@ -242,6 +257,19 @@ function agir_(a, req, quem) {
     if (!linhas.length) throw new Error('Informe a quantidade de pelo menos um produto.');
     incluir_('PEDIDOS', [{ id: id, fornecedor: txt_(f.id), dia: String(req.dia), status: 'PEDIDO', criado_em: agora_(), criado_por: quem.nome, coleta: req.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO' }]);
     incluir_('ITENS', linhas);
+  } else if (a === 'entrega_lancar') {
+    if (quem.tipo !== 'fornecedor') throw new Error('Só o fornecedor lança a entrega.');
+    var fe = forn_(quem.fornecedor);
+    if (!semPedido_(fe)) throw new Error('Este fornecedor trabalha com pedido do mercado.');
+    var me = qtds_(req.itens), ide = novoId_('E'), le = [], vl = req.validades || {};
+    ler_('PRODUTOS').forEach(function (p) {
+      var q = me[txt_(p.codigo)];
+      if (sim_(p.ativo) && txt_(p.fornecedor) === txt_(fe.id) && q > 0) le.push({ pedido: ide, codigo: txt_(p.codigo), nome: txt_(p.nome), custo: num_(p.custo), pedida: q, enviada: q, recebida: '', validade: data_(vl[txt_(p.codigo)]) });
+    });
+    if (!le.length) throw new Error('Informe a quantidade de pelo menos um produto.');
+    var ag = agora_();
+    incluir_('PEDIDOS', [{ id: ide, fornecedor: txt_(fe.id), dia: hoje_(), status: 'ENVIADO', criado_em: ag, criado_por: quem.nome, enviado_em: ag, coleta: 'FORNECEDOR', taxa: 0 }]);
+    incluir_('ITENS', le);
   } else if (a === 'pedido_cancelar') {
     soMercado_(quem);
     var p1 = pedido_(req.id, quem);
@@ -250,22 +278,39 @@ function agir_(a, req, quem) {
   } else if (a === 'pedido_enviar') {
     var p2 = pedido_(req.id, quem);
     if (txt_(p2.status) === 'RECEBIDO' || txt_(p2.status) === 'CANCELADO') throw new Error('Este pedido já foi encerrado.');
-    gravarItens_(req.id, 'enviada', qtds_(req.itens));
+    var m2 = qtds_(req.itens);
+    gravarItens_(req.id, 'enviada', m2);
+    if (semPedido_(forn_(txt_(p2.fornecedor)))) { gravarItens_(req.id, 'pedida', m2); gravarValidades_(req.id, req.validades); }
     gravar_('PEDIDOS', p2._lin, { status: 'ENVIADO', enviado_em: agora_() });
   } else if (a === 'pedido_receber') {
     soMercado_(quem);
     var p3 = pedido_(req.id, quem);
     if (txt_(p3.status) === 'RECEBIDO' || txt_(p3.status) === 'CANCELADO') throw new Error('Este pedido já foi encerrado.');
     var f3 = ler_('FORNECEDORES').filter(function (x) { return txt_(x.id) === txt_(p3.fornecedor); })[0];
-    var buscou = req.coleta === 'MERCADO';
+    var buscou = req.coleta === 'MERCADO' && !semPedido_(f3);
     gravarItens_(req.id, 'recebida', qtds_(req.itens));
+    if (semPedido_(f3)) {
+      gravarValidades_(req.id, req.validades);
+      var tq = req.trocas || {}, ag3 = agora_();
+      Object.keys(tq).forEach(function (c) {
+        var n = Math.max(0, Math.min(999, Math.floor(Number(tq[c]) || 0)));
+        ler_('PERCAS').filter(function (x) { return txt_(x.fornecedor) === txt_(f3.id) && txt_(x.troca) === 'PENDENTE' && txt_(x.codigo) === String(c); })
+          .sort(function (x, y) { return txt_(x.data) < txt_(y.data) ? -1 : 1; })
+          .forEach(function (x) {
+            if (n <= 0) return;
+            var pend = txt_(x.pend) === '' ? num_(x.qtd) : num_(x.pend), u = Math.min(n, pend);
+            n -= u; pend -= u;
+            gravar_('PERCAS', x._lin, pend ? { pend: pend } : { pend: 0, troca: 'ENTREGUE', troca_em: ag3 });
+          });
+      });
+    }
     gravar_('PEDIDOS', p3._lin, { status: 'RECEBIDO', recebido_em: agora_(), recebido_por: quem.nome, coleta: buscou ? 'MERCADO' : 'FORNECEDOR', taxa: buscou && f3 ? num_(f3.taxa_coleta) : 0 });
   } else if (a === 'perca_lancar') {
     soMercado_(quem);
-    var m4 = qtds_(req.itens), motivo = String(req.motivo || '').slice(0, 30), novas = [];
+    var m4 = qtds_(req.itens), motivo = String(req.motivo || '').slice(0, 30), novas = [], troca4 = semPedido_(forn_(req.fornecedor));
     ler_('PRODUTOS').forEach(function (p) {
       var q = m4[txt_(p.codigo)];
-      if (txt_(p.fornecedor) === String(req.fornecedor) && q > 0) novas.push({ id: novoId_('X'), data: hoje_(), fornecedor: txt_(p.fornecedor), codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: q, custo: num_(p.custo), motivo: motivo, lancado_por: quem.nome, lancado_em: agora_() });
+      if (txt_(p.fornecedor) === String(req.fornecedor) && q > 0) novas.push({ id: novoId_('X'), data: hoje_(), fornecedor: txt_(p.fornecedor), codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: q, custo: num_(p.custo), motivo: motivo, lancado_por: quem.nome, lancado_em: agora_(), troca: troca4 ? 'PENDENTE' : '', pend: troca4 ? q : '' });
     });
     if (!novas.length) throw new Error('Informe a quantidade da perca.');
     incluir_('PERCAS', novas);
