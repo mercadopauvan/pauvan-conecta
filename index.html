@@ -66,6 +66,37 @@ button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-co
 .seg button.on{background:var(--bl);border-color:var(--bl);color:#fff;font-weight:700}
 .chip{font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;white-space:nowrap;background:var(--blb);color:var(--bl)}
 .chip.a{background:var(--amb);color:var(--am)}
+.rolw{background:#fff;border-radius:12px;padding:14px 12px;display:flex;flex-direction:column;gap:8px}
+.pdLb0{font-weight:700;font-size:15px;color:var(--t)}
+.pdLcd{background:#b8c9a3;border:3px solid #2b2b2b;border-radius:10px;padding:6px 14px 4px;box-shadow:inset 0 2px 6px rgba(0,0,0,.35)}
+.pdLcd small{display:block;font-weight:700;font-size:13px;color:#2b3a22;letter-spacing:.5px}
+.pdDig{display:flex;justify-content:flex-end;align-items:flex-end;gap:6px;padding:4px 0}
+.pdRl{display:flex;justify-content:center;align-items:center;gap:6px}
+.pdW{position:relative}
+.pdW:after{content:'';position:absolute;left:2px;right:2px;top:50px;height:50px;border-top:3px solid #16a34a;border-bottom:3px solid #16a34a;background:rgba(22,163,74,.08);pointer-events:none;border-radius:2px}
+.pdC{width:58px;height:150px;overflow-y:scroll;scroll-snap-type:y mandatory;border-radius:12px;background:#f1f5f9;border:2px solid #cbd5e1;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.pdC::-webkit-scrollbar{display:none}
+.pdC div{height:50px;line-height:50px;text-align:center;font-weight:800;font-size:30px;color:#94a3b8;scroll-snap-align:center}
+.pdC div.on{color:#0f172a;font-size:36px}
+.pdC div.pd0{scroll-snap-align:none}
+.pdV{font-weight:900;font-size:44px;color:#0f172a;margin:0 2px}
+.pdLb{display:flex;justify-content:center;gap:6px;font-weight:700;font-size:11px;color:#64748b}
+.pdLb span{width:58px;text-align:center}.pdLb i{width:24px}
+.pdTx{text-align:center;font-weight:700;font-size:15px;color:#166534}.pdTx.z{color:#64748b}
+.pr{display:flex;align-items:center;gap:8px}.pr input{width:110px;min-height:44px;border:2px solid var(--g);border-radius:10px;font-size:20px;font-weight:700;text-align:center}
+.alt{border:2px solid #E7B26B}
+.hv{background:linear-gradient(135deg,#1E5B2F,#2F7A44);color:#fff;border-radius:16px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+.hv>span{font-size:12px;font-weight:700;letter-spacing:1px;color:#CFE8D4}.hv>b{font-size:40px;font-weight:800;line-height:1.1}
+.hq{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.hq div{background:rgba(255,255,255,.13);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
+.hq i{font-style:normal;font-size:18px;font-weight:800}.hq small{font-size:12px;color:#CFE8D4}
+.hl{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #EEF1EC}.hl:last-child{border-bottom:0}
+.hl>div{display:flex;flex-direction:column;gap:3px}.hl .chip{align-self:flex-end}
+.cnt{display:flex;align-items:center;justify-content:center;gap:16px}.cnt .sq{width:64px;height:56px;font-size:20px;font-weight:800}
+.cn{font-size:44px;font-weight:800;min-width:90px;text-align:center;color:var(--t)}.cn.z{color:var(--l)}
+.cnt2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.cnt2 button{min-height:44px;border-radius:10px;border:1px solid var(--g);background:#fff;color:var(--g);font-weight:800;font-size:16px}
+.cnt2 button:last-child{border-color:var(--l);color:var(--m);font-weight:600;font-size:14px}
+.lnk2{background:none;border:0;color:var(--bl);font-weight:700;font-size:14px;text-decoration:underline;padding:0;text-align:left}
+.lnk{background:none;border:0;color:var(--vm);font-size:15px;font-weight:700;padding:0 0 0 8px}
 .faixa{margin:-14px -16px 0;padding:4px 16px;border-radius:12px 12px 0 0;background:var(--amb);color:var(--am);font-size:11px;font-weight:700;letter-spacing:.3px;text-align:center}
 .chip.v{background:#DCEBDD;color:var(--g)}
 .fb{background:#fff;border:0;border-radius:14px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px;font-weight:700;min-height:120px;justify-content:center;text-align:center}
@@ -162,8 +193,14 @@ function iog(k, w) {
   return '<svg width="' + w + '" height="' + h + '" viewBox="8 38 64 61" role="img" aria-label="Pote de grego especial"><path d="M12 50h56l-4 42a6 6 0 0 1-6 5H22a6 6 0 0 1-6-5z" fill="#F7D35A" stroke="#9AA39C" stroke-width="1.5"/><path d="M13.5 58h53l-1.3 14H14.8z" fill="#F6EFE4"/><path d="M12.6 50h54.8l-.9 8H13.5z" fill="#5A3420"/>' + TAMPA + '</svg>';
 }
 const logoS = s => '<span class="lgS" style="width:' + s + 'px;height:' + s + 'px"><i style="width:' + Math.round(s * 0.7) + 'px;height:' + s + 'px"></i></span>';
-const semPed = f => f && !f.tem_pedido;
+const semPed = f => f && !f.tem_pedido && !f.kg;
+const MAND = w => '<svg viewBox="0 0 64 64" width="' + w + '" height="' + w + '"><path d="M8 13c6 1 42 1 48 0 2 14 2 30 0 44-6 2-42 2-48 0-2-14-2-30 0-44z" fill="#eff8ff" stroke="#93c5fd" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h48v5c-6 1-42 1-48 0z" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/><path d="M9 11.5l2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5" stroke="#60a5fa" stroke-width="1" fill="none"/><g stroke="#c49a4a" stroke-width="1.4" stroke-linejoin="round"><path d="M15 19c5-2 12-2 16 0 2 2 2 6 0 8-4 2-11 2-16 0-2-2-2-6 0-8z" fill="#f9e4ae" transform="rotate(-10 23 23)"/><path d="M34 18c5-1 11-1 15 1 2 2 2 6 0 8-4 2-10 1-15 0-2-2-2-7 0-9z" fill="#f3d88f" transform="rotate(8 41 23)"/><path d="M14 33c0-3 9-3 9 0l1 19c0 3-11 3-11 0z" fill="#f3d88f"/><path d="M26 35c0-3 9-3 9 0l1 18c0 3-11 3-11 0z" fill="#f9e4ae"/><path d="M38 32c0-3 10-3 10 0l0 20c0 3-11 3-11 0z" fill="#f3d88f"/></g><g stroke="#ddb867" stroke-width=".9" fill="none" stroke-linecap="round"><path d="M18 21.5h8M37 21h9M16.5 37v13M20 36v15M28.5 39v12M32 38v13M40.5 36v14M45 35v15"/></g><g fill="#fff" opacity=".85"><circle cx="20" cy="40" r="1"/><circle cx="31" cy="44" r="1"/><circle cx="43" cy="41" r=".9"/><circle cx="25" cy="21" r=".9"/></g><path d="M11 17c-1 12-1 26 0 37" stroke="#fff" stroke-width="2.2" opacity=".8" stroke-linecap="round" fill="none"/><g stroke="#fff" stroke-width="4.5" stroke-linecap="round"><path d="M53 46v12M47 52h12M48.8 47.8l8.4 8.4M57.2 47.8l-8.4 8.4"/></g><g stroke="#0284c7" stroke-width="2" stroke-linecap="round"><path d="M53 46v12M47 52h12M48.8 47.8l8.4 8.4M57.2 47.8l-8.4 8.4"/></g></svg>';
+const ALF_H = w => '<svg viewBox="0 0 64 64" width="' + w + '" height="' + w + '"><path d="M22 46h20l-3 12H25z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/><g stroke="#c2a878" stroke-width="1.3" fill="none" stroke-linecap="round"><path d="M30 58c-1 3-3 4-5 5M32 58v5M34 58c1 3 3 4 5 5"/></g><path d="M32 47C14 47 8 34 13 24c3-6 9-6 11-3 1-7 7-12 12-9 5-3 11 1 11 8 4-2 10 0 11 6 3 10-6 21-26 21z" fill="#86efac" stroke="#16a34a" stroke-width="1.8" stroke-linejoin="round"/><path d="M32 46c-9-6-13-14-11-24M32 46c8-6 12-14 11-23M32 46V18" stroke="#16a34a" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M19 30c3 2 6 6 8 10M45 29c-3 2-6 6-8 11" stroke="#22c55e" stroke-width="1.2" fill="none"/></svg>';
+const ALF_A = w => '<svg viewBox="0 0 64 64" width="' + w + '" height="' + w + '"><circle cx="32" cy="35" r="23" fill="#bbf7d0" stroke="#4ade80" stroke-width="2"/><path d="M12 33c4-12 14-17 20-17s16 5 20 17c-6-6-13-8-20-8s-14 2-20 8z" fill="#86efac" stroke="#22c55e" stroke-width="1.5"/><path d="M15 44c5 6 11 9 17 9s12-3 17-9" stroke="#4ade80" stroke-width="1.6" fill="none"/><path d="M32 25v26M24 28c-3 7-3 14 0 20M40 28c3 7 3 14 0 20" stroke="#22c55e" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="25" cy="34" rx="4" ry="6" fill="#fff" opacity=".35"/></svg>';
 function des(k, w) {
+  if (k === 'mandioca') return MAND(w);
+  if (k === 'alface_hidro') return ALF_H(w);
+  if (k === 'alface_amer') return ALF_A(w);
   if (String(k).indexOf('iog_') === 0) return iog(k, w);
   if (k === 'bolo_simples') return bolo(false, false, w);
   if (k === 'bolo_cobertura') return bolo(true, false, w);
@@ -221,7 +258,7 @@ function demo(req) {
   db = db || window.__db || { pedidos: [], percas: [] }; window.__db = db;
   db.percas.forEach(x => { if (x.fornecedor === 'soares' && x.troca === undefined) x.troca = 'PENDENTE'; if (x.troca === 'PENDENTE' && x.pend == null) x.pend = x.qtd; });
   const hoje = iso(new Date(Date.now() - 4 * 3600000)), agora = hoje + ' ' + new Date(Date.now() - 4 * 3600000).toISOString().slice(11, 16);
-  const quem = req.token === 'soares' ? { tipo: 'fornecedor', nome: 'Iogurte Soares', fornecedor: 'soares' } : req.token ? { tipo: 'fornecedor', nome: 'Caseirinho da Hélia', fornecedor: 'helia' } : { tipo: 'mercado', nome: 'Ney', perfil: 'GESTAO' };
+  const quem = req.token === 'soares' ? { tipo: 'fornecedor', nome: 'Iogurte Soares', fornecedor: 'soares' } : req.token ? { tipo: 'fornecedor', nome: 'Caseirinho da Hélia', fornecedor: 'helia' } : { tipo: 'mercado', nome: window.__como || 'Ney', perfil: 'GESTAO' };
   if (!req.token && !/^\d{4}$/.test(req.pin || '')) return { ok: false, erro: 'Digite o PIN de 4 números.' };
   const PR = [
     { codigo: '38715', fornecedor: 'helia', nome: 'Mini bolo com cobertura', desenho: 'bolo_mini', custo: 13, ordem: 1 },
@@ -232,7 +269,19 @@ function demo(req) {
     { codigo: '7893582839914', fornecedor: 'soares', nome: 'Tradicional 300 ml', desenho: 'iog_trad_300', custo: 6, ordem: 3 },
     { codigo: '7895461427793', fornecedor: 'soares', nome: 'Gourmet com frutas 300 ml', desenho: 'iog_gourmet_300', custo: 8, ordem: 4 },
     { codigo: '7892106664414', fornecedor: 'soares', nome: 'Grego polpa de fruta pote', desenho: 'iog_grego_fruta', custo: 12, ordem: 5 },
-    { codigo: '7899348029773', fornecedor: 'soares', nome: 'Grego especial pote', desenho: 'iog_grego_especial', custo: 15, ordem: 6 }];
+    { codigo: '7899348029773', fornecedor: 'soares', nome: 'Grego especial pote', desenho: 'iog_grego_especial', custo: 15, ordem: 6 },
+    { codigo: '14752', fornecedor: 'claudinei', nome: 'Mandioca congelada', desenho: 'mandioca', custo: 5, ordem: 1 },
+    { codigo: '18770', fornecedor: 'milton', nome: 'Alface hidropônico', desenho: 'alface_hidro', custo: 2.5, ordem: 1 },
+    { codigo: '36674', fornecedor: 'milton', nome: 'Alface americana', desenho: 'alface_amer', custo: 3, ordem: 2 }];
+  if (db.un && !db.un.some(r => r.id === 'M0')) { const m1 = mais(hoje, -30);
+    [[m1, 38, 10], [mais(m1, 2), 42, 12], [mais(m1, 5), 36, 8], [mais(m1, 9), 40, 14]].forEach((x, i) => db.un.push({ id: 'M0' + (i || ''), fornecedor: 'milton', dia: x[0], em: x[0] + ' 07:15', por: 'Regiane', itens: [{ codigo: '18770', nome: 'Alface hidropônico', qtd: x[1], custo: 2.5, custo_ant: 2.5 }, { codigo: '36674', nome: 'Alface americana', qtd: x[2], custo: 3, custo_ant: 3 }], pago_por: 'Ana Paula', pago_em: x[0] + ' 10:00' })); }
+  if (db.receb && !db.receb.some(r => r.id === 'K0')) { const m1 = mais(hoje, -30);
+    [[m1, [24.5, 25.1]], [mais(m1, 4), [26.2, 23.9]], [mais(m1, 8), [25.0, 24.4]]].forEach((x, i) => db.receb.push({ id: 'K0' + (i || ''), fornecedor: 'claudinei', dia: x[0], em: x[0] + ' 07:00', por: 'Ney', pesagens: x[1], custo: 5, custo_ant: 5, nf: '6006823' })); }
+  if (!db.un) { db.un = [
+    { id: 'M1', fornecedor: 'milton', dia: mais(hoje, -1), em: mais(hoje, -1) + ' 07:10', por: 'Regiane', itens: [{ codigo: '18770', nome: 'Alface hidropônico', qtd: 40, custo: 2.5, custo_ant: 2.5 }, { codigo: '36674', nome: 'Alface americana', qtd: 12, custo: 3, custo_ant: 3 }], pago_por: 'Ana Paula', pago_em: mais(hoje, -1) + ' 10:20' }]; }
+  if (!db.receb) { db.receb = [
+    { id: 'K1', fornecedor: 'claudinei', dia: mais(hoje, -6), em: mais(hoje, -6) + ' 07:20', por: 'Regiane', pesagens: [25.3, 22.95], custo: 5, nf: '' },
+    { id: 'K2', fornecedor: 'claudinei', dia: mais(hoje, -3), em: mais(hoje, -3) + ' 07:05', por: 'Ney', pesagens: [26.1, 26.7], custo: 5, nf: '' }]; }
   if (!db.seed) {
     db.seed = 1;
     const it = (q, env, rec) => PR.filter(p => p.fornecedor === 'soares').map((p, i) => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: q[i], enviada: env ? q[i] : null, recebida: rec ? q[i] : null, validade: mais(hoje, 12 + i) }));
@@ -241,6 +290,7 @@ function demo(req) {
     db.pedidos.push({ id: 'S2', fornecedor: 'soares', dia: hoje, status: 'ENVIADO', criado_em: hoje + ' 07:40', criado_por: 'Iogurte Soares', enviado_em: hoje + ' 07:40', recebido_em: '', recebido_por: '', coleta: 'FORNECEDOR', taxa: 0, itens: it([6, 4, 12, 12, 6, 4], 1, 0) });
     db.percas.push({ id: 'XS1', data: d2, fornecedor: 'soares', codigo: '7899348029773', nome: 'Grego especial pote', qtd: 2, custo: 15, motivo: 'Vencido', por: 'Ney', troca: 'PENDENTE', pend: 2 });
   }
+  if (!db.un.some(r => r.id === 'M0') || !db.receb.some(r => r.id === 'K0')) { window.__db = db; try { localStorage.setItem(K, JSON.stringify(db)); } catch (e) {} return demo(req); }
   const m = {}; (req.itens || []).forEach(i => { m[i.codigo] = Math.max(0, Math.floor(i.qtd)); });
   const ped = id => db.pedidos.find(p => p.id === id);
   const a = req.acao;
@@ -381,8 +431,149 @@ function telaForns() {
   });
   return o + '</div>';
 }
+const kgTxt = v => Number(v).toFixed(3).replace('.', ',');
+const kgDe = r => r.pesagens.reduce((a, b) => a + b, 0);
+const veAcerto = () => ['Celio', 'Ana Paula', 'Amanda'].indexOf(S.est.quem.nome) >= 0;
+function telaKg(f) {
+  const rs = (S.est.receb || []).filter(r => r.fornecedor === f.id), pend = rs.filter(r => !r.nf).sort((a, b) => a.em < b.em ? 1 : -1);
+  const tk = pend.reduce((a, r) => a + kgDe(r), 0), p = prods()[0], ac = veAcerto();
+  let o = hdr(f.nome, 'Produtor rural · entrega no mercado · nota fiscal depois', ['forns', 'Fornecedores']) + '<div class="w">';
+  if (DEMO) o += '<div class="seg">' + [['Ney', 'Como quem pesa (Ney)'], ['Celio', 'Como Celio']].map(v => '<button class="' + (S.est.quem.nome === v[0] ? 'on' : '') + '" data-a="comoKg" data-k="' + v[0] + '">' + v[1] + '</button>').join('') + '</div>';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (ac) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">AGUARDANDO A NOTA FISCAL</div><div class="kv" style="font-size:17px"><b style="text-align:left">' + pend.length + (pend.length === 1 ? ' entrega' : ' entregas') + '</b><b>' + kgTxt(tk) + ' kg</b></div><div class="kv"><span>' + esc(p.nome) + ' · ' + brl(precoAtual(f)) + ' kg</span><b style="white-space:nowrap">' + brl(pend.reduce((a, r) => a + kgDe(r) * r.custo, 0)) + '</b></div><div class="s" style="color:var(--am)">Quando a nota do Claudinei chegar, ela tem que bater com esse peso e esse valor.</div></div>';
+  else o += '<div class="card" style="flex-direction:row;align-items:center;gap:12px">' + des('mandioca', 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + brl(precoAtual(f)) + ' kg</div></div></div>';
+  if (['Ana Paula', 'Amanda'].indexOf(S.est.quem.nome) < 0) o += '<button class="btn" data-a="pesar">REGISTRAR RECEBIMENTO</button>';
+  if (ac) o += '<button class="btn b2" data-a="hist">HISTÓRICO DE ENTREGAS</button>';
+  const lista = ac ? pend : pend.filter(r => r.dia === S.est.hoje), hj = pend.filter(r => r.dia === S.est.hoje);
+  if (hj.length) o += '<div class="card" style="gap:8px"><div class="kv" style="font-size:17px"><b style="text-align:left">Acerto do dia</b><b>' + kgTxt(hj.reduce((a, r) => a + kgDe(r), 0)) + ' kg</b></div><div class="s">Manda para o Claudinei o resumo dos pesos de hoje, para ele conferir e fazer a nota depois.</div><button class="btn zap" data-a="zapKg">ENVIAR NO WHATSAPP</button></div>';
+  o += '<div class="lab">' + (ac ? 'RECEBIMENTOS SEM NOTA' : 'RECEBIDO HOJE') + '</div>';
+  if (!lista.length) o += '<div class="card"><div class="s">' + (ac ? 'Nenhum recebimento aguardando nota.' : 'Nada recebido hoje ainda.') + '</div></div>';
+  lista.forEach(r => { const kg = kgDe(r), det = [];
+    if (r.pesagens.length > 1) det.push(r.pesagens.length + ' pesagens: ' + r.pesagens.map(kgTxt).join(' + ') + ' kg');
+    if (ac) det.push(brl(kg * r.custo));
+    const alt = r.custo_ant && r.custo !== r.custo_ant;
+    o += '<div class="card' + (ac && alt ? ' alt' : '') + '" style="gap:6px">' + (ac && alt ? '<div class="faixa">PREÇO DO KG ALTERADO: ' + brl(r.custo_ant) + ' → ' + brl(r.custo) + ' · por ' + esc(r.por) + '</div>' : '') + '<div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(r.dia) + '</b><b>' + kgTxt(kg) + ' kg</b></div>' + (det.length ? '<div class="s">' + det.join(' · ') + '</div>' : '') + '<div class="s">Recebido por ' + esc(r.por) + ' às ' + esc(r.em.slice(11)) + '</div>' + (r.dia === S.est.hoje ? '<button class="btn pg" data-a="xreceb" data-k="' + esc(r.id) + '">Excluir este recebimento</button>' : '') + '</div>'; });
+  return o + '</div>';
+}
+const SEG = { 0: 'abcdef', 1: 'bc', 2: 'abdeg', 3: 'abcdg', 4: 'bcfg', 5: 'acdfg', 6: 'acdefg', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg' };
+function seg7(dg) {
+  const SEG = { 0: 'abcdef', 1: 'bc', 2: 'abged', 3: 'abgcd', 4: 'fgbc', 5: 'afgcd', 6: 'afgedc', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg' }, on = SEG[dg] || '', P = { a: 'M8,2 L36,2 L31,8 L13,8 Z', b: 'M38,4 L38,33 L33,30 L33,10 Z', c: 'M38,37 L38,66 L33,60 L33,40 Z', d: 'M8,68 L36,68 L31,62 L13,62 Z', e: 'M6,37 L6,66 L11,60 L11,40 Z', f: 'M6,4 L6,33 L11,30 L11,10 Z', g: 'M9,35 L13,31 L31,31 L35,35 L31,39 L13,39 Z' };
+  return '<svg width="40" height="64" viewBox="0 0 44 70" style="transform:skewX(-6deg)">' + Object.keys(P).map(k => '<path d="' + P[k] + '" fill="' + (on.indexOf(k) >= 0 ? '#1d2a16' : 'rgba(29,42,22,.08)') + '"/>').join('') + '</svg>';
+}
+const rolVal = () => Math.round((S.rol[0] * 10 + S.rol[1] + S.rol[2] / 10 + S.rol[3] / 100 + S.rol[4] / 1000) * 1000) / 1000;
+function lcdHtml() { const d = S.rol; return (d[0] ? seg7(d[0]) : seg7(-1)) + seg7(d[1]) + '<svg width="12" height="64" viewBox="0 0 12 70"><rect x="2" y="58" width="8" height="10" rx="2" fill="#1d2a16"/></svg>' + seg7(d[2]) + seg7(d[3]) + seg7(d[4]); }
+const precoAtual = f => { const rs = (S.est.receb || []).filter(r => r.fornecedor === f.id).sort((a, b) => a.em < b.em ? 1 : -1); return rs.length ? rs[0].custo : prods()[0].custo; };
+const dinheiro = v => Number(v).toFixed(2).replace('.', ',');
+function telaPesar() {
+  const f = fornAtual(), p = prods()[0], v = rolVal(), soma = S.pes.reduce((a, b) => a + b, 0) + v, mud = S.preco !== S.precoBase;
+  let o = hdr('Receber mandioca', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:8px"><div style="display:flex;align-items:center;gap:12px">' + des('mandioca', 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(S.precoBase) + ' → ' + brl(S.preco) + ' kg</b>' : brl(S.preco) + ' kg') + '</div></div></div>';
+  if (S.precoEd) o += '<div class="pr"><span class="s">Novo preço do kg R$</span><input id="prIn" inputmode="decimal" value="' + dinheiro(S.preco) + '"><button class="btn" style="min-height:44px;width:auto;padding:0 16px" data-a="precoOk">OK</button></div><div class="s">Só troque se o Claudinei avisou que o preço mudou.</div>';
+  else o += '<button class="btn b2" style="min-height:44px;font-size:14px" data-a="precoEd">' + 'TROCA DE PREÇO' + '</button>';
+  o += '</div>';
+  if (S.pes.length) o += '<div class="card" style="gap:6px"><div class="lab">PESAGENS JÁ SOMADAS</div>' + S.pes.map((x, i) => '<div class="kv"><span>' + (i + 1) + 'ª pesagem</span><b>' + kgTxt(x) + ' kg <button class="lnk" data-a="xpes" data-k="' + i + '" aria-label="Tirar pesagem">✕</button></b></div>').join('') + '</div>';
+  o += '<div class="rolw"><div class="lab">' + (S.pes.length ? (S.pes.length + 1) + 'ª PESAGEM' : 'PESO DA BALANÇA') + '</div><div class="pdLb0">Gire os números até ficar igual à balança</div><div class="pdLcd"><small>Peso kg</small><div class="pdDig" id="lcd">' + lcdHtml() + '</div></div>';
+  const col = i => '<div class="pdW"><div class="pdC" data-c="' + i + '"><div class="pd0"></div>' + [0,1,2,3,4,5,6,7,8,9].map(n => '<div data-n="' + n + '"' + (n === S.rol[i] ? ' class="on"' : '') + '>' + n + '</div>').join('') + '<div class="pd0"></div></div></div>';
+  o += '<div class="pdRl">' + col(0) + col(1) + '<span class="pdV">,</span>' + col(2) + col(3) + col(4) + '</div>';
+  o += '<div class="pdLb"><span>10 kg</span><span>1 kg</span><i></i><span>100 g</span><span>10 g</span><span>1 g</span></div>';
+  o += '<div id="rlTxt" class="pdTx' + (v ? '' : ' z') + '">' + (v ? kgTxt(v) + ' kg chegando' : 'gire os números para marcar o peso') + '</div></div>';
+  o += '<button class="btn b2" data-a="outraPes" id="bOutra"' + (v ? '' : ' disabled') + '>+ SOMAR OUTRA PESAGEM</button>';
+  o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total recebido</b><b id="rlTot">' + kgTxt(soma) + ' kg</b></div></div>';
+  o += '<button class="btn" data-a="lancarKg" id="bLanc"' + (soma ? '' : ' disabled') + '>LANÇAR RECEBIMENTO</button>';
+  return o + '</div>';
+}
+function rolAtualiza() {
+  const v = rolVal(), soma = S.pes.reduce((a, b) => a + b, 0) + v, t = document.getElementById('rlTxt');
+  if (!t) return;
+  document.getElementById('lcd').innerHTML = lcdHtml();
+  t.textContent = v ? kgTxt(v) + ' kg chegando' : 'gire os números para marcar o peso'; t.className = 'pdTx' + (v ? '' : ' z');
+  document.getElementById('rlTot').textContent = kgTxt(soma) + ' kg';
+  document.getElementById('bOutra').disabled = !v; document.getElementById('bLanc').disabled = !soma;
+}
+function rolIniciar() {
+  document.querySelectorAll('.pdC').forEach(c => {
+    const i = +c.dataset.c; c.scrollTop = S.rol[i] * 50; let tm = null;
+    c.addEventListener('scroll', () => { if (!c.isConnected) return; clearTimeout(tm); const n = Math.max(0, Math.min(9, Math.round(c.scrollTop / 50)));
+      if (S.rol[i] !== n) { S.rol[i] = n; c.querySelectorAll('div[data-n]').forEach(x => x.classList.toggle('on', +x.dataset.n === n)); rolAtualiza(); try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {} }
+      tm = setTimeout(() => c.scrollTo({ top: n * 50, behavior: 'smooth' }), 140); }, { passive: true });
+    c.addEventListener('click', ev => { const n = ev.target && ev.target.dataset && ev.target.dataset.n; if (n != null) c.scrollTo({ top: (+n) * 50, behavior: 'smooth' }); });
+  });
+}
+const unTot = r => r.itens.reduce((a, i) => a + i.qtd, 0), unVal = r => r.itens.reduce((a, i) => a + i.qtd * i.custo, 0);
+const precoUn = (f, c) => { const rs = (S.est.un || []).filter(r => r.fornecedor === f.id).sort((a, b) => a.em < b.em ? 1 : -1); for (const r of rs) { const i = r.itens.find(x => x.codigo === c); if (i) return i.custo; } return (S.est.produtos.find(p => p.codigo === c) || {}).custo || 0; };
+function telaUn(f) {
+  const ac = veAcerto(), rs = (S.est.un || []).filter(r => r.fornecedor === f.id).sort((a, b) => a.em < b.em ? 1 : -1);
+  const hj = rs.filter(r => r.dia === S.est.hoje), ap = rs.filter(r => !r.pago_por);
+  let o = hdr(f.nome, 'Produtor rural · sem nota fiscal · pagamento no dia', ['forns', 'Fornecedores']) + '<div class="w">';
+  if (DEMO) o += '<div class="seg">' + [['Regiane', 'Como quem recebe'], ['Ana Paula', 'Como Ana Paula']].map(v => '<button class="' + (S.est.quem.nome === v[0] ? 'on' : '') + '" data-a="comoKg" data-k="' + v[0] + '">' + v[1] + '</button>').join('') + '</div>';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (!ac) {
+    o += '<div class="card" style="gap:8px">' + prods().map(p => '<div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 48) + '<div style="flex:1"><b>' + esc(p.nome) + '</b><div class="s">' + brl(precoUn(f, p.codigo)) + ' a unidade</div></div></div>').join('') + '</div>';
+  }
+  if (['Ana Paula', 'Amanda'].indexOf(S.est.quem.nome) < 0) o += '<button class="btn" data-a="contar">REGISTRAR RECEBIMENTO</button>';
+  if (ac) o += '<button class="btn b2" data-a="hist">HISTÓRICO DE ENTREGAS</button>';
+  if (hj.length) { const t = hj.reduce((a, r) => a + unTot(r), 0);
+    o += '<div class="card" style="gap:8px"><div class="kv" style="font-size:17px"><b style="text-align:left">Recebido hoje</b><b>' + t + ' unidades</b></div><div class="s">' + (ac ? 'Manda para o Sr. Milton o comprovante de hoje: quantidade, preço e total.' : 'Manda para o Sr. Milton a quantidade que foi conferida hoje.') + '</div><button class="btn zap" data-a="zapUn">ENVIAR NO WHATSAPP</button></div>'; }
+  const cartao = r => { const alt = r.itens.filter(i => i.custo !== i.custo_ant);
+    return '<div class="card' + (ac && alt.length ? ' alt' : '') + '" style="gap:6px">' + (ac && alt.length ? '<div class="faixa">PREÇO ALTERADO: ' + alt.map(i => esc(i.nome.toLowerCase()) + ' ' + brl(i.custo_ant) + ' → ' + brl(i.custo)).join(' · ') + ' · por ' + esc(r.por) + '</div>' : '') +
+      '<div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(r.dia) + '</b><b>' + unTot(r) + ' un</b></div>' +
+      r.itens.map(i => '<div class="kv"><span>' + esc(i.nome) + '</span><span>' + i.qtd + ' un' + (ac ? ' × ' + brl(i.custo) : '') + '</span></div>').join('') +
+      (ac ? '<div class="kv"><span class="s">Recebido por ' + esc(r.por) + ' às ' + esc(r.em.slice(11)) + '</span><b>' + brl(unVal(r)) + '</b></div>' + (r.pago_por ? '<div class="s" style="color:var(--g);font-weight:700">✓ PAGO por ' + esc(r.pago_por) + ' às ' + esc(r.pago_em.slice(11)) + '</div>' : '') : '<div class="s">Recebido por ' + esc(r.por) + ' às ' + esc(r.em.slice(11)) + '</div>') +
+      (ac && !r.pago_por ? '<button class="btn" data-a="unPago" data-k="' + esc(r.id) + '">PAGO ' + brl(unVal(r)) + '</button>' : '') +
+      (r.dia === S.est.hoje && !r.pago_por ? '<button class="btn pg" data-a="xun" data-k="' + esc(r.id) + '">Excluir este recebimento</button>' : '') + '</div>'; };
+  if (ac) {
+    if (ap.length) { o += '<div class="lab" style="color:var(--am)">A PAGAR AO SR. MILTON · ' + brl(ap.reduce((a, r) => a + unVal(r), 0)) + '</div>'; ap.forEach(r => { o += cartao(r); }); }
+    const pg = rs.filter(r => r.pago_por);
+    if (pg.length) { o += '<div class="lab">PAGOS</div>'; pg.forEach(r => { o += cartao(r); }); }
+    if (!rs.length) o += '<div class="card"><div class="s">Nenhum recebimento ainda.</div></div>';
+  } else {
+    o += '<div class="lab">RECEBIDO HOJE</div>';
+    if (!hj.length) o += '<div class="card"><div class="s">Nada recebido hoje ainda.</div></div>';
+    hj.forEach(r => { o += cartao(r); });
+  }
+  return o + '</div>';
+}
+function telaContar() {
+  const f = fornAtual(), ps = prods(), tot = ps.reduce((a, p) => a + (S.cnt[p.codigo] || 0), 0);
+  let o = hdr('Receber alface', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  o += '<div class="s">Conte os pés de alface que chegaram. Use +5 e +10 para contar mais rápido.</div>';
+  ps.forEach(p => { const q = S.cnt[p.codigo] || 0, base = precoUn(f, p.codigo), pr = S.pcu[p.codigo], mud = pr !== base;
+    o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:10px"><div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 52) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(base) + ' → ' + brl(pr) + ' a unidade</b>' : brl(pr) + ' a unidade') + '</div></div></div>';
+    o += '<div class="cnt"><button class="sq" data-a="cnt" data-k="' + p.codigo + '|-1"' + (q ? '' : ' disabled') + '>−1</button><b class="cn' + (q ? '' : ' z') + '">' + q + '</b><button class="sq" data-a="cnt" data-k="' + p.codigo + '|1">+1</button></div>';
+    o += '<div class="cnt2"><button data-a="cnt" data-k="' + p.codigo + '|5">+5</button><button data-a="cnt" data-k="' + p.codigo + '|10">+10</button><button data-a="cnt" data-k="' + p.codigo + '|0">Zerar</button></div>';
+    if (S.pEd === p.codigo) o += '<div class="pr"><span class="s">Novo preço da unidade R$</span><input id="prIn" inputmode="decimal" value="' + dinheiro(pr) + '"><button class="btn" style="min-height:44px;width:auto;padding:0 16px" data-a="pUnOk" data-k="' + p.codigo + '">OK</button></div>';
+    else o += '<button class="btn b2" style="min-height:44px;font-size:14px" data-a="pUnEd" data-k="' + p.codigo + '">TROCA DE PREÇO</button>';
+    o += '</div>'; });
+  o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total recebido</b><b>' + tot + ' unidades</b></div></div>';
+  o += '<button class="btn" data-a="lancarUn"' + (tot ? '' : ' disabled') + '>LANÇAR RECEBIMENTO</button>';
+  return o + '</div>';
+}
+function entregasDe(f) {
+  if (f.un) return (S.est.un || []).filter(r => r.fornecedor === f.id).map(r => ({ dia: r.dia, itens: r.itens.map(i => ({ codigo: i.codigo, nome: i.nome, q: i.qtd, v: i.qtd * i.custo, pr: i.custo })), st: r.pago_por ? 'Pago em ' + dm(r.pago_em) : 'A pagar', ok: !!r.pago_por }));
+  return (S.est.receb || []).filter(r => r.fornecedor === f.id).map(r => { const p = S.est.produtos.find(x => x.fornecedor === f.id) || {}, kg = kgDe(r); return { dia: r.dia, itens: [{ codigo: p.codigo, nome: p.nome, q: kg, v: kg * r.custo, pr: r.custo }], st: r.nf ? 'Nota ' + r.nf : 'Aguardando nota', ok: !!r.nf }; });
+}
+function telaHist() {
+  const f = fornAtual(), un = !!f.un, qf = q => un ? q + (q === 1 ? ' unidade' : ' unidades') : kgTxt(q) + ' kg', qc = q => un ? q + ' un' : kgTxt(q) + ' kg';
+  const todas = entregasDe(f).sort((a, b) => a.dia < b.dia ? 1 : -1), mes = todas.filter(e => e.dia.slice(0, 7) === S.hm);
+  const soma = (l, k) => l.reduce((a, e) => a + e.itens.reduce((b, i) => b + i[k], 0), 0);
+  const [y, m] = S.hm.split('-').map(Number), nomeMes = MES[m - 1].charAt(0).toUpperCase() + MES[m - 1].slice(1) + ' de ' + y;
+  let o = hdr('Histórico de entregas', f.nome, ['voltar', 'Voltar']) + '<div class="w">';
+  o += '<div class="card"><div class="dia"><button class="sq" aria-label="Mês anterior" data-a="hmes" data-k="-1">‹</button><b>' + nomeMes + '</b><button class="sq" aria-label="Próximo mês" data-a="hmes" data-k="1"' + (S.hm >= S.est.hoje.slice(0, 7) ? ' disabled' : '') + '>›</button></div></div>';
+  o += '<div class="hv"><span>TOTAL RECEBIDO NO MÊS</span><b>' + brl(soma(mes, 'v')) + '</b><div class="hq"><div><i>' + qf(Math.round(soma(mes, 'q') * 1000) / 1000) + '</i><small>entregue</small></div><div><i>' + mes.length + '</i><small>' + (mes.length === 1 ? 'entrega' : 'entregas') + '</small></div></div></div>';
+  const pp = {}; mes.forEach(e => e.itens.forEach(i => { const x = pp[i.codigo] || (pp[i.codigo] = { nome: i.nome, q: 0, v: 0 }); x.q += i.q; x.v += i.v; }));
+  if (Object.keys(pp).length) o += '<div class="lab">POR PRODUTO</div><div class="card" style="gap:12px">' + Object.keys(pp).map(c => { const x = pp[c], p = S.est.produtos.find(z => z.codigo === c) || {}; return '<div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 44) + '<div style="flex:1"><b>' + esc(x.nome) + '</b><div class="s">' + qf(Math.round(x.q * 1000) / 1000) + ' · média ' + brl(x.q ? x.v / x.q : 0) + (un ? ' a unidade' : ' kg') + '</div></div><b style="white-space:nowrap">' + brl(x.v) + '</b></div>'; }).join('') + '</div>';
+  o += '<div class="lab">ENTREGAS DO MÊS</div>';
+  if (!mes.length) o += '<div class="card"><div class="s">Nenhuma entrega neste mês.</div></div>';
+  else o += '<div class="card" style="gap:0;padding:4px 16px">' + mes.map(e => { const q = e.itens.reduce((a, i) => a + i.q, 0), v = e.itens.reduce((a, i) => a + i.v, 0); return '<div class="hl"><div><b>' + diaTxt(e.dia) + '</b><span class="s">' + (e.itens.length > 1 ? e.itens.map(i => qc(i.q) + ' ' + esc(i.nome.toLowerCase())).join(' + ') : qc(q)) + '</span></div><div style="text-align:right"><b>' + brl(v) + '</b><span class="chip ' + (e.ok ? 'v' : 'a') + '">' + esc(e.st) + '</span></div></div>'; }).join('') + '</div>';
+  o += '<div class="card" style="gap:4px"><div class="lab">DESDE A PRIMEIRA ENTREGA</div><div class="kv"><span>' + todas.length + (todas.length === 1 ? ' entrega · ' : ' entregas · ') + qf(Math.round(soma(todas, 'q') * 1000) / 1000) + '</span><b>' + brl(soma(todas, 'v')) + '</b></div></div>';
+  return o + '</div>';
+}
 function telaForn() {
   const f = fornAtual(), merc = sou() === 'mercado', ab = abertos();
+  if (f.un) return telaUn(f);
+  if (f.kg) return telaKg(f);
   let o = merc ? hdr(f.nome, semPed(f) ? 'Entrega própria · sem taxa de coleta' : '', ['forns', 'Fornecedores']) : marca(f.nome + ' · ' + dataLonga(S.est.hoje));
   const tabs = merc && semPed(f) ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : !merc && semPed(f) ? [['pedidos', 'ENTREGAS'], ['extrato', 'EXTRATO']] : merc ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : [['pedidos', 'PEDIDOS' + (ab.length ? ' (' + ab.length + ')' : '')], ['extrato', 'EXTRATO']];
   o += '<div class="tabs' + (tabs.length === 3 ? ' t3' : tabs.length === 2 ? ' t2' : '') + '">' + tabs.map(t => '<button class="tab' + (S.aba === t[0] ? ' on' : '') + '" data-a="aba" data-k="' + t[0] + '">' + t[1] + '</button>').join('') + '</div><div class="w">';
@@ -508,9 +699,13 @@ function render() {
   else if (S.tela === 'feito') o += telaFeito();
   else if (S.tela === 'abrir') o += telaAbrir();
   else if (S.tela === 'nova') o += telaNova();
+  else if (S.tela === 'pesar') o += telaPesar();
+  else if (S.tela === 'contar') o += telaContar();
+  else if (S.tela === 'hist') o += telaHist();
   else o += telaForn();
   if (S.load) o += '<div class="load">Carregando…</div>';
   el.innerHTML = o;
+  if (S.tela === 'pesar' && S.est) rolIniciar();
   navSync();
 }
 
@@ -541,6 +736,8 @@ window.addEventListener('popstate', e => {
   if (NAV_OVER) { Object.assign(S, NAV_OVER); NAV_OVER = null; NAV_REPLACE = true; } else NAV_POP = true;
   const p = S.est.pedidos.find(x => x.id === (S.tela === 'feito' ? S.feito : S.ped));
   if ((S.tela === 'abrir' && (!p || p.status === 'RECEBIDO' || p.status === 'CANCELADO')) || (S.tela === 'feito' && !p)) { S.tela = 'forn'; if (NAV_POP) { NAV_POP = false; NAV_REPLACE = true; } }
+  if ((S.tela === 'pesar' && !S.rol) || (S.tela === 'contar' && !S.cnt)) S.tela = 'forn';
+  if (S.tela === 'hist' && !S.hm) S.hm = S.est.hoje.slice(0, 7);
   if (S.tela === 'abrir') { AC.abrir(S.ped, null, true); return; }
   render(); window.scrollTo(0, 0);
 });
@@ -575,6 +772,39 @@ const AC = {
   nova() { S.q = {}; S.val = {}; S.erro = ''; S.tela = 'nova'; render(); window.scrollTo(0, 0); },
   async entregar() { if (await chamar('entrega_lancar', { itens: itensReq(), validades: (() => { const v = {}; Object.keys(S.q).forEach(c => { if (S.q[c]) v[c] = S.val[c] || mais(S.est.hoje, 15); }); return v; })() })) { S.q = {}; navVoltar({ tela: 'forn', aba: 'pedidos' }); } },
   copiar(k, b) { try { navigator.clipboard.writeText(k).then(() => { b.textContent = 'COPIADO'; }, () => { b.textContent = 'NÃO DEU PARA COPIAR'; }); } catch (e) { b.textContent = 'NÃO DEU PARA COPIAR'; } },
+  zapKg() {
+    const f = fornAtual(), p = prods()[0], hj = (S.est.receb || []).filter(r => r.fornecedor === f.id && !r.nf && r.dia === S.est.hoje);
+    const ps = [].concat.apply([], hj.map(r => r.pesagens)), tot = ps.reduce((a, b) => a + b, 0);
+    const t = '*Mercado Pauvan · recebimento de ' + p.nome.toLowerCase() + '*\n' + dataLonga(S.est.hoje) + '\n\n' + ps.map((x, i) => (i + 1) + 'ª pesagem: ' + kgTxt(x) + ' kg').join('\n') + '\n\n*Total do dia: ' + kgTxt(tot) + ' kg*\nRecebido por ' + hj.map(r => r.por).filter((x, i, a) => a.indexOf(x) === i).join(', ') + '.\nEsse peso entra na sua próxima nota fiscal.';
+    try { navigator.clipboard.writeText(t); } catch (e) {}
+    const n = f.whatsapp ? (f.whatsapp.length <= 11 ? '55' + f.whatsapp : f.whatsapp) : '';
+    window.__ultimoZap = t; window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(t), '_blank');
+  },
+  hist() { S.hm = S.est.hoje.slice(0, 7); S.tela = 'hist'; render(); window.scrollTo(0, 0); },
+  hmes(k) { const [y, m] = S.hm.split('-').map(Number), d = new Date(Date.UTC(y, m - 1 + (+k), 1)); S.hm = d.toISOString().slice(0, 7); render(); },
+  contar() { const f = fornAtual(); S.cnt = {}; S.pcu = {}; prods().forEach(p => { S.pcu[p.codigo] = precoUn(f, p.codigo); }); S.pEd = null; S.erro = ''; S.tela = 'contar'; render(); window.scrollTo(0, 0); },
+  cnt(k) { const [c, n] = k.split('|'); const v = +n; S.cnt[c] = v === 0 ? 0 : Math.max(0, Math.min(999, (S.cnt[c] || 0) + v)); const y = window.scrollY; render(); window.scrollTo(0, y); },
+  pUnEd(k) { S.pEd = k; const y = window.scrollY; render(); window.scrollTo(0, y); const x = document.getElementById('prIn'); if (x) { x.focus(); x.select(); } },
+  pUnOk(k) { const v = parseFloat(String(document.getElementById('prIn').value).replace(',', '.')); if (!(v > 0) || v > 100) { S.erro = 'Preço inválido.'; render(); return; } S.erro = ''; S.pcu[k] = Math.round(v * 100) / 100; S.pEd = null; const y = window.scrollY; render(); window.scrollTo(0, y); },
+  async lancarUn() { const f = fornAtual(); const it = prods().filter(p => S.cnt[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, qtd: S.cnt[p.codigo], custo: S.pcu[p.codigo], custo_ant: precoUn(f, p.codigo) })); if (await chamar('un_lancar', { fornecedor: S.forn, itens: it })) navVoltar(null, { tela: 'forn' }); },
+  async unPago(k) { await chamar('un_pago', { id: k }); render(); },
+  async xun(k) { if (confirm('Excluir este recebimento?')) { await chamar('un_excluir', { id: k }); render(); } },
+  zapUn() {
+    const f = fornAtual(), ac = veAcerto(), hj = (S.est.un || []).filter(r => r.fornecedor === f.id && r.dia === S.est.hoje), m = {};
+    hj.forEach(r => r.itens.forEach(i => { const x = m[i.nome] || (m[i.nome] = { q: 0, v: 0, c: i.custo }); x.q += i.qtd; x.v += i.qtd * i.custo; x.c = i.custo; }));
+    const tq = Object.values(m).reduce((a, x) => a + x.q, 0), tv = Object.values(m).reduce((a, x) => a + x.v, 0), pg = hj.length && hj.every(r => r.pago_por);
+    const t = '*Mercado Pauvan · recebimento de alface*\n' + dataLonga(S.est.hoje) + '\n\n' + Object.keys(m).map(n => n + ': ' + m[n].q + ' un' + (ac ? ' × ' + brl(m[n].c) + ' = ' + brl(m[n].v) : '')).join('\n') + '\n\n*Total: ' + tq + ' unidades' + (ac ? ' · ' + brl(tv) : '') + '*' + (ac ? '\n' + (pg ? 'Pago.' : 'Passe no financeiro para receber.') : '\nRecebido por ' + hj.map(r => r.por).filter((x, i, a) => a.indexOf(x) === i).join(', ') + '.');
+    try { navigator.clipboard.writeText(t); } catch (e) {}
+    window.__ultimoZap = t; window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
+  },
+  comoKg(k) { window.__como = k; S.est.quem.nome = k; render(); },
+  pesar() { S.rol = [0, 0, 0, 0, 0]; S.pes = []; S.precoBase = S.preco = precoAtual(fornAtual()); S.precoEd = false; S.erro = ''; S.tela = 'pesar'; render(); window.scrollTo(0, 0); },
+  outraPes() { const v = rolVal(); if (!v) return; S.pes.push(v); S.rol = [0, 0, 0, 0, 0]; render(); },
+  precoEd() { S.precoEd = true; render(); const x = document.getElementById('prIn'); if (x) { x.focus(); x.select(); } },
+  precoOk() { const v = parseFloat(String(document.getElementById('prIn').value).replace(',', '.')); if (!(v > 0) || v > 100) { S.erro = 'Preço do kg inválido.'; render(); return; } S.erro = ''; S.preco = Math.round(v * 100) / 100; S.precoEd = false; render(); },
+  xpes(k) { S.pes.splice(+k, 1); render(); },
+  async lancarKg() { const v = rolVal(), ps = S.pes.concat(v ? [v] : []); if (await chamar('receb_lancar', { fornecedor: S.forn, pesagens: ps, custo: S.preco, custo_ant: S.precoBase })) navVoltar(null, { tela: 'forn' }); },
+  async xreceb(k) { if (confirm('Excluir este recebimento?')) { await chamar('receb_excluir', { id: k }); render(); } },
   quer(k) { S.quer = S.quer || {}; S.quer[k] = !S.quer[k]; render(); },
   async querEnviar() { const cs = Object.keys(S.quer || {}).filter(c => S.quer[c]); if (await chamar('interesse_salvar', { fornecedor: S.forn, codigos: cs })) { S.quer = {}; render(); window.scrollTo(0, 0); } },
   qt(k, b) { S.qt[k] = Math.max(0, Math.min(999, (S.qt[k] || 0) + Number(b.dataset.d))); render(); },

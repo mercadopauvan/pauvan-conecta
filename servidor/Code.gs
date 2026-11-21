@@ -162,8 +162,9 @@ function nomeDoPin_(pin, aparelho) {
 function estado_(quem) {
   var corte = Utilities.formatDate(new Date(Date.now() - DIAS_HISTORICO * 86400000), TZ, 'yyyy-MM-dd');
   var meu = quem.tipo === 'fornecedor' ? quem.fornecedor : null;
-  var forn = ler_('FORNECEDORES').filter(function (f) { return sim_(f.ativo) && (!meu || txt_(f.id) === meu); }).map(function (f) {
-    var o = { id: txt_(f.id), nome: txt_(f.nome), grupo: txt_(f.grupo), tem_pedido: sim_(f.tem_pedido), taxa: num_(f.taxa_coleta), fechamento: txt_(f.fechamento) };
+  var forn = ler_('FORNECEDORES').filter(function (f) { return sim_(f.ativo) && (!meu || txt_(f.id) === meu) && podeVer_(f, quem); }).map(function (f) {
+    var tp = txt_(f.tipo).toUpperCase();
+    var o = { id: txt_(f.id), nome: txt_(f.nome), grupo: txt_(f.grupo), tem_pedido: sim_(f.tem_pedido), taxa: num_(f.taxa_coleta), fechamento: txt_(f.fechamento), kg: tp === 'KG' || tp === 'UN', un: tp === 'UN' };
     if (!meu) { o.whatsapp = txt_(f.whatsapp).replace(/\D/g, ''); o.contador = txt_(f.contador).replace(/\D/g, ''); o.token = txt_(f.token); }
     return o;
   });
@@ -186,7 +187,38 @@ function estado_(quem) {
   });
   var intr = {}, props = PropertiesService.getScriptProperties();
   forn.forEach(function (f) { if (f.tem_pedido) return; var j = props.getProperty('interesse_' + f.id); if (j) { try { intr[f.id] = JSON.parse(j); } catch (e) {} } });
-  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc, interesses: intr };
+  var rec = recebimentos_(forn);
+  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc, interesses: intr, receb: rec.receb, un: rec.un };
+}
+/* Quem vê o fornecedor: coluna "acesso" (nomes separados por vírgula). Vazia = todos do mercado. */
+function podeVer_(f, quem) {
+  if (quem.tipo !== 'mercado') return true;
+  var a = txt_(f.acesso);
+  if (!a) return true;
+  return a.split(',').some(function (n) { return chave_(n) === chave_(quem.nome); });
+}
+function fornVisivel_(id, quem) {
+  var f = forn_(id);
+  if (!f || !sim_(f.ativo) || !podeVer_(f, quem)) throw new Error('Fornecedor não encontrado.');
+  return f;
+}
+/* Recebimentos por peso (KG) e por unidade (UN), agrupados por recebimento. Só dos fornecedores que a pessoa vê. */
+function recebimentos_(forn) {
+  var tipo = {}, receb = [], un = [], g = {};
+  forn.forEach(function (f) { if (f.kg) tipo[f.id] = f.un ? 'UN' : 'KG'; });
+  if (!Object.keys(tipo).length) return { receb: receb, un: un };
+  ler_('RECEBIMENTOS').forEach(function (r) {
+    var fid = txt_(r.fornecedor), t = tipo[fid];
+    if (!t) return;
+    var id = txt_(r.id), x = g[id];
+    if (!x) {
+      x = g[id] = { id: id, fornecedor: fid, dia: txt_(r.dia).slice(0, 10), em: txt_(r.em), por: txt_(r.por), nf: txt_(r.nf), pago_por: txt_(r.pago_por), pago_em: txt_(r.pago_em) };
+      if (t === 'KG') { x.pesagens = txt_(r.pesagens).split(';').map(num_).filter(function (v) { return v > 0; }); x.custo = num_(r.custo); x.custo_ant = num_(r.custo_ant); receb.push(x); }
+      else { x.itens = []; un.push(x); }
+    }
+    if (t === 'UN') x.itens.push({ codigo: txt_(r.codigo), nome: txt_(r.nome), qtd: num_(r.qtd), custo: num_(r.custo), custo_ant: num_(r.custo_ant) });
+  });
+  return { receb: receb, un: un };
 }
 var SEQ_ = 0;
 function novoId_(pre) {
@@ -283,6 +315,44 @@ function agir_(a, req, quem) {
     var cs = (req.codigos || []).map(String).filter(function (c) { return ok[c]; });
     if (!cs.length) throw new Error('Marque pelo menos um produto.');
     PropertiesService.getScriptProperties().setProperty('interesse_' + txt_(fi.id), JSON.stringify({ codigos: cs, por: quem.nome, em: agora_() }));
+  } else if (a === 'receb_lancar' || a === 'un_lancar') {
+    soMercado_(quem);
+    var fr = fornVisivel_(req.fornecedor, quem), tr = txt_(fr.tipo).toUpperCase(), agr = agora_(), idr = novoId_('R'), lr = [];
+    var prs = ler_('PRODUTOS').filter(function (p) { return sim_(p.ativo) && txt_(p.fornecedor) === txt_(fr.id); });
+    var preco_ = function (v) { var n = Math.round(num_(v) * 100) / 100; if (!(n > 0) || n > 100) throw new Error('Preço inválido.'); return n; };
+    if (a === 'receb_lancar') {
+      if (tr !== 'KG') throw new Error('Este fornecedor não é por peso.');
+      var ps = (req.pesagens || []).map(function (v) { return Math.round(num_(v) * 1000) / 1000; }).filter(function (v) { return v > 0 && v < 100; });
+      if (!ps.length) throw new Error('Gire a roleta até o peso da balança.');
+      var p0 = prs[0], kg = ps.reduce(function (s, v) { return s + v; }, 0);
+      lr.push({ id: idr, fornecedor: txt_(fr.id), dia: hoje_(), em: agr, por: quem.nome, codigo: txt_(p0.codigo), nome: txt_(p0.nome), qtd: Math.round(kg * 1000) / 1000, custo: preco_(req.custo), custo_ant: preco_(req.custo_ant || req.custo), pesagens: ps.map(function (v) { return String(v).replace('.', ','); }).join(';') });
+    } else {
+      if (tr !== 'UN') throw new Error('Este fornecedor não é por unidade.');
+      (req.itens || []).forEach(function (i) {
+        var p = prs.filter(function (x) { return txt_(x.codigo) === String(i.codigo); })[0], q = Math.floor(num_(i.qtd));
+        if (!p || !(q > 0)) return;
+        if (q > 999) throw new Error('Quantidade inválida.');
+        lr.push({ id: idr, fornecedor: txt_(fr.id), dia: hoje_(), em: agr, por: quem.nome, codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: q, custo: preco_(i.custo), custo_ant: preco_(i.custo_ant || i.custo) });
+      });
+      if (!lr.length) throw new Error('Conte pelo menos um produto.');
+    }
+    incluir_('RECEBIMENTOS', lr);
+  } else if (a === 'un_pago' || a === 'receb_excluir' || a === 'un_excluir') {
+    soMercado_(quem);
+    var linhas = ler_('RECEBIMENTOS').filter(function (r) { return txt_(r.id) === String(req.id); });
+    if (!linhas.length) throw new Error('Recebimento não encontrado.');
+    fornVisivel_(txt_(linhas[0].fornecedor), quem);
+    if (a === 'un_pago') {
+      if (['Celio', 'Ana Paula', 'Amanda'].map(chave_).indexOf(chave_(quem.nome)) < 0) throw new Error('Só a gestão marca como pago.');
+      var ag2 = agora_();
+      linhas.forEach(function (r) { if (!txt_(r.pago_por)) gravar_('RECEBIMENTOS', r._lin, { pago_por: quem.nome, pago_em: ag2 }); });
+    } else {
+      if (txt_(linhas[0].pago_por) || txt_(linhas[0].nf)) throw new Error('Recebimento já pago ou com nota não pode ser excluído.');
+      if (txt_(linhas[0].dia).slice(0, 10) !== hoje_()) throw new Error('Só dá para excluir o recebimento de hoje.');
+      var sh = aba_('RECEBIMENTOS');
+      linhas.map(function (r) { return r._lin; }).sort(function (x, y) { return y - x; }).forEach(function (l) { sh.deleteRow(l); });
+      sujo_('RECEBIMENTOS');
+    }
   } else if (a === 'pedido_cancelar') {
     soMercado_(quem);
     var p1 = pedido_(req.id, quem);
