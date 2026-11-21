@@ -66,6 +66,7 @@ button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-co
 .seg button.on{background:var(--bl);border-color:var(--bl);color:#fff;font-weight:700}
 .chip{font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;white-space:nowrap;background:var(--blb);color:var(--bl)}
 .chip.a{background:var(--amb);color:var(--am)}
+.faixa{margin:-14px -16px 0;padding:4px 16px;border-radius:12px 12px 0 0;background:var(--amb);color:var(--am);font-size:11px;font-weight:700;letter-spacing:.3px;text-align:center}
 .chip.v{background:#DCEBDD;color:var(--g)}
 .fb{background:#fff;border:0;border-radius:14px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px;font-weight:700;min-height:120px;justify-content:center;text-align:center}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -117,7 +118,7 @@ const DEMO = !API;
 const TOKEN = new URLSearchParams(location.search).get('f') || '';
 const CH = 'conecta_auth' + (TOKEN ? '_f' : '');
 const el = document.getElementById('app');
-const S = { pin: '', erro: '', load: false, est: null, tela: 'pin', forn: null, aba: 'pedir', q: {}, d: 1, ped: null, coleta: 'MERCADO', busca: true, motivo: 'Vencido', mes: null, feito: null, nomeF: '', trocaOk: false, vista: 'm', qt: {}, val: {} };
+const S = { pin: '', erro: '', load: false, est: null, tela: 'pin', forn: null, aba: 'pedir', q: {}, d: 1, ped: null, coleta: 'MERCADO', busca: true, motivo: 'Vencido', mes: null, feito: null, nomeF: '', trocaOk: false, vista: 'm', qt: {}, val: {}, quer: null };
 
 /* ---------- utilidades ---------- */
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -230,15 +231,15 @@ function demo(req) {
     { codigo: '7894439164630', fornecedor: 'soares', nome: 'Gourmet com frutas 1 litro', desenho: 'iog_gourmet_1l', custo: 21, ordem: 2 },
     { codigo: '7893582839914', fornecedor: 'soares', nome: 'Tradicional 300 ml', desenho: 'iog_trad_300', custo: 6, ordem: 3 },
     { codigo: '7895461427793', fornecedor: 'soares', nome: 'Gourmet com frutas 300 ml', desenho: 'iog_gourmet_300', custo: 8, ordem: 4 },
-    { codigo: '7892106664414', fornecedor: 'soares', nome: 'Grego polpa de fruta 300 g', desenho: 'iog_grego_fruta', custo: 12, ordem: 5 },
-    { codigo: '7899348029773', fornecedor: 'soares', nome: 'Grego especial 300 g', desenho: 'iog_grego_especial', custo: 15, ordem: 6 }];
+    { codigo: '7892106664414', fornecedor: 'soares', nome: 'Grego polpa de fruta pote', desenho: 'iog_grego_fruta', custo: 12, ordem: 5 },
+    { codigo: '7899348029773', fornecedor: 'soares', nome: 'Grego especial pote', desenho: 'iog_grego_especial', custo: 15, ordem: 6 }];
   if (!db.seed) {
     db.seed = 1;
     const it = (q, env, rec) => PR.filter(p => p.fornecedor === 'soares').map((p, i) => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: q[i], enviada: env ? q[i] : null, recebida: rec ? q[i] : null, validade: mais(hoje, 12 + i) }));
     const d5 = mais(hoje, -5), d2 = mais(hoje, -2);
     db.pedidos.push({ id: 'S1', fornecedor: 'soares', dia: d5, status: 'RECEBIDO', criado_em: d5 + ' 07:35', criado_por: 'Iogurte Soares', enviado_em: d5 + ' 07:35', recebido_em: d5 + ' 07:55', recebido_por: 'Regiane', coleta: 'FORNECEDOR', taxa: 0, itens: it([6, 4, 10, 10, 6, 4], 1, 1) });
     db.pedidos.push({ id: 'S2', fornecedor: 'soares', dia: hoje, status: 'ENVIADO', criado_em: hoje + ' 07:40', criado_por: 'Iogurte Soares', enviado_em: hoje + ' 07:40', recebido_em: '', recebido_por: '', coleta: 'FORNECEDOR', taxa: 0, itens: it([6, 4, 12, 12, 6, 4], 1, 0) });
-    db.percas.push({ id: 'XS1', data: d2, fornecedor: 'soares', codigo: '7899348029773', nome: 'Grego especial 300 g', qtd: 2, custo: 15, motivo: 'Vencido', por: 'Ney', troca: 'PENDENTE', pend: 2 });
+    db.percas.push({ id: 'XS1', data: d2, fornecedor: 'soares', codigo: '7899348029773', nome: 'Grego especial pote', qtd: 2, custo: 15, motivo: 'Vencido', por: 'Ney', troca: 'PENDENTE', pend: 2 });
   }
   const m = {}; (req.itens || []).forEach(i => { m[i.codigo] = Math.max(0, Math.floor(i.qtd)); });
   const ped = id => db.pedidos.find(p => p.id === id);
@@ -247,7 +248,12 @@ function demo(req) {
     const itens = PR.filter(p => m[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: m[p.codigo], enviada: null, recebida: null }));
     if (!itens.length) return { ok: false, erro: 'Informe a quantidade de pelo menos um produto.' };
     db.pedidos.push({ id: 'P' + Date.now(), fornecedor: 'helia', dia: req.dia, status: 'PEDIDO', criado_em: agora, criado_por: quem.nome, enviado_em: '', recebido_em: '', recebido_por: '', coleta: req.coleta === 'FORNECEDOR' ? 'FORNECEDOR' : 'MERCADO', taxa: 0, itens: itens });
+  } else if (a === 'interesse_salvar') {
+    const cs = (req.codigos || []).filter(c => PR.some(p => p.codigo === c && p.fornecedor === 'soares'));
+    if (!cs.length) return { ok: false, erro: 'Marque pelo menos um produto.' };
+    db.interesse = { codigos: cs, por: quem.nome, em: agora };
   } else if (a === 'entrega_lancar') {
+    db.interesse = null;
     const itens = PR.filter(p => p.fornecedor === 'soares' && m[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, custo: p.custo, pedida: m[p.codigo], enviada: m[p.codigo], recebida: null, validade: (req.validades || {})[p.codigo] || '' }));
     if (!itens.length) return { ok: false, erro: 'Informe a quantidade de pelo menos um produto.' };
     db.pedidos.push({ id: 'S' + Date.now(), fornecedor: 'soares', dia: hoje, status: 'ENVIADO', criado_em: agora, criado_por: quem.nome, enviado_em: agora, recebido_em: '', recebido_por: '', coleta: 'FORNECEDOR', taxa: 0, itens: itens });
@@ -265,7 +271,7 @@ function demo(req) {
     n.forEach((p, i) => db.percas.push({ id: 'X' + Date.now() + i, data: hoje, fornecedor: fo, codigo: p.codigo, nome: p.nome, qtd: m[p.codigo], custo: p.custo, motivo: req.motivo, por: quem.nome, troca: fo === 'soares' ? 'PENDENTE' : '', pend: fo === 'soares' ? m[p.codigo] : 0 }));
   } else if (a === 'perca_excluir') { db.percas = db.percas.filter(p => p.id !== req.id); }
   try { localStorage.setItem(K, JSON.stringify(db)); } catch (e) {}
-  return { ok: true, estado: { quem: quem, hoje: hoje, fornecedores: [{ id: 'helia', nome: 'Caseirinho da Hélia', grupo: 'COM PEDIDO ANTES', tem_pedido: true, taxa: 5, fechamento: 'MENSAL', whatsapp: '', token: 'demo' }, { id: 'soares', nome: 'Iogurte Soares', grupo: 'ENTREGA PRÓPRIA', tem_pedido: false, taxa: 0, fechamento: 'MENSAL', whatsapp: '', token: 'soares' }], produtos: PR, pedidos: db.pedidos, percas: db.percas } };
+  return { ok: true, estado: { quem: quem, hoje: hoje, fornecedores: [{ id: 'helia', nome: 'Caseirinho da Hélia', grupo: 'COM PEDIDO ANTES', tem_pedido: true, taxa: 5, fechamento: 'MENSAL', whatsapp: '', token: 'demo' }, { id: 'soares', nome: 'Iogurte Soares', grupo: 'ENTREGA PRÓPRIA', tem_pedido: false, taxa: 0, fechamento: 'MENSAL', whatsapp: '', token: 'soares' }], produtos: PR, pedidos: db.pedidos, percas: db.percas, interesses: db.interesse ? { soares: db.interesse } : {} } };
 }
 
 /* ---------- peças de tela ---------- */
@@ -280,6 +286,7 @@ function linhaProd(p, sub, alerta, extra) {
     '<button class="sq p" aria-label="Aumentar" data-a="q" data-k="' + esc(p.codigo) + '" data-d="1">+</button></div>' + (extra || '') + '</div>';
 }
 const itensTxt = (p, campo) => p.itens.filter(i => (i[campo] == null ? i.pedida : i[campo]) > 0).map(i => (i[campo] == null ? i.pedida : i[campo]) + ' ' + esc(i.nome)).join(' · ');
+function intr() { return (S.est && S.est.interesses || {})[S.forn] || null; }
 function statusChip(p) {
   if (p.status === 'ENVIADO' && semPed(S.est.fornecedores.find(x => x.id === p.fornecedor))) return '<span class="chip a">' + (sou() === 'mercado' ? 'PARA CONFERIR' : 'AGUARDANDO CONFERÊNCIA') + '</span>';
   if (p.status === 'ENVIADO') return '<span class="chip v">ENVIO INFORMADO</span>';
@@ -301,7 +308,7 @@ function extrato() {
   });
   let trp = 0;
   S.est.percas.filter(p => p.fornecedor === S.forn && p.data.slice(0, 7) === mes).forEach(p => {
-    if (p.troca) { if (p.troca === 'PENDENTE') trp += p.pend; lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo) + ' · troca', s: p.qtd + ' ' + esc(p.nome) + (p.troca === 'PENDENTE' ? (p.pend < p.qtd ? ' · ' + (p.qtd - p.pend) + ' já trocado, ' + p.pend + ' pendente' : ' · troca pendente') : ' · trocado em ' + dm(p.troca_em)), v: 0, id: p.id }); return; }
+    if (p.troca) { if (p.troca === 'PENDENTE') trp += p.pend; lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo), s: p.qtd + ' ' + esc(p.nome) + (p.troca === 'PENDENTE' ? (p.pend < p.qtd ? ' · ' + (p.qtd - p.pend) + ' já trocado, ' + p.pend + ' pendente' : '') : ' · trocado em ' + dm(p.troca_em)), st: p.troca === 'PENDENTE' ? 'troca pendente' : 'trocado', v: 0, id: p.id }); return; }
     perc += p.qtd * p.custo;
     lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo), s: p.qtd + ' ' + esc(p.nome), v: -p.qtd * p.custo, id: p.id });
   });
@@ -343,7 +350,7 @@ function extrato() {
   o += '<div class="lab">LANÇAMENTOS</div>';
   if (!lin.length) o += '<div class="card"><div class="s">Nenhum lançamento neste mês.</div></div>';
   lin.forEach(l => {
-    o += '<div class="card" style="gap:6px"><div class="kv"><span style="font-weight:700">' + dm(l.d) + ' · ' + l.t + '</span><b style="white-space:nowrap' + (l.v < 0 ? ';color:var(--vm)' : '') + '">' + (l.v < 0 ? '− ' + brl(-l.v) : l.v === 0 ? 'troca' : brl(l.v)) + '</b></div><div class="s">' + l.s + '</div>' + (l.x ? '<div class="s" style="color:var(--am);font-weight:600">' + l.x + '</div>' : '') +
+    o += '<div class="card" style="gap:6px"><div class="kv"><span style="font-weight:700">' + dm(l.d) + ' · ' + l.t + '</span><b style="white-space:nowrap' + (l.v < 0 ? ';color:var(--vm)' : '') + '">' + (l.v < 0 ? '− ' + brl(-l.v) : l.v === 0 ? (l.st || 'troca') : brl(l.v)) + '</b></div><div class="s">' + l.s + '</div>' + (l.x ? '<div class="s" style="color:var(--am);font-weight:600">' + l.x + '</div>' : '') +
       (l.id && sou() === 'mercado' && l.d === h ? '<button class="lk" data-a="xperca" data-k="' + esc(l.id) + '">Excluir esta perca</button>' : '') + '</div>';
   });
   return o;
@@ -377,10 +384,20 @@ function telaForns() {
 function telaForn() {
   const f = fornAtual(), merc = sou() === 'mercado', ab = abertos();
   let o = merc ? hdr(f.nome, semPed(f) ? 'Entrega própria · sem taxa de coleta' : '', ['forns', 'Fornecedores']) : marca(f.nome + ' · ' + dataLonga(S.est.hoje));
-  const tabs = merc && semPed(f) ? [['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : !merc && semPed(f) ? [['pedidos', 'ENTREGAS'], ['extrato', 'EXTRATO']] : merc ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : [['pedidos', 'PEDIDOS' + (ab.length ? ' (' + ab.length + ')' : '')], ['extrato', 'EXTRATO']];
+  const tabs = merc && semPed(f) ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : !merc && semPed(f) ? [['pedidos', 'ENTREGAS'], ['extrato', 'EXTRATO']] : merc ? [['pedir', 'PEDIR'], ['receber', 'RECEBER' + (ab.length ? ' (' + ab.length + ')' : '')], ['perca', 'PERCA'], ['extrato', 'EXTRATO']] : [['pedidos', 'PEDIDOS' + (ab.length ? ' (' + ab.length + ')' : '')], ['extrato', 'EXTRATO']];
   o += '<div class="tabs' + (tabs.length === 3 ? ' t3' : tabs.length === 2 ? ' t2' : '') + '">' + tabs.map(t => '<button class="tab' + (S.aba === t[0] ? ' on' : '') + '" data-a="aba" data-k="' + t[0] + '">' + t[1] + '</button>').join('') + '</div><div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
-  if (S.aba === 'pedir') {
+  if (S.aba === 'pedir' && semPed(f)) {
+    const it = intr();
+    if (!S.quer) S.quer = {};
+    o += '<div class="s">Marque só o que o mercado quer na próxima entrega. A quantidade fica por conta do Soares.</div>';
+    if (it) o += '<div class="card" style="background:#E4F0E6"><div class="lab" style="color:var(--g)">ÚLTIMO PEDIDO ENVIADO · ' + esc(it.por) + ' · ' + esc(it.em.slice(8, 10) + '/' + it.em.slice(5, 7) + ' ' + it.em.slice(11)) + '</div><div class="s">' + it.codigos.map(c => esc((prods().find(p => p.codigo === c) || {}).nome || c)).join(' · ') + '</div><div class="s">Aguardando a entrega do Soares.</div></div>';
+    prods().forEach(p => { const on = !!S.quer[p.codigo];
+      o += '<button class="tg' + (on ? ' on' : '') + '" data-a="quer" data-k="' + esc(p.codigo) + '">' + des(p.desenho, 56) + '<span class="n"><b>' + esc(p.nome) + '</b><span>' + (on ? 'QUERO' : 'Não quero') + '</span></span><span class="sw"></span></button>'; });
+    const n = prods().filter(p => S.quer[p.codigo]).length;
+    o += '<div class="card"><div class="kv" style="font-size:17px"><b>Pedido</b><b>' + n + (n === 1 ? ' produto' : ' produtos') + '</b></div></div>';
+    o += '<button class="btn" data-a="querEnviar"' + (n ? '' : ' disabled') + '>ENVIAR PARA O SOARES</button>';
+  } else if (S.aba === 'pedir') {
     const dia = mais(S.est.hoje, S.d);
     o += '<div class="card"><div class="lab">PEDIDO PARA</div><div class="dia"><button class="sq" aria-label="Dia anterior" data-a="d" data-d="-1"' + (S.d <= 0 ? ' disabled' : '') + '>‹</button><b>' + diaTxt(dia) + '</b><button class="sq" aria-label="Próximo dia" data-a="d" data-d="1"' + (S.d >= 7 ? ' disabled' : '') + '>›</button></div></div>';
     prods().forEach(p => { o += linhaProd(p); });
@@ -390,11 +407,14 @@ function telaForn() {
   } else if (semPed(f) && (S.aba === 'receber' || S.aba === 'pedidos')) {
     const tp = S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE');
     if (tp.length) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">' + (merc ? 'TROCA PENDENTE' : 'LEVAR DE TROCA NA PRÓXIMA ENTREGA') + '</div>' + tp.map(x => { const pr = S.est.produtos.find(y => y.codigo === x.codigo) || {}; return '<div class="kv" style="align-items:center"><span style="display:flex;align-items:center;gap:10px">' + des(pr.desenho, 40) + esc(x.nome) + '</span><b>' + x.pend + ' · ' + esc(x.motivo.toLowerCase()) + '</b></div>'; }).join('') + '</div>';
-    if (!merc) o += '<button class="btn" data-a="nova">LANÇAR ENTREGA DE HOJE</button>';
+    if (!merc && intr()) { const em = intr().em;
+      o += '<div class="card" style="border:2px solid #E7B26B"><div class="kv"><b style="text-align:left;font-size:17px">Pedido do mercado</b><span class="chip a">NOVO</span></div><div class="s">Feito ' + diaTxt(em.slice(0, 10)).toLowerCase() + ' às ' + esc(em.slice(11)) + '</div><button class="btn" data-a="nova">SEPARAR O PEDIDO</button></div>'; }
+    else if (!merc) o += '<button class="btn" data-a="nova">LANÇAR ENTREGA DE HOJE</button>';
     if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">' + (merc ? 'Nenhuma entrega para conferir' : 'Nenhuma entrega aguardando conferência') + '</div><div class="s">' + (merc ? 'Quando o Soares lançar a entrega, ela aparece aqui.' : 'Depois que o mercado confere, a entrega vai para o EXTRATO.') + '</div></div>';
     ab.forEach(p => {
       const v = p.itens.reduce((a, i) => a + (i.enviada || 0) * i.custo, 0), u = p.itens.reduce((a, i) => a + (i.enviada || 0), 0);
-      o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="kv"><span>' + u + ' unidades</span><b>' + brl(v) + '</b></div><div class="s">Lançada às ' + esc(p.enviado_em.slice(11)) + '</div>' +
+      const fx = p.status === 'ENVIADO';
+      o += '<div class="card">' + (fx ? '<div class="faixa">' + (merc ? 'PARA CONFERIR' : 'AGUARDANDO CONFERÊNCIA') + '</div>' : '') + '<div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + (fx ? '' : statusChip(p)) + '</div>' + (merc ? '<div class="kv"><span>' + u + ' unidades</span><b>' + brl(v) + '</b></div><div class="s">Lançada às ' + esc(p.enviado_em.slice(11)) + '</div>' : '<div class="s">' + u + ' unidades · ' + brl(v) + ' · lançada às ' + esc(p.enviado_em.slice(11)) + '</div>') +
         '<button class="btn" data-a="abrir" data-k="' + esc(p.id) + '">' + (merc ? 'RECEBER E CONFERIR' : 'CORRIGIR A ENTREGA') + '</button></div>';
     });
   } else if (S.aba === 'receber' || S.aba === 'pedidos') {
@@ -474,7 +494,8 @@ function telaNova() {
   let o = hdr('Entrega de hoje', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
   o += '<div class="s">Marque a quantidade exata que você está levando. Começa em zero.</div>';
-  prods().forEach(p => { o += linhaProd(p, brl(p.custo) + ' cada', false, (S.q[p.codigo] || 0) ? valIn(p.codigo, mais(S.est.hoje, 15)) : ''); });
+  const qi = intr() ? intr().codigos : null;
+  prods().slice().sort((a, b) => qi ? (qi.includes(b.codigo) - qi.includes(a.codigo)) : 0).forEach(p => { const pq = qi && qi.includes(p.codigo); o += linhaProd(p, (qi ? (pq ? '<b style="color:var(--am)">O MERCADO QUER</b> · ' : 'Não pedido · ') : '') + brl(p.custo) + ' cada', pq, (S.q[p.codigo] || 0) ? valIn(p.codigo, mais(S.est.hoje, 15)) : ''); });
   if (tp.length) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">LEVE TAMBÉM DE TROCA</div><div class="s" style="color:var(--am);font-weight:600">' + tp.map(x => x.pend + ' ' + esc(x.nome)).join(' · ') + '</div></div>';
   const v = prods().reduce((a, p) => a + (S.q[p.codigo] || 0) * p.custo, 0);
   o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total</b><b>' + somaQ() + ' unidades · ' + brl(v) + '</b></div></div>';
@@ -530,7 +551,7 @@ const AC = {
   pin(k) { S.erro = ''; if (k === 'x') S.pin = S.pin.slice(0, -1); else if (S.pin.length < 4) S.pin += k; render(); if (S.pin.length === 4) entrar(); },
   sair() { const d = navProf(); try { localStorage.removeItem(CH); } catch (e) {} S.pin = ''; S.est = null; S.tela = 'pin'; render(); if (d) history.go(-d); },
   forns() { navVoltar(null, { tela: 'forns' }); },
-  forn(k) { S.forn = k; S.aba = fornAtual().tem_pedido ? 'pedir' : 'receber'; S.q = {}; S.d = 1; S.erro = ''; S.tela = 'forn'; render(); window.scrollTo(0, 0); },
+  forn(k) { S.forn = k; S.aba = 'pedir'; S.q = {}; S.d = 1; S.erro = ''; S.tela = 'forn'; render(); window.scrollTo(0, 0); },
   aba(k) { S.aba = k; S.q = {}; S.erro = ''; NAV_REPLACE = true; render(); },
   q(k, b) { S.q[k] = Math.max(0, Math.min(999, (S.q[k] || 0) + Number(b.dataset.d))); render(); },
   d(k, b) { S.d = Math.max(0, Math.min(7, S.d + Number(b.dataset.d))); render(); },
@@ -554,6 +575,8 @@ const AC = {
   nova() { S.q = {}; S.val = {}; S.erro = ''; S.tela = 'nova'; render(); window.scrollTo(0, 0); },
   async entregar() { if (await chamar('entrega_lancar', { itens: itensReq(), validades: (() => { const v = {}; Object.keys(S.q).forEach(c => { if (S.q[c]) v[c] = S.val[c] || mais(S.est.hoje, 15); }); return v; })() })) { S.q = {}; navVoltar({ tela: 'forn', aba: 'pedidos' }); } },
   copiar(k, b) { try { navigator.clipboard.writeText(k).then(() => { b.textContent = 'COPIADO'; }, () => { b.textContent = 'NÃO DEU PARA COPIAR'; }); } catch (e) { b.textContent = 'NÃO DEU PARA COPIAR'; } },
+  quer(k) { S.quer = S.quer || {}; S.quer[k] = !S.quer[k]; render(); },
+  async querEnviar() { const cs = Object.keys(S.quer || {}).filter(c => S.quer[c]); if (await chamar('interesse_salvar', { fornecedor: S.forn, codigos: cs })) { S.quer = {}; render(); window.scrollTo(0, 0); } },
   qt(k, b) { S.qt[k] = Math.max(0, Math.min(999, (S.qt[k] || 0) + Number(b.dataset.d))); render(); },
   voltar() { if (S.tela === 'feito') navVoltar({ tela: 'forn', aba: 'receber' }); else navVoltar(null, { tela: 'forn' }); },
   abrir(k, b, doHistorico) {

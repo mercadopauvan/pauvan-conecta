@@ -184,7 +184,9 @@ function estado_(quem) {
     var tr = txt_(p.troca);
     return { id: txt_(p.id), data: txt_(p.data), fornecedor: txt_(p.fornecedor), codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: num_(p.qtd), custo: num_(p.custo), motivo: txt_(p.motivo), por: txt_(p.lancado_por), troca: tr, pend: tr === 'PENDENTE' ? (txt_(p.pend) === '' ? num_(p.qtd) : num_(p.pend)) : 0, troca_em: txt_(p.troca_em) };
   });
-  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc };
+  var intr = {}, props = PropertiesService.getScriptProperties();
+  forn.forEach(function (f) { if (f.tem_pedido) return; var j = props.getProperty('interesse_' + f.id); if (j) { try { intr[f.id] = JSON.parse(j); } catch (e) {} } });
+  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc, interesses: intr };
 }
 var SEQ_ = 0;
 function novoId_(pre) {
@@ -270,6 +272,17 @@ function agir_(a, req, quem) {
     var ag = agora_();
     incluir_('PEDIDOS', [{ id: ide, fornecedor: txt_(fe.id), dia: hoje_(), status: 'ENVIADO', criado_em: ag, criado_por: quem.nome, enviado_em: ag, coleta: 'FORNECEDOR', taxa: 0 }]);
     incluir_('ITENS', le);
+    PropertiesService.getScriptProperties().deleteProperty('interesse_' + txt_(fe.id));
+  } else if (a === 'interesse_salvar') {
+    /* Pedido sem quantidade (quero / não quero) para fornecedor que entrega por conta própria. */
+    soMercado_(quem);
+    var fi = forn_(req.fornecedor);
+    if (!semPedido_(fi) || !sim_(fi.ativo)) throw new Error('Fornecedor não encontrado.');
+    var ok = {};
+    ler_('PRODUTOS').forEach(function (p) { if (sim_(p.ativo) && txt_(p.fornecedor) === txt_(fi.id)) ok[txt_(p.codigo)] = 1; });
+    var cs = (req.codigos || []).map(String).filter(function (c) { return ok[c]; });
+    if (!cs.length) throw new Error('Marque pelo menos um produto.');
+    PropertiesService.getScriptProperties().setProperty('interesse_' + txt_(fi.id), JSON.stringify({ codigos: cs, por: quem.nome, em: agora_() }));
   } else if (a === 'pedido_cancelar') {
     soMercado_(quem);
     var p1 = pedido_(req.id, quem);
