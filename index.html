@@ -582,7 +582,7 @@ function telaForn() {
     const it = intr();
     if (!S.quer) S.quer = {};
     o += '<div class="s">Marque só o que o mercado quer na próxima entrega. A quantidade fica por conta do Soares.</div>';
-    if (it) o += '<div class="card" style="background:#E4F0E6"><div class="lab" style="color:var(--g)">ÚLTIMO PEDIDO ENVIADO · ' + esc(it.por) + ' · ' + esc(it.em.slice(8, 10) + '/' + it.em.slice(5, 7) + ' ' + it.em.slice(11)) + '</div><div class="s">' + it.codigos.map(c => esc((prods().find(p => p.codigo === c) || {}).nome || c)).join(' · ') + '</div><div class="s">Aguardando a entrega do Soares.</div></div>';
+    if (it) o += '<div class="card" style="background:#E4F0E6"><div class="lab" style="color:var(--g)">ÚLTIMO PEDIDO ENVIADO · ' + esc(it.por) + ' · ' + esc(it.em.slice(8, 10) + '/' + it.em.slice(5, 7) + ' ' + it.em.slice(11)) + '</div><div class="s">' + it.codigos.map(c => esc((prods().find(p => p.codigo === c) || {}).nome || c)).join(' · ') + '</div><div class="s">Aguardando a entrega do Soares.</div><button class="btn zap" data-a="zapQuer">ENVIAR NO WHATSAPP</button></div>';
     prods().forEach(p => { const on = !!S.quer[p.codigo];
       o += '<button class="tg' + (on ? ' on' : '') + '" data-a="quer" data-k="' + esc(p.codigo) + '">' + des(p.desenho, 56) + '<span class="n"><b>' + esc(p.nome) + '</b><span>' + (on ? 'QUERO' : 'Não quero') + '</span></span><span class="sw"></span></button>'; });
     const n = prods().filter(p => S.quer[p.codigo]).length;
@@ -806,6 +806,13 @@ const AC = {
   async lancarKg() { const v = rolVal(), ps = S.pes.concat(v ? [v] : []); if (await chamar('receb_lancar', { fornecedor: S.forn, pesagens: ps, custo: S.preco, custo_ant: S.precoBase })) navVoltar(null, { tela: 'forn' }); },
   async xreceb(k) { if (confirm('Excluir este recebimento?')) { await chamar('receb_excluir', { id: k }); render(); } },
   quer(k) { S.quer = S.quer || {}; S.quer[k] = !S.quer[k]; render(); },
+  zapQuer() {
+    const f = fornAtual(), it = intr(); if (!it) return;
+    const t = '*Mercado Pauvan · pedido para o ' + f.nome + '*\n' + dataLonga(it.em.slice(0, 10)) + ' às ' + it.em.slice(11) + '\n\nQueremos na próxima entrega:\n' + it.codigos.map(c => '• ' + ((prods().find(p => p.codigo === c) || {}).nome || c)).join('\n') + '\n\nA quantidade fica por sua conta. Obrigado!';
+    try { navigator.clipboard.writeText(t); } catch (e) {}
+    const n = f.whatsapp ? (f.whatsapp.length <= 11 ? '55' + f.whatsapp : f.whatsapp) : '';
+    window.__ultimoZap = t; window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(t), '_blank');
+  },
   async querEnviar() { const cs = Object.keys(S.quer || {}).filter(c => S.quer[c]); if (await chamar('interesse_salvar', { fornecedor: S.forn, codigos: cs })) { S.quer = {}; render(); window.scrollTo(0, 0); } },
   qt(k, b) { S.qt[k] = Math.max(0, Math.min(999, (S.qt[k] || 0) + Number(b.dataset.d))); render(); },
   voltar() { if (S.tela === 'feito') navVoltar({ tela: 'forn', aba: 'receber' }); else navVoltar(null, { tela: 'forn' }); },
