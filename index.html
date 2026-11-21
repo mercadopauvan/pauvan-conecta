@@ -394,7 +394,7 @@ function telaForn() {
     if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">' + (merc ? 'Nenhuma entrega para conferir' : 'Nenhuma entrega aguardando conferência') + '</div><div class="s">' + (merc ? 'Quando a Soares lançar a entrega, ela aparece aqui.' : 'Depois que o mercado confere, a entrega vai para o EXTRATO.') + '</div></div>';
     ab.forEach(p => {
       const v = p.itens.reduce((a, i) => a + (i.enviada || 0) * i.custo, 0), u = p.itens.reduce((a, i) => a + (i.enviada || 0), 0);
-      o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="s">Entrega: ' + itensTxt(p, 'enviada') + '</div><div class="kv"><span>' + u + ' unidades</span><b>' + brl(v) + '</b></div><div class="s">Lançada às ' + esc(p.enviado_em.slice(11)) + '</div>' +
+      o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="kv"><span>' + u + ' unidades</span><b>' + brl(v) + '</b></div><div class="s">Lançada às ' + esc(p.enviado_em.slice(11)) + '</div>' +
         '<button class="btn" data-a="abrir" data-k="' + esc(p.id) + '">' + (merc ? 'RECEBER E CONFERIR' : 'CORRIGIR A ENTREGA') + '</button></div>';
     });
   } else if (S.aba === 'receber' || S.aba === 'pedidos') {
