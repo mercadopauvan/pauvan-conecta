@@ -391,6 +391,7 @@ function extrato() {
       let t = '*FECHAMENTO ' + nm.toUpperCase() + '/' + mes.slice(0, 4) + ' · MERCADO PAUVAN*\n' + f.nome + '\n\n*Itens para a nota fiscal:*\n' + zl.join('\n') + '\n\n*Total da nota: ' + un + ' unidades · ' + brl(val) + '*';
       const ab = cods.filter(c => porProd[c].tr).map(c => porProd[c].tr + ' × ' + porProd[c].nome);
       if (ab.length) t += '\n\n' + (fS ? 'Já descontadas as trocas que não vieram: ' : 'Já descontadas as percas: ') + ab.join(', ');
+      if (fS) t += '\n\nO mês já está fechado. Pode emitir a nota fiscal com essas quantidades, que estamos aguardando a nota para fazer o pagamento. O relatório completo também está no app Pauvan Conecta.';
       if (!fS && taxa) t += '\n\nDesconto das coletas Pauvan (' + viag + (viag > 1 ? ' viagens' : ' viagem') + '): − ' + brl(taxa) + '\n*Valor a pagar (boleto ou Pix): ' + brl(val - taxa) + '*';
       const num = w => w ? (w.length <= 11 ? '55' + w : w) : '', zb = (w, rot) => '<a class="btn zap" style="display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center" target="_blank" href="https://wa.me/' + num(w) + '?text=' + encodeURIComponent(t) + '">' + rot + '</a>';
       o += zb(f.whatsapp, 'ENVIAR PARA ' + (f.id === 'helia' ? 'A HÉLIA' : 'O SOARES')) + zb(f.contador, 'ENVIAR PARA O CONTADOR') + '<button class="btn b2" data-a="copiar" data-k="' + esc(t) + '">COPIAR TEXTO</button>';
