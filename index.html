@@ -85,6 +85,9 @@ button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-co
 .pdTx{text-align:center;font-weight:700;font-size:15px;color:#166534}.pdTx.z{color:#64748b}
 .pr{display:flex;align-items:center;gap:8px}.pr input{width:110px;min-height:44px;border:2px solid var(--g);border-radius:10px;font-size:20px;font-weight:700;text-align:center}
 .alt{border:2px solid #E7B26B}
+.nfok,.nfdv{border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.nfok{background:#E4F0E6;color:var(--g)}.nfdv{background:var(--amb);color:var(--am)}
+.nfok b,.nfdv b{font-size:15px}.nfok span,.nfdv span{font-weight:700;color:var(--t)}.nfok small,.nfdv small{font-size:13px}
 .hv{background:linear-gradient(135deg,#1E5B2F,#2F7A44);color:#fff;border-radius:16px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
 .hv>span{font-size:12px;font-weight:700;letter-spacing:1px;color:#CFE8D4}.hv>b{font-size:40px;font-weight:800;line-height:1.1}
 .hq{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.hq div{background:rgba(255,255,255,.13);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
@@ -336,6 +339,12 @@ function linhaProd(p, sub, alerta, extra) {
     '<button class="sq p" aria-label="Aumentar" data-a="q" data-k="' + esc(p.codigo) + '" data-d="1">+</button></div>' + (extra || '') + '</div>';
 }
 const itensTxt = (p, campo) => p.itens.filter(i => (i[campo] == null ? i.pedida : i[campo]) > 0).map(i => (i[campo] == null ? i.pedida : i[campo]) + ' ' + esc(i.nome)).join(' · ');
+function notaHtml(fo, mes) {
+  const ns = (S.est.notas || []).filter(n => n.fornecedor === fo && (!mes || n.mes === mes));
+  return ns.map(n => n.status === 'OK'
+    ? '<div class="nfok"><b>✓ NOTA CONFERIDA</b><span>NF ' + esc(n.nf) + ' · ' + dm(n.data) + ' · ' + brl(n.valor) + '</span><small>Quantidades e valores batem com o controle de entregas.</small></div>'
+    : '<div class="nfdv"><b>NOTA COM DIFERENÇA</b><span>NF ' + esc(n.nf) + ' · ' + dm(n.data) + ' · ' + brl(n.valor) + '</span><small>' + esc(n.detalhe || 'Confira com o fornecedor antes de pagar.') + '</small></div>').join('');
+}
 function intr() { return (S.est && S.est.interesses || {})[S.forn] || null; }
 function statusChip(p) {
   if (p.status === 'ENVIADO' && semPed(S.est.fornecedores.find(x => x.id === p.fornecedor))) return '<span class="chip a">' + (sou() === 'mercado' ? 'PARA CONFERIR' : 'AGUARDANDO CONFERÊNCIA') + '</span>';
@@ -380,7 +389,7 @@ function extrato() {
   {
     const cods = Object.keys(porProd).filter(c => porProd[c].rec || porProd[c].tr);
     let un = 0, val = 0;
-    o += '<div class="card"><div class="lab">FECHAMENTO DO MÊS · QUANTIDADES PARA A NOTA</div><div class="kv"><span>Nota fiscal do mês</span><span class="chip a">AGUARDANDO</span></div>';
+    o += '<div class="card"><div class="lab">FECHAMENTO DO MÊS · QUANTIDADES PARA A NOTA</div>' + (notaHtml(S.forn, mes) || '<div class="kv"><span>Nota fiscal do mês</span><span class="chip a">AGUARDANDO</span></div>');
     const zl = [];
     cods.forEach(c => { const r = porProd[c], q = Math.max(0, r.rec - r.tr); un += q; val += q * r.custo; if (q) zl.push(q + ' × ' + r.nome + ' — ' + brl(q * r.custo));
       o += '<div class="sep" style="gap:2px"><div class="kv"><b style="text-align:left">' + esc(r.nome) + '</b><b style="white-space:nowrap">' + q + ' un. · ' + brl(q * r.custo) + '</b></div><div class="s">Recebido ' + r.rec + (r.tr ? (fS ? ' − troca pendente ' : ' − perca ') + r.tr : '') + '</div></div>'; });
@@ -441,8 +450,9 @@ function telaKg(f) {
   let o = hdr(f.nome, 'Produtor rural · entrega no mercado · nota fiscal depois', ['forns', 'Fornecedores']) + '<div class="w">';
   if (DEMO) o += '<div class="seg">' + [['Ney', 'Como quem pesa (Ney)'], ['Celio', 'Como Celio']].map(v => '<button class="' + (S.est.quem.nome === v[0] ? 'on' : '') + '" data-a="comoKg" data-k="' + v[0] + '">' + v[1] + '</button>').join('') + '</div>';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
-  if (ac) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">AGUARDANDO A NOTA FISCAL</div><div class="kv" style="font-size:17px"><b style="text-align:left">' + pend.length + (pend.length === 1 ? ' entrega' : ' entregas') + '</b><b>' + kgTxt(tk) + ' kg</b></div><div class="kv"><span>' + esc(p.nome) + ' · ' + brl(precoAtual(f)) + ' kg</span><b style="white-space:nowrap">' + brl(pend.reduce((a, r) => a + kgDe(r) * r.custo, 0)) + '</b></div><div class="s" style="color:var(--am)">Quando a nota do Claudinei chegar, ela tem que bater com esse peso e esse valor.</div></div>';
+  if (ac && pend.length) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">AGUARDANDO A NOTA FISCAL</div><div class="kv" style="font-size:17px"><b style="text-align:left">' + pend.length + (pend.length === 1 ? ' entrega' : ' entregas') + '</b><b>' + kgTxt(tk) + ' kg</b></div><div class="kv"><span>' + esc(p.nome) + ' · ' + brl(precoAtual(f)) + ' kg</span><b style="white-space:nowrap">' + brl(pend.reduce((a, r) => a + kgDe(r) * r.custo, 0)) + '</b></div><div class="s" style="color:var(--am)">Quando a nota do Claudinei chegar, ela tem que bater com esse peso e esse valor.</div></div>';
   else o += '<div class="card" style="flex-direction:row;align-items:center;gap:12px">' + des('mandioca', 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + brl(precoAtual(f)) + ' kg</div></div></div>';
+  if (ac) { const nh = notaHtml(f.id); if (nh) o += '<div class="lab">NOTAS FISCAIS</div><div class="card" style="gap:8px">' + nh + '</div>'; }
   o += '<button class="btn" data-a="pesar">REGISTRAR RECEBIMENTO</button>';
   if (ac) o += '<button class="btn b2" data-a="hist">HISTÓRICO DE ENTREGAS</button>';
   const lista = ac ? pend : pend.filter(r => r.dia === S.est.hoje), hj = pend.filter(r => r.dia === S.est.hoje);

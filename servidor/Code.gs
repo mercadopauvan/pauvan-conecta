@@ -188,7 +188,17 @@ function estado_(quem) {
   var intr = {}, props = PropertiesService.getScriptProperties();
   forn.forEach(function (f) { if (f.tem_pedido) return; var j = props.getProperty('interesse_' + f.id); if (j) { try { intr[f.id] = JSON.parse(j); } catch (e) {} } });
   var rec = recebimentos_(forn);
-  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc, interesses: intr, receb: rec.receb, un: rec.un };
+  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc, interesses: intr, receb: rec.receb, un: rec.un, notas: notas_(forn) };
+}
+/* Notas fiscais conferidas na entrada do Plenus (aba NOTAS, gravada na entrada de NF). */
+function notas_(forn) {
+  var ids = {};
+  forn.forEach(function (f) { ids[f.id] = 1; });
+  var s = ss_().getSheetByName('NOTAS');
+  if (!s) return [];
+  return ler_('NOTAS').filter(function (n) { return ids[txt_(n.fornecedor)]; }).map(function (n) {
+    return { fornecedor: txt_(n.fornecedor), mes: txt_(n.mes).slice(0, 7), nf: txt_(n.nf), data: txt_(n.data).slice(0, 10), valor: num_(n.valor), status: txt_(n.status).toUpperCase(), detalhe: txt_(n.detalhe) };
+  });
 }
 /* Quem vê o fornecedor: coluna "acesso" (nomes separados por vírgula). Vazia = todos do mercado. */
 function podeVer_(f, quem) {
