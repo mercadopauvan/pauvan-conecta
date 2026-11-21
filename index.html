@@ -442,7 +442,7 @@ function telaKg(f) {
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
   if (ac) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">AGUARDANDO A NOTA FISCAL</div><div class="kv" style="font-size:17px"><b style="text-align:left">' + pend.length + (pend.length === 1 ? ' entrega' : ' entregas') + '</b><b>' + kgTxt(tk) + ' kg</b></div><div class="kv"><span>' + esc(p.nome) + ' · ' + brl(precoAtual(f)) + ' kg</span><b style="white-space:nowrap">' + brl(pend.reduce((a, r) => a + kgDe(r) * r.custo, 0)) + '</b></div><div class="s" style="color:var(--am)">Quando a nota do Claudinei chegar, ela tem que bater com esse peso e esse valor.</div></div>';
   else o += '<div class="card" style="flex-direction:row;align-items:center;gap:12px">' + des('mandioca', 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + brl(precoAtual(f)) + ' kg</div></div></div>';
-  if (['Ana Paula', 'Amanda'].indexOf(S.est.quem.nome) < 0) o += '<button class="btn" data-a="pesar">REGISTRAR RECEBIMENTO</button>';
+  o += '<button class="btn" data-a="pesar">REGISTRAR RECEBIMENTO</button>';
   if (ac) o += '<button class="btn b2" data-a="hist">HISTÓRICO DE ENTREGAS</button>';
   const lista = ac ? pend : pend.filter(r => r.dia === S.est.hoje), hj = pend.filter(r => r.dia === S.est.hoje);
   if (hj.length) o += '<div class="card" style="gap:8px"><div class="kv" style="font-size:17px"><b style="text-align:left">Acerto do dia</b><b>' + kgTxt(hj.reduce((a, r) => a + kgDe(r), 0)) + ' kg</b></div><div class="s">Manda para o Claudinei o resumo dos pesos de hoje, para ele conferir e fazer a nota depois.</div><button class="btn zap" data-a="zapKg">ENVIAR NO WHATSAPP</button></div>';
@@ -511,7 +511,7 @@ function telaUn(f) {
   if (!ac) {
     o += '<div class="card" style="gap:8px">' + prods().map(p => '<div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 48) + '<div style="flex:1"><b>' + esc(p.nome) + '</b><div class="s">' + brl(precoUn(f, p.codigo)) + ' a unidade</div></div></div>').join('') + '</div>';
   }
-  if (['Ana Paula', 'Amanda'].indexOf(S.est.quem.nome) < 0) o += '<button class="btn" data-a="contar">REGISTRAR RECEBIMENTO</button>';
+  o += '<button class="btn" data-a="contar">REGISTRAR RECEBIMENTO</button>';
   if (ac) o += '<button class="btn b2" data-a="hist">HISTÓRICO DE ENTREGAS</button>';
   if (hj.length) { const t = hj.reduce((a, r) => a + unTot(r), 0);
     o += '<div class="card" style="gap:8px"><div class="kv" style="font-size:17px"><b style="text-align:left">Recebido hoje</b><b>' + t + ' unidades</b></div><div class="s">' + (ac ? 'Manda para o Sr. Milton o comprovante de hoje: quantidade, preço e total.' : 'Manda para o Sr. Milton a quantidade que foi conferida hoje.') + '</div><button class="btn zap" data-a="zapUn">ENVIAR NO WHATSAPP</button></div>'; }
