@@ -179,7 +179,7 @@ const MOTO = c => {
     '<circle cx="30.5" cy="6.5" r="3.8" fill="' + c + '"/><path d="M28.5 13.5L25 26.5"/><path d="M29 16l9.5 1.5"/><path d="M25 27h8l3 8"/></g>' +
     '<rect x="3.5" y="11" width="15" height="12.5" rx="2.8" fill="' + b + '"/></g><path d="M1 15h6M0 22h5M1 29h4" stroke="' + b + '" stroke-width="2.6" stroke-linecap="round"/></svg>';
 };
-const coletaTxt = (p, f) => semPed(f) ? 'Entrega da Soares no mercado · sem taxa de coleta' : p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Coleta Pauvan · taxa ' + brl(f.taxa);
+const coletaTxt = (p, f) => semPed(f) ? 'Entrega do Soares no mercado · sem taxa de coleta' : p.coleta === 'FORNECEDOR' ? 'Entrega no mercado · sem taxa' : 'Coleta Pauvan · taxa ' + brl(f.taxa);
 
 /* ---------- servidor ---------- */
 function aparelho() {
@@ -336,9 +336,9 @@ function extrato() {
       if (ab.length) t += '\n\n' + (fS ? 'Já descontadas as trocas que não vieram: ' : 'Já descontadas as percas: ') + ab.join(', ');
       if (!fS && taxa) t += '\n\nDesconto das coletas Pauvan (' + viag + (viag > 1 ? ' viagens' : ' viagem') + '): − ' + brl(taxa) + '\n*Valor a pagar (boleto ou Pix): ' + brl(val - taxa) + '*';
       const num = w => w ? (w.length <= 11 ? '55' + w : w) : '', zb = (w, rot) => '<a class="btn zap" style="display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center" target="_blank" href="https://wa.me/' + num(w) + '?text=' + encodeURIComponent(t) + '">' + rot + '</a>';
-      o += zb(f.whatsapp, 'ENVIAR PARA ' + (f.id === 'helia' ? 'A HÉLIA' : 'A SOARES')) + zb(f.contador, 'ENVIAR PARA O CONTADOR') + '<button class="btn b2" data-a="copiar" data-k="' + esc(t) + '">COPIAR TEXTO</button>';
+      o += zb(f.whatsapp, 'ENVIAR PARA ' + (f.id === 'helia' ? 'A HÉLIA' : 'O SOARES')) + zb(f.contador, 'ENVIAR PARA O CONTADOR') + '<button class="btn b2" data-a="copiar" data-k="' + esc(t) + '">COPIAR TEXTO</button>';
     }
-    o += '<div class="s">' + (fS ? 'A Soares' : 'A fornecedora') + ' emite a nota com essas quantidades: entregue menos ' + (fS ? 'troca que não veio.' : 'perca.') + ' Quando a nota chegar, o valor dela é conferido com este total.</div></div>';
+    o += '<div class="s">' + (fS ? 'O Soares' : 'A fornecedora') + ' emite a nota com essas quantidades: entregue menos ' + (fS ? 'troca que não veio.' : 'perca.') + ' Quando a nota chegar, o valor dela é conferido com este total.</div></div>';
   }
   o += '<div class="lab">LANÇAMENTOS</div>';
   if (!lin.length) o += '<div class="card"><div class="s">Nenhum lançamento neste mês.</div></div>';
@@ -391,7 +391,7 @@ function telaForn() {
     const tp = S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE');
     if (tp.length) o += '<div class="card" style="background:var(--amb)"><div class="lab" style="color:var(--am)">' + (merc ? 'TROCA PENDENTE' : 'LEVAR DE TROCA NA PRÓXIMA ENTREGA') + '</div>' + tp.map(x => { const pr = S.est.produtos.find(y => y.codigo === x.codigo) || {}; return '<div class="kv" style="align-items:center"><span style="display:flex;align-items:center;gap:10px">' + des(pr.desenho, 40) + esc(x.nome) + '</span><b>' + x.pend + ' · ' + esc(x.motivo.toLowerCase()) + '</b></div>'; }).join('') + '</div>';
     if (!merc) o += '<button class="btn" data-a="nova">LANÇAR ENTREGA DE HOJE</button>';
-    if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">' + (merc ? 'Nenhuma entrega para conferir' : 'Nenhuma entrega aguardando conferência') + '</div><div class="s">' + (merc ? 'Quando a Soares lançar a entrega, ela aparece aqui.' : 'Depois que o mercado confere, a entrega vai para o EXTRATO.') + '</div></div>';
+    if (!ab.length) o += '<div class="card"><div style="font-size:16px;font-weight:700">' + (merc ? 'Nenhuma entrega para conferir' : 'Nenhuma entrega aguardando conferência') + '</div><div class="s">' + (merc ? 'Quando o Soares lançar a entrega, ela aparece aqui.' : 'Depois que o mercado confere, a entrega vai para o EXTRATO.') + '</div></div>';
     ab.forEach(p => {
       const v = p.itens.reduce((a, i) => a + (i.enviada || 0) * i.custo, 0), u = p.itens.reduce((a, i) => a + (i.enviada || 0), 0);
       o += '<div class="card"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(p.dia) + '</b>' + statusChip(p) + '</div><div class="kv"><span>' + u + ' unidades</span><b>' + brl(v) + '</b></div><div class="s">Lançada às ' + esc(p.enviado_em.slice(11)) + '</div>' +
@@ -408,7 +408,7 @@ function telaForn() {
       o += '</div>';
     });
   } else if (S.aba === 'perca') {
-    o += '<div class="s">' + (semPed(f) ? 'Lance aqui o iogurte vencido ou com avaria. A Soares troca pelo mesmo produto na próxima entrega.' : 'Lance aqui o bolo vencido ou com avaria. O valor é descontado no pagamento.') + '</div>';
+    o += '<div class="s">' + (semPed(f) ? 'Lance aqui o iogurte vencido ou com avaria. O Soares troca pelo mesmo produto na próxima entrega.' : 'Lance aqui o bolo vencido ou com avaria. O valor é descontado no pagamento.') + '</div>';
     prods().forEach(p => { o += linhaProd(p, semPed(f) ? 'troca pelo mesmo produto' : brl(p.custo) + ' cada'); });
     o += '<div class="card"><div class="lab">MOTIVO</div><div class="seg">' + ['Vencido', 'Avaria'].map(m => '<button class="' + (S.motivo === m ? 'on' : '') + '" data-a="motivo" data-k="' + m + '">' + m + '</button>').join('') + '</div></div>';
     o += '<button class="btn" data-a="perca"' + (somaQ() ? '' : ' disabled') + '>' + (semPed(f) ? 'LANÇAR PERCA PARA TROCA' : 'LANÇAR PERCA') + '</button>';
@@ -442,7 +442,7 @@ function telaAbrir() {
   p.itens.forEach(i => {
     const pr = S.est.produtos.find(x => x.codigo === i.codigo) || { desenho: '' };
     const ref = merc ? (i.enviada != null ? i.enviada : i.pedida) : i.pedida, al = somaQ() > 0 && (S.q[i.codigo] || 0) !== ref;
-    if (semPed(f)) { o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, merc ? 'Ela enviou ' + i.enviada : brl(i.custo) + ' cada', merc && al, valIn(i.codigo, i.validade)); return; }
+    if (semPed(f)) { o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, merc ? 'Enviado ' + i.enviada : brl(i.custo) + ' cada', merc && al, valIn(i.codigo, i.validade)); return; }
     o += linhaProd({ codigo: i.codigo, nome: i.nome, desenho: pr.desenho }, semPed(f) ? (merc ? 'Ela enviou ' + i.enviada : 'Lançado ' + i.enviada) : 'Pedido ' + i.pedida + (merc && i.enviada != null ? ' · enviado ' + i.enviada : ''), al);
   });
   if (merc && semPed(f)) {
@@ -453,7 +453,7 @@ function telaAbrir() {
       tc.forEach(c => { const pr = S.est.produtos.find(y => y.codigo === c) || {}, q = S.qt[c] || 0;
         o += '<div class="pr" style="border:2px dashed #E7B26B">' + des(pr.desenho, 62) + '<div class="n"><b>' + esc(pr.nome) + '</b><span>Troca de ' + tm[c] + (q && q < tm[c] ? ' · faltou ' + (tm[c] - q) + ', continua pendente' : q > tm[c] ? ' · veio ' + (q - tm[c]) + ' a mais' : '') + '</span></div><div class="st"><button class="sq" aria-label="Diminuir" data-a="qt" data-k="' + esc(c) + '" data-d="-1"' + (q ? '' : ' disabled') + '>−</button><span>' + q + '</span><button class="sq p" aria-label="Aumentar" data-a="qt" data-k="' + esc(c) + '" data-d="1">+</button></div></div>'; });
     }
-    o += quadroConf(p, i => i.enviada || 0, 'chegou', 'Recebendo', 'Tudo certo: cada produto bate com o que ela lançou.') + '<div class="kv"><span>Valor</span><b>' + brl(p.itens.reduce((a, i) => a + (S.q[i.codigo] || 0) * i.custo, 0)) + '</b></div></div>';
+    o += quadroConf(p, i => i.enviada || 0, 'chegou', 'Recebendo', 'Tudo certo: cada produto bate com o que foi lançado.') + '<div class="kv"><span>Valor</span><b>' + brl(p.itens.reduce((a, i) => a + (S.q[i.codigo] || 0) * i.custo, 0)) + '</b></div></div>';
     o += '<button class="btn" data-a="receber"' + (rec ? '' : ' disabled') + '>CONFIRMAR RECEBIMENTO</button><div class="s" style="text-align:center">A confirmação fica registrada com o seu nome, dia e hora, no lugar da assinatura na folha de entrega.</div>';
   } else if (merc) {
     o += '<div class="card"><div class="lab">QUEM TROUXE</div><div class="seg"><button class="' + (S.coleta === 'MERCADO' ? 'on' : '') + '" data-a="coleta" data-k="MERCADO">Coleta Pauvan</button><button class="' + (S.coleta === 'FORNECEDOR' ? 'on' : '') + '" data-a="coleta" data-k="FORNECEDOR">Ela entregou</button></div>' +
