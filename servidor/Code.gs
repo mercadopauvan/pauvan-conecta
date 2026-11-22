@@ -69,7 +69,7 @@ function num_(v) {
 }
 function ler_(nome) {
   if (LIDO_[nome]) return LIDO_[nome];
-  var cache = CACHE_ABAS[nome] ? CacheService.getScriptCache() : null, chave = 'aba_v2_' + nome;
+  var cache = CACHE_ABAS[nome] ? CacheService.getScriptCache() : null, chave = 'aba_v3_' + nome;
   if (cache) {
     var j = cache.get(chave);
     if (j) return (LIDO_[nome] = JSON.parse(j));
@@ -164,12 +164,13 @@ function estado_(quem) {
   var meu = quem.tipo === 'fornecedor' ? quem.fornecedor : null;
   var forn = ler_('FORNECEDORES').filter(function (f) { return sim_(f.ativo) && (!meu || txt_(f.id) === meu) && podeVer_(f, quem); }).map(function (f) {
     var tp = txt_(f.tipo).toUpperCase();
-    var o = { id: txt_(f.id), nome: txt_(f.nome), grupo: txt_(f.grupo), tem_pedido: sim_(f.tem_pedido), taxa: num_(f.taxa_coleta), fechamento: txt_(f.fechamento), kg: tp === 'KG' || tp === 'UN', un: tp === 'UN' };
+    var o = { id: txt_(f.id), nome: txt_(f.nome), grupo: txt_(f.grupo), tem_pedido: sim_(f.tem_pedido), taxa: num_(f.taxa_coleta), fechamento: txt_(f.fechamento), kg: tp === 'KG' || tp === 'UN' || tp === 'AC', un: tp === 'UN' };
+    if (tp === 'AC') { o.gd = true; o.ap = o.nome.split(' · ')[0]; o.sub = 'Produtor rural · ' + (SUB_AC[o.fechamento.toUpperCase()] || 'acerto acumulado') + ' · nota fiscal depois'; }
     if (!meu) { o.whatsapp = txt_(f.whatsapp).replace(/\D/g, ''); o.contador = txt_(f.contador).replace(/\D/g, ''); o.token = txt_(f.token); }
     return o;
   });
   var prod = ler_('PRODUTOS').filter(function (p) { return sim_(p.ativo) && (!meu || txt_(p.fornecedor) === meu); }).map(function (p) {
-    return { codigo: txt_(p.codigo), fornecedor: txt_(p.fornecedor), nome: txt_(p.nome), desenho: txt_(p.desenho), custo: num_(p.custo), ordem: num_(p.ordem) };
+    return { codigo: txt_(p.codigo), fornecedor: txt_(p.fornecedor), nome: txt_(p.nome), desenho: txt_(p.desenho), custo: num_(p.custo), ordem: num_(p.ordem), un: txt_(p.unidade).toUpperCase() === 'UN' };
   }).sort(function (a, b) { return a.ordem - b.ordem; });
   var itens = {};
   ler_('ITENS').forEach(function (i) {
@@ -181,14 +182,16 @@ function estado_(quem) {
   }).map(function (p) {
     return { id: txt_(p.id), fornecedor: txt_(p.fornecedor), dia: txt_(p.dia), status: txt_(p.status), criado_em: txt_(p.criado_em), criado_por: txt_(p.criado_por), enviado_em: txt_(p.enviado_em), recebido_em: txt_(p.recebido_em), recebido_por: txt_(p.recebido_por), coleta: txt_(p.coleta), taxa: num_(p.taxa), itens: itens[txt_(p.id)] || [] };
   });
-  var perc = ler_('PERCAS').filter(function (p) { return (!meu || txt_(p.fornecedor) === meu) && (txt_(p.data) >= corte || txt_(p.troca) === 'PENDENTE'); }).map(function (p) {
+  var ehGd = {};
+  forn.forEach(function (f) { if (f.gd) ehGd[f.id] = 1; });
+  var perc = ler_('PERCAS').filter(function (p) { return !ehGd[txt_(p.fornecedor)] && (!meu || txt_(p.fornecedor) === meu) && (txt_(p.data) >= corte || txt_(p.troca) === 'PENDENTE'); }).map(function (p) {
     var tr = txt_(p.troca);
     return { id: txt_(p.id), data: txt_(p.data), fornecedor: txt_(p.fornecedor), codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: num_(p.qtd), custo: num_(p.custo), motivo: txt_(p.motivo), por: txt_(p.lancado_por), troca: tr, pend: tr === 'PENDENTE' ? (txt_(p.pend) === '' ? num_(p.qtd) : num_(p.pend)) : 0, troca_em: txt_(p.troca_em) };
   });
   var intr = {}, props = PropertiesService.getScriptProperties();
   forn.forEach(function (f) { if (f.tem_pedido) return; var j = props.getProperty('interesse_' + f.id); if (j) { try { intr[f.id] = JSON.parse(j); } catch (e) {} } });
-  var rec = recebimentos_(forn);
-  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc, interesses: intr, receb: rec.receb, un: rec.un, notas: notas_(forn) };
+  var rec = recebimentos_(forn), ac = acumulado_(forn);
+  return { quem: quem, hoje: hoje_(), fornecedores: forn, produtos: prod, pedidos: ped, percas: perc, interesses: intr, receb: rec.receb, un: rec.un, notas: notas_(forn), gd: ac.gd, gdPer: ac.gdPer, gdAc: ac.gdAc };
 }
 /* Notas fiscais conferidas na entrada do Plenus (aba NOTAS, gravada na entrada de NF). */
 function notas_(forn) {
@@ -197,7 +200,8 @@ function notas_(forn) {
   var s = ss_().getSheetByName('NOTAS');
   if (!s) return [];
   return ler_('NOTAS').filter(function (n) { return ids[txt_(n.fornecedor)]; }).map(function (n) {
-    return { fornecedor: txt_(n.fornecedor), mes: txt_(n.mes).slice(0, 7), nf: txt_(n.nf), data: txt_(n.data).slice(0, 10), valor: num_(n.valor), status: txt_(n.status).toUpperCase(), detalhe: txt_(n.detalhe) };
+    var m = txt_(n.mes); if (/^\d{4}-\d{2}-\d{2}$/.test(m)) m = m.slice(0, 7);
+    return { fornecedor: txt_(n.fornecedor), mes: m, nf: txt_(n.nf), data: txt_(n.data).slice(0, 10), valor: num_(n.valor), status: txt_(n.status).toUpperCase(), detalhe: txt_(n.detalhe) };
   });
 }
 /* Quem vê o fornecedor: coluna "acesso" (nomes separados por vírgula). Vazia = todos do mercado. */
@@ -215,7 +219,7 @@ function fornVisivel_(id, quem) {
 /* Recebimentos por peso (KG) e por unidade (UN), agrupados por recebimento. Só dos fornecedores que a pessoa vê. */
 function recebimentos_(forn) {
   var tipo = {}, receb = [], un = [], g = {};
-  forn.forEach(function (f) { if (f.kg) tipo[f.id] = f.un ? 'UN' : 'KG'; });
+  forn.forEach(function (f) { if (f.kg && !f.gd) tipo[f.id] = f.un ? 'UN' : 'KG'; });
   if (!Object.keys(tipo).length) return { receb: receb, un: un };
   ler_('RECEBIMENTOS').forEach(function (r) {
     var fid = txt_(r.fornecedor), t = tipo[fid];
@@ -229,6 +233,56 @@ function recebimentos_(forn) {
     if (t === 'UN') x.itens.push({ codigo: txt_(r.codigo), nome: txt_(r.nome), qtd: num_(r.qtd), custo: num_(r.custo), custo_ant: num_(r.custo_ant) });
   });
   return { receb: receb, un: un };
+}
+/* Produtores com acerto acumulado (tipo AC): entregas e percas em aberto (sem acerto) e os últimos acertos. */
+var SUB_AC = { 'ACERTO NA SEXTA': 'acerto na sexta-feira', 'ACERTO SEMANAL': 'acerto semanal (ou acumulado de 2 semanas)' };
+var GESTAO_ = ['Celio', 'Ana Paula', 'Amanda'];
+function acumulado_(forn) {
+  var ids = {}, out = { gd: [], gdPer: [], gdAc: [] };
+  forn.forEach(function (f) { if (f.gd) ids[f.id] = 1; });
+  if (!Object.keys(ids).length) return out;
+  ler_('RECEBIMENTOS').forEach(function (r) {
+    var fid = txt_(r.fornecedor);
+    if (!ids[fid] || txt_(r.acerto)) return;
+    out.gd.push({ id: txt_(r.id), fornecedor: fid, dia: txt_(r.dia).slice(0, 10), em: txt_(r.em), por: txt_(r.por), codigo: txt_(r.codigo), kg: num_(r.qtd), custo: num_(r.custo), custo_ant: num_(r.custo_ant), ac: '' });
+  });
+  ler_('PERCAS').forEach(function (r) {
+    var fid = txt_(r.fornecedor);
+    if (!ids[fid] || txt_(r.acerto)) return;
+    out.gdPer.push({ id: txt_(r.id), fornecedor: fid, dia: txt_(r.data).slice(0, 10), codigo: txt_(r.codigo), kg: num_(r.qtd), custo: num_(r.custo), motivo: txt_(r.motivo), por: txt_(r.lancado_por), ac: '' });
+  });
+  var cont = {};
+  ler_('ACERTOS').slice().reverse().forEach(function (a) {
+    var fid = txt_(a.fornecedor);
+    if (!ids[fid] || (cont[fid] = (cont[fid] || 0) + 1) > 15) return;
+    var d = {};
+    try { d = JSON.parse(txt_(a.dados)); } catch (e) {}
+    d.id = txt_(a.id); d.fornecedor = fid; d.em = txt_(a.em); d.por = txt_(a.por);
+    d.linhas = d.linhas || []; d.percas = d.percas || []; d.dias = d.dias || [];
+    out.gdAc.push(d);
+  });
+  return out;
+}
+function r2_(v) { return Math.round(v * 100) / 100; }
+function contaAc_(f, desc) {
+  var fid = txt_(f.id), prods = {}, ordem = [];
+  ler_('PRODUTOS').filter(function (p) { return txt_(p.fornecedor) === fid; }).sort(function (a, b) { return num_(a.ordem) - num_(b.ordem); })
+    .forEach(function (p) { prods[txt_(p.codigo)] = p; ordem.push(txt_(p.codigo)); });
+  var abertos = ler_('RECEBIMENTOS').filter(function (r) { return txt_(r.fornecedor) === fid && !txt_(r.acerto); });
+  var pa = ler_('PERCAS').filter(function (r) { return txt_(r.fornecedor) === fid && !txt_(r.acerto); });
+  var m = {};
+  abertos.slice().sort(function (a, b) { return txt_(a.em) < txt_(b.em) ? -1 : 1; }).forEach(function (r) {
+    var c = txt_(r.codigo), p = prods[c] || {}, dia = txt_(r.dia).slice(0, 10), q = num_(r.qtd), cu = num_(r.custo);
+    var x = m[c] || (m[c] = { codigo: c, nome: txt_(p.nome) || txt_(r.nome), un: txt_(p.unidade).toUpperCase() === 'UN', kg: 0, v: 0, c: cu, dias: {} });
+    x.kg += q; x.v += q * cu; x.c = cu; x.dias[dia] = (x.dias[dia] || 0) + q;
+  });
+  var linhas = ordem.filter(function (c) { return m[c]; }).map(function (c) { return m[c]; });
+  Object.keys(m).forEach(function (c) { if (ordem.indexOf(c) < 0) linhas.push(m[c]); });
+  var total = r2_(linhas.reduce(function (a, x) { return a + x.v; }, 0)), fun = r2_(total * 0.015);
+  var per = r2_(pa.reduce(function (a, x) { return a + num_(x.qtd) * num_(x.custo); }, 0)), dsc = desc ? 15 : 0;
+  var dias = abertos.map(function (r) { return txt_(r.dia).slice(0, 10); }).filter(function (x, i, a) { return a.indexOf(x) === i; }).sort();
+  var percas = pa.map(function (x) { var p = prods[txt_(x.codigo)] || {}; return { dia: txt_(x.data).slice(0, 10), nome: txt_(x.nome), un: txt_(p.unidade).toUpperCase() === 'UN', kg: num_(x.qtd), custo: num_(x.custo), motivo: txt_(x.motivo), por: txt_(x.lancado_por) }; });
+  return { conta: { forn: txt_(f.nome).split(' · ')[0], linhas: linhas, total: total, fun: fun, per: per, desc: dsc, final: r2_(total - fun - per - dsc), dias: dias, percas: percas }, abertos: abertos, pa: pa };
 }
 var SEQ_ = 0;
 function novoId_(pre) {
@@ -363,6 +417,50 @@ function agir_(a, req, quem) {
       linhas.map(function (r) { return r._lin; }).sort(function (x, y) { return y - x; }).forEach(function (l) { sh.deleteRow(l); });
       sujo_('RECEBIMENTOS');
     }
+  } else if (a === 'gd_lancar' || a === 'gd_perca') {
+    soMercado_(quem);
+    var fg = fornVisivel_(req.fornecedor, quem);
+    if (txt_(fg.tipo).toUpperCase() !== 'AC') throw new Error('Este fornecedor não é de acerto acumulado.');
+    var pg = ler_('PRODUTOS').filter(function (p) { return sim_(p.ativo) && txt_(p.fornecedor) === txt_(fg.id) && txt_(p.codigo) === String(req.codigo); })[0];
+    if (!pg) throw new Error('Produto não encontrado.');
+    var ung = txt_(pg.unidade).toUpperCase() === 'UN', ps2 = [], qg;
+    if (ung) { qg = Math.floor(num_(req.kg)); if (!(qg > 0) || qg > 999) throw new Error('Quantidade inválida.'); }
+    else {
+      ps2 = (req.pesagens || []).map(function (v) { return Math.round(num_(v) * 1000) / 1000; }).filter(function (v) { return v > 0 && v < 100; });
+      if (!ps2.length && num_(req.kg) > 0 && num_(req.kg) < 100) ps2 = [Math.round(num_(req.kg) * 1000) / 1000];
+      if (!ps2.length) throw new Error('Gire a roleta até o peso da balança.');
+      qg = Math.round(ps2.reduce(function (x, y) { return x + y; }, 0) * 1000) / 1000;
+    }
+    var cg = Math.round(num_(req.custo) * 100) / 100;
+    if (!(cg > 0) || cg > 200) throw new Error('Preço inválido.');
+    if (a === 'gd_lancar') {
+      var cag = Math.round(num_(req.custo_ant || req.custo) * 100) / 100;
+      incluir_('RECEBIMENTOS', [{ id: novoId_('G'), fornecedor: txt_(fg.id), dia: hoje_(), em: agora_(), por: quem.nome, codigo: txt_(pg.codigo), nome: txt_(pg.nome), qtd: qg, custo: cg, custo_ant: cag > 0 ? cag : cg, pesagens: ps2.map(function (v) { return String(v).replace('.', ','); }).join(';') }]);
+    } else {
+      incluir_('PERCAS', [{ id: novoId_('X'), data: hoje_(), fornecedor: txt_(fg.id), codigo: txt_(pg.codigo), nome: txt_(pg.nome), qtd: qg, custo: cg, motivo: String(req.motivo || 'Estragou').slice(0, 30), lancado_por: quem.nome, lancado_em: agora_(), troca: '' }]);
+    }
+  } else if (a === 'gd_excluir') {
+    soMercado_(quem);
+    var aba = 'RECEBIMENTOS', xg = ler_('RECEBIMENTOS').filter(function (r) { return txt_(r.id) === String(req.id); })[0];
+    if (!xg) { aba = 'PERCAS'; xg = ler_('PERCAS').filter(function (r) { return txt_(r.id) === String(req.id); })[0]; }
+    if (!xg) throw new Error('Lançamento não encontrado.');
+    var fx = fornVisivel_(txt_(xg.fornecedor), quem);
+    if (txt_(fx.tipo).toUpperCase() !== 'AC') throw new Error('Lançamento de outro tipo de fornecedor.');
+    if (txt_(xg.acerto)) throw new Error('Já entrou num acerto, não dá para excluir.');
+    if (txt_(aba === 'PERCAS' ? xg.data : xg.dia).slice(0, 10) !== hoje_()) throw new Error('Só dá para excluir o lançamento de hoje.');
+    aba_(aba).deleteRow(xg._lin);
+    sujo_(aba);
+  } else if (a === 'gd_acerto') {
+    soMercado_(quem);
+    if (GESTAO_.map(chave_).indexOf(chave_(quem.nome)) < 0) throw new Error('Só a gestão faz o acerto.');
+    var fa = fornVisivel_(req.fornecedor, quem);
+    if (txt_(fa.tipo).toUpperCase() !== 'AC') throw new Error('Este fornecedor não é de acerto acumulado.');
+    var ca = contaAc_(fa, !!req.desc);
+    if (!ca.abertos.length) throw new Error('Nenhuma entrega em aberto.');
+    var ida = novoId_('A'), aga = agora_();
+    incluir_('ACERTOS', [{ id: ida, fornecedor: txt_(fa.id), em: aga, por: quem.nome, de: ca.conta.dias[0], ate: ca.conta.dias[ca.conta.dias.length - 1], total: ca.conta.total, funrural: ca.conta.fun, percas: ca.conta.per, desc_nf: ca.conta.desc, final: ca.conta.final, dados: JSON.stringify(ca.conta) }]);
+    ca.abertos.forEach(function (r) { gravar_('RECEBIMENTOS', r._lin, { acerto: ida, pago_por: quem.nome, pago_em: aga }); });
+    ca.pa.forEach(function (r) { gravar_('PERCAS', r._lin, { acerto: ida }); });
   } else if (a === 'pedido_cancelar') {
     soMercado_(quem);
     var p1 = pedido_(req.id, quem);

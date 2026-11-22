@@ -24,8 +24,8 @@ html,body{margin:0;background:var(--bg);color:var(--t);font-family:Inter,system-
 button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent}
 #app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
 .hdr{background:var(--g);color:#fff;padding:14px 20px 16px;display:flex;flex-direction:column;gap:4px}
-.apBar{background:var(--g);padding:10px 18px 0;display:flex}
 .apV{display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border:1px solid rgba(255,255,255,.55);border-radius:999px;color:#fff;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
+.apBar{background:var(--g);padding:10px 18px 0;display:flex}
 .hdr .bk{background:none;border:0;color:#DCEBDD;font-size:14px;min-height:32px;text-align:left;padding:0}
 .hdr h1{font-size:20px;margin:0;font-weight:700}
 .hdr p{font-size:14px;margin:0;color:#DCEBDD;line-height:1.4}
@@ -205,7 +205,18 @@ const semPed = f => f && !f.tem_pedido && !f.kg;
 const MAND = w => '<svg viewBox="0 0 64 64" width="' + w + '" height="' + w + '"><path d="M8 13c6 1 42 1 48 0 2 14 2 30 0 44-6 2-42 2-48 0-2-14-2-30 0-44z" fill="#eff8ff" stroke="#93c5fd" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h48v5c-6 1-42 1-48 0z" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/><path d="M9 11.5l2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5" stroke="#60a5fa" stroke-width="1" fill="none"/><g stroke="#c49a4a" stroke-width="1.4" stroke-linejoin="round"><path d="M15 19c5-2 12-2 16 0 2 2 2 6 0 8-4 2-11 2-16 0-2-2-2-6 0-8z" fill="#f9e4ae" transform="rotate(-10 23 23)"/><path d="M34 18c5-1 11-1 15 1 2 2 2 6 0 8-4 2-10 1-15 0-2-2-2-7 0-9z" fill="#f3d88f" transform="rotate(8 41 23)"/><path d="M14 33c0-3 9-3 9 0l1 19c0 3-11 3-11 0z" fill="#f3d88f"/><path d="M26 35c0-3 9-3 9 0l1 18c0 3-11 3-11 0z" fill="#f9e4ae"/><path d="M38 32c0-3 10-3 10 0l0 20c0 3-11 3-11 0z" fill="#f3d88f"/></g><g stroke="#ddb867" stroke-width=".9" fill="none" stroke-linecap="round"><path d="M18 21.5h8M37 21h9M16.5 37v13M20 36v15M28.5 39v12M32 38v13M40.5 36v14M45 35v15"/></g><g fill="#fff" opacity=".85"><circle cx="20" cy="40" r="1"/><circle cx="31" cy="44" r="1"/><circle cx="43" cy="41" r=".9"/><circle cx="25" cy="21" r=".9"/></g><path d="M11 17c-1 12-1 26 0 37" stroke="#fff" stroke-width="2.2" opacity=".8" stroke-linecap="round" fill="none"/><g stroke="#fff" stroke-width="4.5" stroke-linecap="round"><path d="M53 46v12M47 52h12M48.8 47.8l8.4 8.4M57.2 47.8l-8.4 8.4"/></g><g stroke="#0284c7" stroke-width="2" stroke-linecap="round"><path d="M53 46v12M47 52h12M48.8 47.8l8.4 8.4M57.2 47.8l-8.4 8.4"/></g></svg>';
 const ALF_H = w => '<svg viewBox="0 0 64 64" width="' + w + '" height="' + w + '"><path d="M22 46h20l-3 12H25z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/><g stroke="#c2a878" stroke-width="1.3" fill="none" stroke-linecap="round"><path d="M30 58c-1 3-3 4-5 5M32 58v5M34 58c1 3 3 4 5 5"/></g><path d="M32 47C14 47 8 34 13 24c3-6 9-6 11-3 1-7 7-12 12-9 5-3 11 1 11 8 4-2 10 0 11 6 3 10-6 21-26 21z" fill="#86efac" stroke="#16a34a" stroke-width="1.8" stroke-linejoin="round"/><path d="M32 46c-9-6-13-14-11-24M32 46c8-6 12-14 11-23M32 46V18" stroke="#16a34a" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M19 30c3 2 6 6 8 10M45 29c-3 2-6 6-8 11" stroke="#22c55e" stroke-width="1.2" fill="none"/></svg>';
 const ALF_A = w => '<svg viewBox="0 0 64 64" width="' + w + '" height="' + w + '"><circle cx="32" cy="35" r="23" fill="#bbf7d0" stroke="#4ade80" stroke-width="2"/><path d="M12 33c4-12 14-17 20-17s16 5 20 17c-6-6-13-8-20-8s-14 2-20 8z" fill="#86efac" stroke="#22c55e" stroke-width="1.5"/><path d="M15 44c5 6 11 9 17 9s12-3 17-9" stroke="#4ade80" stroke-width="1.6" fill="none"/><path d="M32 25v26M24 28c-3 7-3 14 0 20M40 28c3 7 3 14 0 20" stroke="#22c55e" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="25" cy="34" rx="4" ry="6" fill="#fff" opacity=".35"/></svg>';
+const SVG64 = (w, b) => '<svg viewBox="0 0 64 64" width="' + w + '" height="' + w + '">' + b + '</svg>';
+const PAES = {
+pao_forma: w => SVG64(w, '<path d="M10 26c0-9 8-13 22-13s22 4 22 13v24c0 3-2 5-5 5H15c-3 0-5-2-5-5z" fill="#D9A15B" stroke="#9A5B22" stroke-width="2"/><path d="M14 27c0-6 6-9 18-9s18 3 18 9" fill="none" stroke="#F2C987" stroke-width="3" stroke-linecap="round"/><g stroke="#9A5B22" stroke-width="1.6"><path d="M22 22v32M32 20v35M42 22v32"/></g><rect x="8" y="10" width="48" height="47" rx="9" fill="#E8F1FB" fill-opacity=".35" stroke="#93C5FD" stroke-width="1.5"/><path d="M26 8h12l-2 4H28z" fill="#3B82F6"/>'),
+pao_caseiro: w => SVG64(w, '<ellipse cx="32" cy="50" rx="25" ry="5" fill="#000" opacity=".08"/><path d="M7 44c0-15 11-26 25-26s25 11 25 26c0 4-3 6-7 6H14c-4 0-7-2-7-6z" fill="#C98235" stroke="#8A4B16" stroke-width="2"/><path d="M13 40c1-10 9-17 19-17" fill="none" stroke="#E9B46B" stroke-width="3" stroke-linecap="round"/><g stroke="#F3D3A0" stroke-width="2.6" stroke-linecap="round"><path d="M22 30l6 8M31 27l6 9M40 30l5 7"/></g>'),
+pao_hotdog: w => SVG64(w, '<path d="M6 40c0-8 8-12 26-12s26 4 26 12-8 11-26 11S6 48 6 40z" fill="#D99A4E" stroke="#94561D" stroke-width="2"/><path d="M12 38c4-3 11-5 20-5s16 2 20 5" fill="none" stroke="#7A4314" stroke-width="2.2" stroke-linecap="round"/><path d="M10 24c0-7 7-10 22-10s22 3 22 10-7 9-22 9-22-2-22-9z" fill="#E3AA5F" stroke="#94561D" stroke-width="2"/><path d="M15 22c4-3 9-4 17-4s13 1 17 4" fill="none" stroke="#7A4314" stroke-width="2.2" stroke-linecap="round"/><path d="M16 18c3-2 8-3 12-3" stroke="#F5D29A" stroke-width="2.4" fill="none" stroke-linecap="round"/>'),
+cuca: w => SVG64(w, '<rect x="6" y="24" width="52" height="28" rx="4" fill="#F1D9A8" stroke="#A36A2A" stroke-width="2"/><rect x="6" y="36" width="52" height="6" fill="#B7651E"/><path d="M6 28c4-6 8 0 12-5s8 2 12-3 8 3 12-2 8 3 12-1 4 3 4 3v6H6z" fill="#E4B565" stroke="#A36A2A" stroke-width="1.6"/><g fill="#C88A3A"><circle cx="13" cy="26" r="2.2"/><circle cx="24" cy="24" r="2.4"/><circle cx="35" cy="25" r="2.2"/><circle cx="46" cy="23" r="2.4"/><circle cx="53" cy="27" r="2"/><circle cx="19" cy="29" r="1.6"/><circle cx="41" cy="29" r="1.8"/></g><g fill="#FFF7E6"><circle cx="29" cy="23" r="1"/><circle cx="50" cy="25" r="1"/><circle cx="16" cy="24" r="1"/></g>'),
+bisnaguinha: w => SVG64(w, '<rect x="9" y="14" width="46" height="44" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/><path d="M9 22h46" stroke="#F59E0B" stroke-width="2"/><text x="32" y="20" text-anchor="middle" font-size="6" font-weight="700" fill="#B45309" font-family="Arial">BISNAGUINHA</text><g stroke="#A35B1C" stroke-width="1.6"><ellipse cx="22" cy="33" rx="9" ry="6" fill="#E0A055"/><ellipse cx="42" cy="33" rx="9" ry="6" fill="#D99448"/><ellipse cx="22" cy="47" rx="9" ry="6" fill="#D99448"/><ellipse cx="42" cy="47" rx="9" ry="6" fill="#E0A055"/></g><g stroke="#F5D29A" stroke-width="1.6" stroke-linecap="round" fill="none"><path d="M17 31c3-2 7-2 9-1M37 31c3-2 7-2 9-1M17 45c3-2 7-2 9-1M37 45c3-2 7-2 9-1"/></g>')
+};
+const HFD = {"pr_abacaxi": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><g fill=\"#3E8B33\"><path d=\"M32 4l-4 14h8z\"/><path d=\"M20 8l6 12-8-2z\"/><path d=\"M44 8l-6 12 8-2z\"/></g><ellipse cx=\"32\" cy=\"40\" rx=\"15\" ry=\"20\" fill=\"#E8A92C\"/><g stroke=\"#B9781A\" stroke-width=\"1.6\" fill=\"none\"><path d=\"M20 30l24 20M20 42l18 14M26 22l20 18M44 30L20 50M44 42L26 56M38 22L18 40\"/></g></svg>", "pr_banana": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><g transform=\"translate(32 9) rotate(22) scale(1.3 1.06)\"><path d=\"M-4 0 L-7 18 L-6 36 L0 50 L4 50 L5 36 L5 18 L4 0 Z\" fill=\"#E2D37E\" stroke=\"#9E9038\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 L-1 20 L0 36 L2 48\" stroke=\"#9E9038\" stroke-width=\"1.1\" fill=\"none\" opacity=\".6\"/><circle cx=\"2\" cy=\"50\" r=\"2\" fill=\"#45361A\"/></g><g transform=\"translate(32 9) rotate(7) scale(1.3 1.06)\"><path d=\"M-4 0 L-7 18 L-6 36 L0 50 L4 50 L5 36 L5 18 L4 0 Z\" fill=\"#E2D37E\" stroke=\"#9E9038\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 L-1 20 L0 36 L2 48\" stroke=\"#9E9038\" stroke-width=\"1.1\" fill=\"none\" opacity=\".6\"/><circle cx=\"2\" cy=\"50\" r=\"2\" fill=\"#45361A\"/></g><g transform=\"translate(32 9) rotate(-8) scale(1.3 1.06)\"><path d=\"M-4 0 L-7 18 L-6 36 L0 50 L4 50 L5 36 L5 18 L4 0 Z\" fill=\"#E2D37E\" stroke=\"#9E9038\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 L-1 20 L0 36 L2 48\" stroke=\"#9E9038\" stroke-width=\"1.1\" fill=\"none\" opacity=\".6\"/><circle cx=\"2\" cy=\"50\" r=\"2\" fill=\"#45361A\"/></g><g transform=\"translate(32 9) rotate(-23) scale(1.3 1.06)\"><path d=\"M-4 0 L-7 18 L-6 36 L0 50 L4 50 L5 36 L5 18 L4 0 Z\" fill=\"#E2D37E\" stroke=\"#9E9038\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 L-1 20 L0 36 L2 48\" stroke=\"#9E9038\" stroke-width=\"1.1\" fill=\"none\" opacity=\".6\"/><circle cx=\"2\" cy=\"50\" r=\"2\" fill=\"#45361A\"/></g><path d=\"M27 3 Q32 1 37 3 L36 11 L28 11 Z\" fill=\"#7A8F2C\" stroke=\"#556619\" stroke-width=\"1\"/><rect x=\"29.5\" y=\"0.5\" width=\"5\" height=\"4\" rx=\"1.2\" fill=\"#5B4A2A\"/></svg>", "pr_banana_nanica": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><g transform=\"translate(32 9) rotate(26) scale(0.92 1.08)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F7D43A\" stroke=\"#C59E1E\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C59E1E\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#4A3A1C\"/></g><g transform=\"translate(32 9) rotate(14) scale(0.92 1.08)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F7D43A\" stroke=\"#C59E1E\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C59E1E\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#4A3A1C\"/></g><g transform=\"translate(32 9) rotate(2) scale(0.92 1.08)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F7D43A\" stroke=\"#C59E1E\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C59E1E\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#4A3A1C\"/></g><g transform=\"translate(32 9) rotate(-10) scale(0.92 1.08)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F7D43A\" stroke=\"#C59E1E\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C59E1E\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#4A3A1C\"/></g><g transform=\"translate(32 9) rotate(-22) scale(0.92 1.08)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F7D43A\" stroke=\"#C59E1E\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C59E1E\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#4A3A1C\"/></g><path d=\"M27 3 Q32 1 37 3 L36 11 L28 11 Z\" fill=\"#7A8F2C\" stroke=\"#556619\" stroke-width=\"1\"/><rect x=\"29.5\" y=\"0.5\" width=\"5\" height=\"4\" rx=\"1.2\" fill=\"#5B4A2A\"/></svg>", "pr_banana_maca": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><g transform=\"translate(32 9) rotate(30) scale(1.25 0.82)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F1B53A\" stroke=\"#C08317\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C08317\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#5E401A\"/></g><g transform=\"translate(32 9) rotate(15) scale(1.25 0.82)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F1B53A\" stroke=\"#C08317\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C08317\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#5E401A\"/></g><g transform=\"translate(32 9) rotate(0) scale(1.25 0.82)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F1B53A\" stroke=\"#C08317\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C08317\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#5E401A\"/></g><g transform=\"translate(32 9) rotate(-15) scale(1.25 0.82)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F1B53A\" stroke=\"#C08317\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C08317\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#5E401A\"/></g><g transform=\"translate(32 9) rotate(-30) scale(1.25 0.82)\"><path d=\"M-5 0 C-9 18 -6 34 4 46 C7 48 10 46 8 43 C2 32 2 18 4 0 Z\" fill=\"#F1B53A\" stroke=\"#C08317\" stroke-width=\"1.1\" stroke-linejoin=\"round\"/><path d=\"M0 2 C-2 18 -1 32 6 44\" stroke=\"#C08317\" stroke-width=\"1.1\" fill=\"none\" opacity=\".5\"/><circle cx=\"7\" cy=\"45\" r=\"2\" fill=\"#5E401A\"/></g><path d=\"M27 3 Q32 1 37 3 L36 11 L28 11 Z\" fill=\"#7A8F2C\" stroke=\"#556619\" stroke-width=\"1\"/><rect x=\"29.5\" y=\"0.5\" width=\"5\" height=\"4\" rx=\"1.2\" fill=\"#5B4A2A\"/></svg>", "pr_rucula": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><path d=\"M30 60V30\" stroke=\"#5E8C31\" stroke-width=\"3\"/><path d=\"M30 34c-12-2-20-10-18-24 4 6 8 4 10 10 2-6 6-4 8 2 2-8 6-10 8-16 4 10 2 22-8 28z\" fill=\"#4E9A2E\"/><path d=\"M34 40c10-2 18-8 20-20-5 4-8 3-10 8-1-5-5-4-7 1z\" fill=\"#6DB83F\"/><rect x=\"24\" y=\"44\" width=\"14\" height=\"6\" rx=\"2\" fill=\"#C7A46A\"/></svg>", "pr_cheiro": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><g stroke=\"#4F8A2B\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M32 60 L14 14\"/><path d=\"M32 60 L22 8\"/><path d=\"M32 60 L30 6\"/><path d=\"M32 60 L38 8\"/><path d=\"M32 60 L46 12\"/><path d=\"M32 60 L52 20\"/></g><g fill=\"#3F8F2A\"><circle cx=\"14\" cy=\"14\" r=\"5\"/><circle cx=\"22\" cy=\"8\" r=\"5\"/><circle cx=\"38\" cy=\"8\" r=\"5\"/><circle cx=\"46\" cy=\"12\" r=\"5\"/></g><g fill=\"#6CC24A\"><circle cx=\"30\" cy=\"6\" r=\"4\"/><circle cx=\"52\" cy=\"20\" r=\"4\"/><circle cx=\"18\" cy=\"22\" r=\"4\"/><circle cx=\"44\" cy=\"22\" r=\"4\"/></g><rect x=\"26\" y=\"44\" width=\"12\" height=\"6\" rx=\"2\" fill=\"#C7A46A\"/></svg>", "pr_almeirao": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><path d=\"M32 60C18 50 12 30 20 6c4 14 8 20 12 30 4-10 8-16 12-30 8 24 2 44-12 54z\" fill=\"#3E8B33\"/><path d=\"M32 58V18\" stroke=\"#E9F2D8\" stroke-width=\"3\"/><path d=\"M32 30l-7-6M32 40l7-7M32 48l-6-5\" stroke=\"#E9F2D8\" stroke-width=\"2\"/></svg>", "pr_mostarda": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><path d=\"M32 60C14 52 8 34 14 12c8 6 10 10 12 16 2-10 6-16 10-22 4 8 4 14 4 20 4-6 8-8 14-10 4 24-6 40-22 44z\" fill=\"#5FA83A\"/><path d=\"M32 60V22\" stroke=\"#C9E59A\" stroke-width=\"3\"/></svg>", "pr_pimenta": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><g transform=\"translate(20 38) rotate(-20)\"><path d=\"M0 -10c8 0 12 8 8 16-2 4-6 6-8 6s-6-2-8-6c-4-8 0-16 8-16z\" fill=\"#E23B2E\"/><path d=\"M0 -10v-6\" stroke=\"#3E7A23\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g transform=\"translate(42 36) rotate(15)\"><path d=\"M0 -10c8 0 12 8 8 16-2 4-6 6-8 6s-6-2-8-6c-4-8 0-16 8-16z\" fill=\"#F2B705\"/><path d=\"M0 -10v-6\" stroke=\"#3E7A23\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g transform=\"translate(31 24) rotate(0)\"><path d=\"M0 -10c8 0 12 8 8 16-2 4-6 6-8 6s-6-2-8-6c-4-8 0-16 8-16z\" fill=\"#E86A1F\"/><path d=\"M0 -10v-6\" stroke=\"#3E7A23\" stroke-width=\"3\" stroke-linecap=\"round\"/></g></svg>", "gd_pepino": "<span style=\"font-size:__F__px;line-height:1;display:inline-block;width:__W__px;text-align:center\">🥒</span>", "gd_vagem": "<span style=\"font-size:__F__px;line-height:1;display:inline-block;width:__W__px;text-align:center\">🫛</span>", "gd_abobrinha": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><path d=\"M12 50C20 30 36 16 52 12c4 0 6 3 3 6C44 32 30 46 18 56c-4 3-8-1-6-6z\" fill=\"#84cc16\"/><path d=\"M16 50C26 34 38 24 50 16\" stroke=\"#3f6212\" stroke-width=\"2\" fill=\"none\" stroke-dasharray=\"4 4\"/></svg>", "gd_quiabo": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><path d=\"M34 6c4-1 7 1 7 4\" stroke=\"#3f6212\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M28 10h14l-2 8H30z\" fill=\"#4d7c0f\"/><path d=\"M29 16h12c2 16-2 34-6 42-4-8-8-26-6-42z\" fill=\"#65a30d\"/><path d=\"M33 18c-1 14 0 28 2 38M37 18c1 14 0 28-2 38\" stroke=\"#3f6212\" stroke-width=\"1.6\" fill=\"none\"/></svg>", "gd_jilo": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><path d=\"M30 10c2-6 10-6 12-2\" stroke=\"#3f6212\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M24 14l8-4 8 4-8 5z\" fill=\"#4d7c0f\"/><ellipse cx=\"32\" cy=\"38\" rx=\"17\" ry=\"20\" fill=\"#84cc16\"/><ellipse cx=\"25\" cy=\"30\" rx=\"5\" ry=\"8\" fill=\"#d9f99d\" opacity=\".7\"/></svg>", "gd_berinjela": "<span style=\"font-size:__F__px;line-height:1;display:inline-block;width:__W__px;text-align:center\">🍆</span>", "gd_maracuja": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><circle cx=\"32\" cy=\"36\" r=\"22\" fill=\"#facc15\"/><circle cx=\"24\" cy=\"28\" r=\"7\" fill=\"#fef08a\" opacity=\".8\"/><g fill=\"#ca8a04\" opacity=\".5\"><circle cx=\"40\" cy=\"30\" r=\"1.6\"/><circle cx=\"44\" cy=\"42\" r=\"1.6\"/><circle cx=\"34\" cy=\"48\" r=\"1.6\"/><circle cx=\"24\" cy=\"42\" r=\"1.6\"/></g><path d=\"M32 14c0-6 4-8 8-8\" stroke=\"#3f6212\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/></svg>", "gd_maxixe": "<svg viewBox=\"0 0 64 64\" width=\"__W__\" height=\"__W__\"><path d=\"M33 14c1-5 4-8 7-9\" stroke=\"#5B7A2E\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/><ellipse cx=\"32\" cy=\"36\" rx=\"17\" ry=\"22\" fill=\"#86B84A\"/><ellipse cx=\"26\" cy=\"29\" rx=\"6\" ry=\"10\" fill=\"#B4D97C\" opacity=\".6\"/><g fill=\"#4E7E24\"><circle cx=\"24\" cy=\"24\" r=\"1.8\"/><circle cx=\"34\" cy=\"20\" r=\"1.8\"/><circle cx=\"42\" cy=\"28\" r=\"1.8\"/><circle cx=\"22\" cy=\"36\" r=\"1.8\"/><circle cx=\"32\" cy=\"32\" r=\"1.8\"/><circle cx=\"42\" cy=\"40\" r=\"1.8\"/><circle cx=\"26\" cy=\"46\" r=\"1.8\"/><circle cx=\"36\" cy=\"48\" r=\"1.8\"/><circle cx=\"30\" cy=\"40\" r=\"1.8\"/><circle cx=\"40\" cy=\"52\" r=\"1.8\"/></g></svg>", "gd_tomate": "<span style=\"font-size:__F__px;line-height:1;display:inline-block;width:__W__px;text-align:center\">🍅</span>", "gd_limao": "<span style=\"font-size:__F__px;line-height:1;display:inline-block;width:__W__px;text-align:center\">🍋</span>", "gd_couve": "<span style=\"font-size:__F__px;line-height:1;display:inline-block;width:__W__px;text-align:center\">🥬</span>"};
 function des(k, w) {
+  if (HFD[k]) return HFD[k].replace(/__W__/g, w).replace(/__F__/g, Math.round(w * .78));
+  if (PAES[k]) return PAES[k](w);
   if (k === 'mandioca') return MAND(w);
   if (k === 'alface_hidro') return ALF_H(w);
   if (k === 'alface_amer') return ALF_A(w);
@@ -363,38 +374,43 @@ function textoZap(p) {
   return t;
 }
 function extrato() {
-  const h = S.est.hoje, mes = S.mes || h.slice(0, 7), lin = [];
+  const h = S.est.hoje, fq = fornAtual().fechamento === 'QUINZENAL', qz = d => +String(d).slice(8, 10) <= 15 ? 1 : 2;
+  const mes = S.mes || (fq ? h.slice(0, 7) + '-' + qz(h) : h.slice(0, 7)), lin = [];
+  const noPer = d => String(d).slice(0, 7) === mes.slice(0, 7) && (!fq || qz(d) === +mes.slice(8));
+  const perNome = fq ? (mes.slice(8) === '1' ? '1ª' : '2ª') + ' quinzena de ' + MES[+mes.slice(5, 7) - 1] : MES[+mes.slice(5, 7) - 1], perTxt = fq ? 'da quinzena' : 'do mês';
   let rec = 0, taxa = 0, perc = 0;
-  S.est.pedidos.filter(p => p.fornecedor === S.forn && p.status === 'RECEBIDO' && p.recebido_em.slice(0, 7) === mes).forEach(p => {
+  S.est.pedidos.filter(p => p.fornecedor === S.forn && p.status === 'RECEBIDO' && noPer(p.recebido_em)).forEach(p => {
     const v = p.itens.reduce((a, i) => a + (i.recebida || 0) * i.custo, 0);
     rec += v; taxa += p.taxa || 0;
     lin.push({ d: p.recebido_em.slice(0, 10), t: 'Recebido' + (p.coleta === 'MERCADO' ? ' · mercado buscou' : ' · entregue no mercado'), s: itensTxt(p, 'recebida') || 'nada recebido', v: v, x: p.taxa ? 'Taxa de coleta − ' + brl(p.taxa) : '' });
   });
   let trp = 0;
-  S.est.percas.filter(p => p.fornecedor === S.forn && p.data.slice(0, 7) === mes).forEach(p => {
+  S.est.percas.filter(p => p.fornecedor === S.forn && noPer(p.data)).forEach(p => {
     if (p.troca) { if (p.troca === 'PENDENTE') trp += p.pend; lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo), s: p.qtd + ' ' + esc(p.nome) + (p.troca === 'PENDENTE' ? (p.pend < p.qtd ? ' · ' + (p.qtd - p.pend) + ' já trocado, ' + p.pend + ' pendente' : '') : ' · trocado em ' + dm(p.troca_em)), st: p.troca === 'PENDENTE' ? 'troca pendente' : 'trocado', v: 0, id: p.id }); return; }
     perc += p.qtd * p.custo;
     lin.push({ d: p.data, t: 'Perca · ' + esc(p.motivo), s: p.qtd + ' ' + esc(p.nome), v: -p.qtd * p.custo, id: p.id });
   });
-  const fS = semPed(fornAtual()), fimMes = mes + '-31', porProd = {};
+  const fS = semPed(fornAtual()), fimMes = mes.slice(0, 7) + (fq && mes.slice(8) === '1' ? '-15' : '-31'), porProd = {};
   let pendVal = 0, pendUn = 0;
   let viag = 0;
-  S.est.pedidos.filter(p => p.fornecedor === S.forn && p.status === 'RECEBIDO' && p.recebido_em.slice(0, 7) === mes).forEach(p => { if (p.taxa) viag++; p.itens.forEach(i => { const r = porProd[i.codigo] || (porProd[i.codigo] = { nome: i.nome, custo: i.custo, rec: 0, tr: 0 }); r.rec += i.recebida || 0; }); });
-  if (!fS) S.est.percas.filter(x => x.fornecedor === S.forn && !x.troca && x.data.slice(0, 7) === mes).forEach(x => { const r = porProd[x.codigo] || (porProd[x.codigo] = { nome: x.nome, custo: x.custo, rec: 0, tr: 0 }); r.tr += x.qtd; });
+  S.est.pedidos.filter(p => p.fornecedor === S.forn && p.status === 'RECEBIDO' && noPer(p.recebido_em)).forEach(p => { if (p.taxa) viag++; p.itens.forEach(i => { const r = porProd[i.codigo] || (porProd[i.codigo] = { nome: i.nome, custo: i.custo, rec: 0, tr: 0 }); r.rec += i.recebida || 0; }); });
+  if (!fS) S.est.percas.filter(x => x.fornecedor === S.forn && !x.troca && noPer(x.data)).forEach(x => { const r = porProd[x.codigo] || (porProd[x.codigo] = { nome: x.nome, custo: x.custo, rec: 0, tr: 0 }); r.tr += x.qtd; });
   if (fS) {
     S.est.percas.filter(x => x.fornecedor === S.forn && x.troca === 'PENDENTE' && x.data <= fimMes).forEach(x => { const r = porProd[x.codigo] || (porProd[x.codigo] = { nome: x.nome, custo: x.custo, rec: 0, tr: 0 }); r.tr += x.pend; pendUn += x.pend; pendVal += x.pend * x.custo; });
     perc = pendVal;
   }
   lin.sort((a, b) => a.d < b.d ? 1 : -1);
   const min = mais(h.slice(0, 8) + '01', -40).slice(0, 7);
-  const ant = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7) - 2, 1))).slice(0, 7), prox = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7), 1))).slice(0, 7);
-  let o = '<div class="card"><div class="dia"><button class="sq" aria-label="Mês anterior" data-a="mes" data-k="' + ant + '"' + (ant < min ? ' disabled' : '') + '>‹</button><b>' + MES[+mes.slice(5, 7) - 1] + ' de ' + mes.slice(0, 4) + '</b><button class="sq" aria-label="Próximo mês" data-a="mes" data-k="' + prox + '"' + (prox > h.slice(0, 7) ? ' disabled' : '') + '>›</button></div></div>';
+  const mAnt = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7) - 2, 1))).slice(0, 7), mProx = iso(new Date(Date.UTC(+mes.slice(0, 4), +mes.slice(5, 7), 1))).slice(0, 7);
+  const ant = fq ? (mes.slice(8) === '2' ? mes.slice(0, 7) + '-1' : mAnt + '-2') : mAnt, prox = fq ? (mes.slice(8) === '1' ? mes.slice(0, 7) + '-2' : mProx + '-1') : mProx;
+  const atual = fq ? h.slice(0, 7) + '-' + qz(h) : h.slice(0, 7), cmp = k => k.slice(0, 7) + (k.length > 7 ? k.slice(8) : '');
+  let o = '<div class="card"><div class="dia"><button class="sq" aria-label="Período anterior" data-a="mes" data-k="' + ant + '"' + (ant.slice(0, 7) < min ? ' disabled' : '') + '>‹</button><b>' + perNome.charAt(0).toUpperCase() + perNome.slice(1) + ' de ' + mes.slice(0, 4) + '</b><button class="sq" aria-label="Próximo período" data-a="mes" data-k="' + prox + '"' + (cmp(prox) > cmp(atual) ? ' disabled' : '') + '>›</button></div>' + (fq ? '<div class="s" style="text-align:center">' + (mes.slice(8) === '1' ? '01 a 15' : '16 ao fim') + ' de ' + MES[+mes.slice(5, 7) - 1] + '</div>' : '') + '</div>';
   o += '<div class="card"><div class="kv"><span>Produtos recebidos</span><b>' + brl(rec) + '</b></div>' + (fS ? '<div class="kv"><span>Trocas pendentes · abatidas da nota (' + pendUn + ' un.)</span><b style="white-space:nowrap">− ' + brl(pendVal) + '</b></div>' : '<div class="kv"><span>Taxa de coleta</span><b>− ' + brl(taxa) + '</b></div><div class="kv"><span>Percas</span><b>− ' + brl(perc) + '</b></div>') +
-    '<div class="sep"><div class="kv" style="font-size:18px"><b>' + (sou() === 'mercado' ? 'A pagar' : 'A receber') + '</b><b style="color:var(--g)">' + brl(rec - taxa - perc) + '</b></div></div><div class="s">' + (fS ? 'Acerto mensal. Vencido ou avaria é trocado pelo mesmo produto; se a troca não vier até o fechamento, ela sai da nota em quantidade e valor.' : 'Acerto mensal. Perca descontada pelo produto; taxa de coleta descontada no pagamento.') + '</div></div>';
+    '<div class="sep"><div class="kv" style="font-size:18px"><b>' + (sou() === 'mercado' ? 'A pagar' : 'A receber') + '</b><b style="color:var(--g)">' + brl(rec - taxa - perc) + '</b></div></div><div class="s">' + (fS ? 'Acerto mensal. Vencido ou avaria é trocado pelo mesmo produto; se a troca não vier até o fechamento, ela sai da nota em quantidade e valor.' : 'Acerto ' + (fq ? 'quinzenal' : 'mensal') + '. Perca descontada pelo produto; taxa de coleta descontada no pagamento.') + '</div></div>';
   {
     const cods = Object.keys(porProd).filter(c => porProd[c].rec || porProd[c].tr);
     let un = 0, val = 0;
-    o += '<div class="card"><div class="lab">FECHAMENTO DO MÊS · QUANTIDADES PARA A NOTA</div>' + (notaHtml(S.forn, mes) || '<div class="kv"><span>Nota fiscal do mês</span><span class="chip a">AGUARDANDO</span></div>');
+    o += '<div class="card"><div class="lab">FECHAMENTO ' + perTxt.toUpperCase() + ' · QUANTIDADES PARA A NOTA</div>' + (notaHtml(S.forn, mes) || '<div class="kv"><span>Nota fiscal ' + perTxt + '</span><span class="chip a">AGUARDANDO</span></div>');
     const zl = [];
     cods.forEach(c => { const r = porProd[c], q = Math.max(0, r.rec - r.tr); un += q; val += q * r.custo; if (q) zl.push(q + ' × ' + r.nome + ' — ' + brl(q * r.custo));
       o += '<div class="sep" style="gap:2px"><div class="kv"><b style="text-align:left">' + esc(r.nome) + '</b><b style="white-space:nowrap">' + q + ' un. · ' + brl(q * r.custo) + '</b></div><div class="s">Recebido ' + r.rec + (r.tr ? (fS ? ' − troca pendente ' : ' − perca ') + r.tr : '') + '</div></div>'; });
@@ -402,18 +418,18 @@ function extrato() {
     if (!fS && taxa) o += '<div class="sep"><div class="kv"><span>Desconto das coletas Pauvan (' + viag + (viag > 1 ? ' viagens' : ' viagem') + ')</span><b style="white-space:nowrap">− ' + brl(taxa) + '</b></div><div class="kv" style="font-size:17px"><b>A pagar no boleto ou Pix</b><b style="color:var(--g)">' + brl(val - taxa) + '</b></div><div class="s">A taxa de coleta não entra na nota: é descontada no pagamento.</div></div>';
     if (sou() === 'mercado' && un) {
       const f = fornAtual(), nm = MES[+mes.slice(5, 7) - 1];
-      let t = '*FECHAMENTO ' + nm.toUpperCase() + '/' + mes.slice(0, 4) + ' · MERCADO PAUVAN*\n' + f.nome + '\n\n*Itens para a nota fiscal:*\n' + zl.join('\n') + '\n\n*Total da nota: ' + un + ' unidades · ' + brl(val) + '*';
+      let t = '*FECHAMENTO ' + (fq ? perNome.toUpperCase() : nm.toUpperCase()) + '/' + mes.slice(0, 4) + ' · MERCADO PAUVAN*\n' + f.nome + '\n\n*Itens para a nota fiscal:*\n' + zl.join('\n') + '\n\n*Total da nota: ' + un + ' unidades · ' + brl(val) + '*';
       const ab = cods.filter(c => porProd[c].tr).map(c => porProd[c].tr + ' × ' + porProd[c].nome);
       if (ab.length) t += '\n\n' + (fS ? 'Já descontadas as trocas que não vieram: ' : 'Já descontadas as percas: ') + ab.join(', ');
       if (fS) t += '\n\nO mês já está fechado. Pode emitir a nota fiscal com essas quantidades, que estamos aguardando a nota para fazer o pagamento. O relatório completo também está no app Pauvan Conecta.';
       if (!fS && taxa) t += '\n\nDesconto das coletas Pauvan (' + viag + (viag > 1 ? ' viagens' : ' viagem') + '): − ' + brl(taxa) + '\n*Valor a pagar (boleto ou Pix): ' + brl(val - taxa) + '*';
       const num = w => w ? (w.length <= 11 ? '55' + w : w) : '', zb = (w, rot) => '<a class="btn zap" style="display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center" target="_blank" href="https://wa.me/' + num(w) + '?text=' + encodeURIComponent(t) + '">' + rot + '</a>';
-      o += zb(f.whatsapp, 'ENVIAR PARA ' + (f.id === 'helia' ? 'A HÉLIA' : 'O SOARES')) + zb(f.contador, 'ENVIAR PARA O CONTADOR') + '<button class="btn b2" data-a="copiar" data-k="' + esc(t) + '">COPIAR TEXTO</button>';
+      o += zb(f.whatsapp, 'ENVIAR PARA ' + (f.id === 'helia' ? 'A HÉLIA' : f.id === 'soares' ? 'O SOARES' : 'A ' + f.nome.toUpperCase())) + zb(f.contador, 'ENVIAR PARA O CONTADOR') + '<button class="btn b2" data-a="copiar" data-k="' + esc(t) + '">COPIAR TEXTO</button>';
     }
     o += '<div class="s">' + (fS ? 'O Soares' : 'A fornecedora') + ' emite a nota com essas quantidades: entregue menos ' + (fS ? 'troca que não veio.' : 'perca.') + ' Quando a nota chegar, o valor dela é conferido com este total.</div></div>';
   }
   o += '<div class="lab">LANÇAMENTOS</div>';
-  if (!lin.length) o += '<div class="card"><div class="s">Nenhum lançamento neste mês.</div></div>';
+  if (!lin.length) o += '<div class="card"><div class="s">Nenhum lançamento ' + (fq ? 'nesta quinzena.' : 'neste mês.') + '</div></div>';
   lin.forEach(l => {
     o += '<div class="card" style="gap:6px"><div class="kv"><span style="font-weight:700">' + dm(l.d) + ' · ' + l.t + '</span><b style="white-space:nowrap' + (l.v < 0 ? ';color:var(--vm)' : '') + '">' + (l.v < 0 ? '− ' + brl(-l.v) : l.v === 0 ? (l.st || 'troca') : brl(l.v)) + '</b></div><div class="s">' + l.s + '</div>' + (l.x ? '<div class="s" style="color:var(--am);font-weight:600">' + l.x + '</div>' : '') +
       (l.id && sou() === 'mercado' && l.d === h ? '<button class="lk" data-a="xperca" data-k="' + esc(l.id) + '">Excluir esta perca</button>' : '') + '</div>';
@@ -422,6 +438,95 @@ function extrato() {
 }
 
 /* ---------- telas ---------- */
+/* ---------- Produtores com acerto acumulado (Godoy, Presídio): kg ou unidade ---------- */
+const prodC = c => S.est.produtos.find(p => p.codigo === c && p.fornecedor === S.forn) || S.est.produtos.find(p => p.codigo === c) || { nome: c, desenho: '', custo: 0 };
+const apel = () => (fornAtual() || {}).ap || '';
+const qTxt = (c, q) => prodC(c).un ? Math.round(q) + ' un' : kgTxt(q) + ' kg';
+const daForn = l => (l || []).filter(r => r.fornecedor === S.forn);
+const gdAb = () => daForn(S.est.gd).filter(r => !r.ac), gdPa = () => daForn(S.est.gdPer).filter(r => !r.ac);
+const gdUlt = () => daForn(S.est.gdAc).sort((a, b) => a.em < b.em ? 1 : -1)[0];
+const r2 = v => Math.round(v * 100) / 100;
+const gdPreco = c => { const rs = daForn(S.est.gd).filter(r => r.codigo === c).sort((a, b) => a.em < b.em ? 1 : -1); return rs.length ? rs[0].custo : prodC(c).custo; };
+const somaQ2 = rs => { const kg = rs.filter(r => !prodC(r.codigo).un).reduce((a, r) => a + r.kg, 0), un = rs.filter(r => prodC(r.codigo).un).reduce((a, r) => a + r.kg, 0); return [un ? Math.round(un) + ' un' : '', kg ? kgTxt(kg) + ' kg' : ''].filter(x => x).join(' · ') || '0'; };
+function gdConta(desc) {
+  const ab = gdAb(), pa = gdPa(), m = {};
+  ab.forEach(r => { const x = m[r.codigo] || (m[r.codigo] = { codigo: r.codigo, nome: prodC(r.codigo).nome, un: !!prodC(r.codigo).un, kg: 0, v: 0, c: r.custo, dias: {} }); x.kg += r.kg; x.v += r.kg * r.custo; x.c = r.custo; x.dias[r.dia] = (x.dias[r.dia] || 0) + r.kg; });
+  const linhas = prods().filter(p => m[p.codigo]).map(p => m[p.codigo]), total = r2(linhas.reduce((a, x) => a + x.v, 0));
+  const fun = r2(total * 0.015), per = r2(pa.reduce((a, x) => a + x.kg * x.custo, 0)), dsc = desc ? 15 : 0;
+  const dias = ab.map(r => r.dia).filter((x, i, a) => a.indexOf(x) === i).sort();
+  return { forn: apel(), linhas, total, fun, per, desc: dsc, final: r2(total - fun - per - dsc), dias, percas: pa.map(x => ({ dia: x.dia, nome: prodC(x.codigo).nome, un: !!prodC(x.codigo).un, kg: x.kg, custo: x.custo, motivo: x.motivo, por: x.por })) };
+}
+function telaGd(f) {
+  const ac = veAcerto(), ab = gdAb(), pa = gdPa(), u = gdUlt();
+  let o = hdr(f.nome, f.sub || '', ['forns', 'Fornecedores']) + '<div class="w">';
+  if (DEMO) o += '<div class="seg">' + [['Ney', 'Como quem recebe (Ney)'], ['Ana Paula', 'Como Ana Paula']].map(v => '<button class="' + (S.est.quem.nome === v[0] ? 'on' : '') + '" data-a="comoKg" data-k="' + v[0] + '">' + v[1] + '</button>').join('') + '</div>';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (ac) { const c = gdConta(false);
+    o += '<div class="card" style="background:var(--amb);gap:6px"><div class="lab" style="color:var(--am)">EM ABERTO' + (u ? ' DESDE O ACERTO DE ' + dm(u.em) : '') + '</div><div class="kv" style="font-size:17px"><b style="text-align:left">' + c.dias.length + (c.dias.length === 1 ? ' entrega' : ' entregas') + '</b><b>' + somaQ2(ab) + '</b></div><div class="kv"><span>Valor das entregas</span><b style="font-size:22px">' + brl(c.total) + '</b></div>' + (pa.length ? '<div class="s">' + pa.length + (pa.length === 1 ? ' perca lançada' : ' percas lançadas') + ' · ' + brl(c.per) + '</div>' : '') + '<button class="btn" data-a="gdAcerto"' + (ab.length ? '' : ' disabled') + '>FAZER O ACERTO</button></div>'; }
+  o += '<button class="btn' + (ac ? ' b2' : '') + '" data-a="gdEsc" data-k="rec">REGISTRAR RECEBIMENTO</button><button class="btn b2" data-a="gdEsc" data-k="per">LANÇAR PERCA</button>';
+  if (ac) o += '<button class="btn b2" data-a="gdHist">ACERTOS ANTERIORES</button>';
+  const lista = ac ? ab : ab.filter(r => r.dia === S.est.hoje), dias = lista.map(r => r.dia).filter((x, i, a) => a.indexOf(x) === i).sort().reverse();
+  o += '<div class="lab">' + (ac ? 'ENTREGAS EM ABERTO' : 'RECEBIDO HOJE') + '</div>';
+  if (!dias.length) o += '<div class="card"><div class="s">' + (ac ? 'Nenhuma entrega em aberto.' : 'Nada recebido hoje ainda.') + '</div></div>';
+  dias.forEach(d => { const rs = lista.filter(r => r.dia === d);
+    o += '<div class="card" style="gap:6px"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(d) + '</b><b>' + somaQ2(rs) + '</b></div>' +
+      rs.map(r => '<div class="kv"><span style="display:flex;align-items:center;gap:8px">' + des(prodC(r.codigo).desenho, 28) + esc(prodC(r.codigo).nome) + '</span><span>' + qTxt(r.codigo, r.kg) + (ac ? ' · ' + brl(r.kg * r.custo) : '') + (r.dia === S.est.hoje ? ' <button class="lnk" data-a="gdX" data-k="' + esc(r.id) + '" aria-label="Excluir">✕</button>' : '') + '</span></div>' + (ac && r.custo_ant && r.custo !== r.custo_ant ? '<div class="faixa">PREÇO ALTERADO: ' + brl(r.custo_ant) + ' → ' + brl(r.custo) + ' · por ' + esc(r.por) + '</div>' : '')).join('') +
+      '<div class="s">Recebido por ' + rs.map(r => r.por).filter((x, i, a) => a.indexOf(x) === i).join(', ') + '</div></div>'; });
+  if (pa.length) { o += '<div class="lab" style="color:#b3261e">PERCAS EM ABERTO</div>';
+    pa.forEach(x => { o += '<div class="card" style="gap:4px;border-left:4px solid #b3261e"><div class="kv"><b style="text-align:left">' + des(prodC(x.codigo).desenho, 24) + ' ' + esc(prodC(x.codigo).nome) + '</b><b>' + qTxt(x.codigo, x.kg) + (ac ? ' · ' + brl(x.kg * x.custo) : '') + '</b></div><div class="s">' + dm(x.dia) + ' · ' + esc(x.motivo) + ' · por ' + esc(x.por) + (x.dia === S.est.hoje ? ' · <button class="lnk" data-a="gdXp" data-k="' + esc(x.id) + '">excluir</button>' : '') + '</div></div>'; }); }
+  return o + '</div>';
+}
+function telaGdEsc() {
+  const per = S.gdModo === 'per', f = fornAtual();
+  let o = hdr(per ? 'Lançar perca' : 'Registrar recebimento', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w"><div style="font-size:17px;font-weight:700">' + (per ? 'Qual produto estragou?' : 'Qual produto chegou?') + '</div><div class="grid">';
+  prods().forEach(p => { o += '<button class="fb" data-a="gdP" data-k="' + esc(p.codigo) + '">' + des(p.desenho, 56) + '<span>' + esc(p.nome) + '</span><span class="s">' + brl(gdPreco(p.codigo)) + (p.un ? ' a unidade' : ' kg') + '</span></button>'; });
+  return o + '</div></div>';
+}
+function telaGdCont() {
+  const f = fornAtual(), p = prodC(S.gdP), per = S.gdModo === 'per', mud = S.preco !== S.precoBase;
+  let o = hdr((per ? 'Perca de ' : 'Receber ') + p.nome.toLowerCase(), f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:8px"><div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(S.precoBase) + ' → ' + brl(S.preco) + ' a unidade</b>' : brl(S.preco) + ' a unidade') + '</div></div></div>';
+  if (per) o += '<div class="lab">MOTIVO</div><div class="seg" style="margin:0">' + ['Murchou', 'Estragou', 'Amassado'].map(m => '<button class="' + (S.motivo === m ? 'on' : '') + '" data-a="motivo" data-k="' + m + '">' + m + '</button>').join('') + '</div>';
+  else if (S.precoEd) o += '<div class="pr"><span class="s">Novo preço da unidade R$</span><input id="prIn" inputmode="decimal" value="' + dinheiro(S.preco) + '"><button class="btn" style="min-height:44px;width:auto;padding:0 16px" data-a="precoOk">OK</button></div><div class="s">Só troque se o ' + esc(f.ap) + ' avisou que o preço mudou.</div>';
+  else o += '<button class="btn b2" style="min-height:44px;font-size:14px" data-a="precoEd">TROCA DE PREÇO</button>';
+  o += '</div><div class="card" style="align-items:center;gap:10px"><div class="lab">' + (per ? 'QUANTAS UNIDADES ESTRAGARAM' : 'QUANTAS UNIDADES CHEGARAM') + '</div><div style="font-size:56px;font-weight:800;line-height:1">' + S.cq + '</div>' +
+    '<div style="display:flex;gap:8px;width:100%">' + [['-1', '−1'], ['1', '+1'], ['5', '+5'], ['10', '+10']].map(x => '<button class="btn b2" style="flex:1;min-height:56px;font-size:20px" data-a="cq" data-k="' + x[0] + '">' + x[1] + '</button>').join('') + '</div><button class="lnk" data-a="cq" data-k="0">zerar</button></div>';
+  o += '<button class="btn" data-a="gdContOk"' + (S.cq ? '' : ' disabled') + '>' + (per ? 'LANÇAR PERCA' : 'LANÇAR RECEBIMENTO') + '</button>';
+  return o + '</div>';
+}
+function telaGdAc() {
+  const f = fornAtual(), u = gdUlt(), sug = !(u && u.desc > 0), c = gdConta(S.gdDesc);
+  let o = hdr('Acerto do ' + f.ap, c.dias.length ? 'Entregas de ' + dm(c.dias[0]) + ' a ' + dm(c.dias[c.dias.length - 1]) : '', ['voltar', 'Voltar']) + '<div class="w">';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  o += '<div class="card" style="gap:6px"><div class="lab">ENTREGAS</div>' + c.linhas.map(x => '<div class="kv"><span style="display:flex;align-items:center;gap:8px">' + des(prodC(x.codigo).desenho, 28) + '<span>' + esc(x.nome) + '<br><small class="s">' + qTxt(x.codigo, x.kg) + ' × ' + brl(x.c) + '</small></span></span><b>' + brl(x.v) + '</b></div>').join('') +
+    '<div class="kv" style="border-top:1px solid var(--ln);padding-top:8px;font-size:17px"><b style="text-align:left">Total</b><b>' + brl(c.total) + '</b></div></div>';
+  o += '<div class="card" style="gap:8px"><div class="lab">DESCONTOS</div><div class="kv"><span>Funrural 1,5%</span><b style="color:#b3261e">− ' + brl(c.fun) + '</b></div>' +
+    '<div class="kv"><span>Percas' + (c.percas.length ? '<br><small class="s">' + c.percas.map(x => esc(x.nome.toLowerCase()) + ' ' + (x.un ? Math.round(x.kg) + ' un' : kgTxt(x.kg) + ' kg')).join(' · ') + '</small>' : '') + '</span><b style="color:#b3261e">− ' + brl(c.per) + '</b></div>' +
+    '<div class="kv"><span>Emissão da nota fiscal</span><b style="color:#b3261e">' + (S.gdDesc ? '− ' + brl(15) : 'não cobrado') + '</b></div>' +
+    '<div class="seg" style="margin:0">' + [[1, 'COBRAR R$ 15,00'], [0, 'NÃO COBRAR']].map(v => '<button class="' + (+!!S.gdDesc === v[0] ? 'on' : '') + '" data-a="gdDesc" data-k="' + v[0] + '">' + v[1] + '</button>').join('') + '</div>' +
+    '<div class="s">' + (u ? 'No acerto de ' + dm(u.em) + ' a nota ' + (u.desc > 0 ? 'foi cobrada' : 'não foi cobrada') + ', então neste ' + (sug ? 'cobra' : 'não cobra') + '.' : 'Primeiro acerto: cobra.') + '</div></div>';
+  o += '<div class="card" style="background:#e8f5ea;gap:4px"><div class="lab" style="color:var(--g)">VALOR FINAL A PAGAR</div><div style="font-size:34px;font-weight:800;color:var(--g)">' + brl(c.final) + '</div></div>';
+  o += '<button class="btn b2" data-a="gdRel">VER E IMPRIMIR O RELATÓRIO</button><button class="btn zap" data-a="gdZap">ENVIAR NO WHATSAPP</button><button class="btn" data-a="gdPago">PAGO ' + brl(c.final) + '</button>';
+  return o + '</div>';
+}
+function telaGdHist() {
+  const l = daForn(S.est.gdAc).sort((a, b) => a.em < b.em ? 1 : -1);
+  let o = hdr('Acertos do ' + apel(), 'Do mais novo para o mais antigo', ['voltar', 'Voltar']) + '<div class="w">';
+  if (!l.length) o += '<div class="card"><div class="s">Nenhum acerto ainda.</div></div>';
+  l.forEach(a => { o += '<div class="card" style="gap:6px"><div class="kv"><b style="text-align:left;font-size:17px">Acerto de ' + dm(a.em) + '</b><b style="font-size:20px;color:var(--g)">' + brl(a.final) + '</b></div><div class="s">Entregas de ' + dm(a.dias[0]) + ' a ' + dm(a.dias[a.dias.length - 1]) + ' · total ' + brl(a.total) + ' · Funrural ' + brl(a.fun) + ' · percas ' + brl(a.per) + ' · nota ' + (a.desc ? brl(a.desc) : 'não cobrada') + '</div><div class="s">Pago por ' + esc(a.por) + ' às ' + esc(a.em.slice(11)) + '</div>' + (a.linhas.length ? '<button class="btn b2" style="min-height:44px" data-a="gdRel" data-k="' + esc(a.id) + '">IMPRIMIR DE NOVO</button>' : '') + '</div>'; });
+  return o + '</div>';
+}
+function gdRelHtml(a) {
+  const td = 'style="border:1px solid #999;padding:4px 6px"', tdr = 'style="border:1px solid #999;padding:4px 6px;text-align:right"', n2 = v => Number(v).toFixed(2).replace('.', ','), q = (un, v) => !v ? '' : un ? String(Math.round(v)) : Number(v).toFixed(3).replace('.', ',');
+  let h = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Acerto ' + esc(a.forn) + ' ' + dm(a.em) + '</title><style>@page{size:A4 landscape;margin:12mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:Arial,sans-serif;font-size:12px;color:#111}table{border-collapse:collapse;width:100%}th{background:#e7efe3;border:1px solid #999;padding:4px 6px}.tot td{font-weight:bold}</style></head><body>';
+  h += '<div style="display:flex;align-items:center;gap:14px;background:#1F5C33;color:#fff;padding:12px 16px;border-radius:8px;margin-bottom:12px">' + LOGO.replace('src="logo.png"', 'src="' + new URL('logo.png', location.href).href + '"').replace('<img ', '<img style="height:54px;width:auto" ') + '<div style="width:2px;align-self:stretch;background:rgba(255,255,255,.75)"></div><div style="flex:1"><div style="font-size:20px;font-weight:bold">Pauvan <span style="color:#A9E824">Conecta</span></div><div style="font-size:15px;font-weight:bold;margin-top:2px">CONTROLE DE RECEBIMENTO · VERDURAS ' + esc(a.forn.toUpperCase()) + '</div><div style="color:#DCEBDD">Período: ' + dm(a.dias[0]) + ' a ' + dm(a.dias[a.dias.length - 1]) + ' · acerto em ' + dm(a.em) + '/' + a.em.slice(0, 4) + ' · ' + esc(a.por) + '</div></div></div>';
+  h += '<table><tr><th>PRODUTO</th><th>UN.</th><th>V. UNI.</th>' + a.dias.map(d => '<th>' + dm(d) + '</th>').join('') + '<th>TOTAL</th><th>V. TOTAL</th></tr>';
+  a.linhas.forEach(x => { h += '<tr><td ' + td + '>' + esc(x.nome.toUpperCase()) + '</td><td ' + td + '>' + (x.un ? 'UN' : 'KG') + '</td><td ' + tdr + '>' + n2(x.c) + '</td>' + a.dias.map(d => '<td ' + tdr + '>' + q(x.un, x.dias[d]) + '</td>').join('') + '<td ' + tdr + '>' + q(x.un, x.kg) + '</td><td ' + tdr + '>' + n2(x.v) + '</td></tr>'; });
+  h += '</table><table style="width:320px;margin:12px 0 0 auto">' + [['TOTAL', a.total], ['FUNRURAL 1,5%', -a.fun], ['PERCAS', -a.per], ['DESC. EMISSÃO NF', -a.desc], ['VALOR FINAL', a.final]].map((x, i) => '<tr' + (i === 4 ? ' class="tot" style="background:#e7efe3;font-size:14px"' : '') + '><td ' + td + '>' + x[0] + '</td><td ' + tdr + '>R$ ' + n2(x[1]) + '</td></tr>').join('') + '</table>';
+  if (a.percas.length) h += '<div style="margin-top:14px;font-weight:bold">PERCAS</div><table><tr><th>DATA</th><th>PRODUTO</th><th>QTD.</th><th>MOTIVO</th><th>V. UN.</th><th>V. TOTAL</th><th>RESPONSÁVEL</th></tr>' + a.percas.map(x => '<tr><td ' + td + '>' + dm(x.dia) + '</td><td ' + td + '>' + esc(x.nome.toUpperCase()) + '</td><td ' + tdr + '>' + q(x.un, x.kg) + (x.un ? ' un' : ' kg') + '</td><td ' + td + '>' + esc(x.motivo) + '</td><td ' + tdr + '>' + n2(x.custo) + '</td><td ' + tdr + '>' + n2(x.kg * x.custo) + '</td><td ' + td + '>' + esc(x.por) + '</td></tr>').join('') + '<tr class="tot" style="background:#e7efe3"><td ' + td + ' colspan="5">TOTAL DAS PERCAS</td><td ' + tdr + '>R$ ' + n2(a.per) + '</td><td ' + td + '></td></tr></table>';
+  return h + '</body></html>';
+}
 function telaPin() {
   let o = marca('Entrega, conferência e controle.') + '<div class="w">';
   o += '<div style="font-size:19px;font-weight:700">' + (TOKEN ? esc(S.nomeF || 'Acesso do parceiro') : 'Acesso do Mercado Pauvan') + '</div><div class="s">' + (TOKEN ? 'Digite seu PIN de 4 números.' : 'Use o mesmo PIN do App Pauvan.') + '</div>';
@@ -481,11 +586,12 @@ function lcdHtml() { const d = S.rol; return (d[0] ? seg7(d[0]) : seg7(-1)) + se
 const precoAtual = f => { const rs = (S.est.receb || []).filter(r => r.fornecedor === f.id).sort((a, b) => a.em < b.em ? 1 : -1); return rs.length ? rs[0].custo : prods()[0].custo; };
 const dinheiro = v => Number(v).toFixed(2).replace('.', ',');
 function telaPesar() {
-  const f = fornAtual(), p = prods()[0], v = rolVal(), soma = S.pes.reduce((a, b) => a + b, 0) + v, mud = S.preco !== S.precoBase;
-  let o = hdr('Receber mandioca', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  const f = fornAtual(), p = S.gdP ? prodC(S.gdP) : prods()[0], per = S.gdP && S.gdModo === 'per', v = rolVal(), soma = S.pes.reduce((a, b) => a + b, 0) + v, mud = S.preco !== S.precoBase;
+  let o = hdr((per ? 'Perca de ' : 'Receber ') + p.nome.toLowerCase(), f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
-  o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:8px"><div style="display:flex;align-items:center;gap:12px">' + des('mandioca', 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(S.precoBase) + ' → ' + brl(S.preco) + ' kg</b>' : brl(S.preco) + ' kg') + '</div></div></div>';
-  if (S.precoEd) o += '<div class="pr"><span class="s">Novo preço do kg R$</span><input id="prIn" inputmode="decimal" value="' + dinheiro(S.preco) + '"><button class="btn" style="min-height:44px;width:auto;padding:0 16px" data-a="precoOk">OK</button></div><div class="s">Só troque se o Claudinei avisou que o preço mudou.</div>';
+  o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:8px"><div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(S.precoBase) + ' → ' + brl(S.preco) + ' kg</b>' : brl(S.preco) + ' kg') + '</div></div></div>';
+  if (per) o += '<div class="lab">MOTIVO</div><div class="seg" style="margin:0">' + ['Murchou', 'Estragou', 'Amassado'].map(m => '<button class="' + (S.motivo === m ? 'on' : '') + '" data-a="motivo" data-k="' + m + '">' + m + '</button>').join('') + '</div>';
+  else if (S.precoEd) o += '<div class="pr"><span class="s">Novo preço do kg R$</span><input id="prIn" inputmode="decimal" value="' + dinheiro(S.preco) + '"><button class="btn" style="min-height:44px;width:auto;padding:0 16px" data-a="precoOk">OK</button></div><div class="s">Só troque se o ' + (f.gd ? f.ap : 'Claudinei') + ' avisou que o preço mudou.</div>';
   else o += '<button class="btn b2" style="min-height:44px;font-size:14px" data-a="precoEd">' + 'TROCA DE PREÇO' + '</button>';
   o += '</div>';
   if (S.pes.length) o += '<div class="card" style="gap:6px"><div class="lab">PESAGENS JÁ SOMADAS</div>' + S.pes.map((x, i) => '<div class="kv"><span>' + (i + 1) + 'ª pesagem</span><b>' + kgTxt(x) + ' kg <button class="lnk" data-a="xpes" data-k="' + i + '" aria-label="Tirar pesagem">✕</button></b></div>').join('') + '</div>';
@@ -493,17 +599,17 @@ function telaPesar() {
   const col = i => '<div class="pdW"><div class="pdC" data-c="' + i + '"><div class="pd0"></div>' + [0,1,2,3,4,5,6,7,8,9].map(n => '<div data-n="' + n + '"' + (n === S.rol[i] ? ' class="on"' : '') + '>' + n + '</div>').join('') + '<div class="pd0"></div></div></div>';
   o += '<div class="pdRl">' + col(0) + col(1) + '<span class="pdV">,</span>' + col(2) + col(3) + col(4) + '</div>';
   o += '<div class="pdLb"><span>10 kg</span><span>1 kg</span><i></i><span>100 g</span><span>10 g</span><span>1 g</span></div>';
-  o += '<div id="rlTxt" class="pdTx' + (v ? '' : ' z') + '">' + (v ? kgTxt(v) + ' kg chegando' : 'gire os números para marcar o peso') + '</div></div>';
+  o += '<div id="rlTxt" class="pdTx' + (v ? '' : ' z') + '">' + (v ? kgTxt(v) + (per ? ' kg perdidos' : ' kg chegando') : 'gire os números para marcar o peso') + '</div></div>';
   o += '<button class="btn b2" data-a="outraPes" id="bOutra"' + (v ? '' : ' disabled') + '>+ SOMAR OUTRA PESAGEM</button>';
-  o += '<div class="card"><div class="kv" style="font-size:17px"><b>Total recebido</b><b id="rlTot">' + kgTxt(soma) + ' kg</b></div></div>';
-  o += '<button class="btn" data-a="lancarKg" id="bLanc"' + (soma ? '' : ' disabled') + '>LANÇAR RECEBIMENTO</button>';
+  o += '<div class="card"><div class="kv" style="font-size:17px"><b>' + (per ? 'Total da perca' : 'Total recebido') + '</b><b id="rlTot">' + kgTxt(soma) + ' kg</b></div></div>';
+  o += '<button class="btn" data-a="lancarKg" id="bLanc"' + (soma ? '' : ' disabled') + '>' + (per ? 'LANÇAR PERCA' : 'LANÇAR RECEBIMENTO') + '</button>';
   return o + '</div>';
 }
 function rolAtualiza() {
   const v = rolVal(), soma = S.pes.reduce((a, b) => a + b, 0) + v, t = document.getElementById('rlTxt');
   if (!t) return;
   document.getElementById('lcd').innerHTML = lcdHtml();
-  t.textContent = v ? kgTxt(v) + ' kg chegando' : 'gire os números para marcar o peso'; t.className = 'pdTx' + (v ? '' : ' z');
+  t.textContent = v ? kgTxt(v) + (S.gdP && S.gdModo === 'per' ? ' kg perdidos' : ' kg chegando') : 'gire os números para marcar o peso'; t.className = 'pdTx' + (v ? '' : ' z');
   document.getElementById('rlTot').textContent = kgTxt(soma) + ' kg';
   document.getElementById('bOutra').disabled = !v; document.getElementById('bLanc').disabled = !soma;
 }
@@ -588,6 +694,7 @@ function telaHist() {
 }
 function telaForn() {
   const f = fornAtual(), merc = sou() === 'mercado', ab = abertos();
+  if (f.gd) return telaGd(f);
   if (f.un) return telaUn(f);
   if (f.kg) return telaKg(f);
   let o = merc ? hdr(f.nome, semPed(f) ? 'Entrega própria · sem taxa de coleta' : '', ['forns', 'Fornecedores']) : marca(f.nome + ' · ' + dataLonga(S.est.hoje));
@@ -717,6 +824,10 @@ function render() {
   else if (S.tela === 'nova') o += telaNova();
   else if (S.tela === 'pesar') o += telaPesar();
   else if (S.tela === 'contar') o += telaContar();
+  else if (S.tela === 'gdEsc') o += telaGdEsc();
+  else if (S.tela === 'gdAc') o += telaGdAc();
+  else if (S.tela === 'gdCont') o += telaGdCont();
+  else if (S.tela === 'gdHist') o += telaGdHist();
   else if (S.tela === 'hist') o += telaHist();
   else o += telaForn();
   if (S.load) o += '<div class="load">Carregando…</div>';
@@ -752,7 +863,7 @@ window.addEventListener('popstate', e => {
   if (NAV_OVER) { Object.assign(S, NAV_OVER); NAV_OVER = null; NAV_REPLACE = true; } else NAV_POP = true;
   const p = S.est.pedidos.find(x => x.id === (S.tela === 'feito' ? S.feito : S.ped));
   if ((S.tela === 'abrir' && (!p || p.status === 'RECEBIDO' || p.status === 'CANCELADO')) || (S.tela === 'feito' && !p)) { S.tela = 'forn'; if (NAV_POP) { NAV_POP = false; NAV_REPLACE = true; } }
-  if ((S.tela === 'pesar' && !S.rol) || (S.tela === 'contar' && !S.cnt)) S.tela = 'forn';
+  if ((S.tela === 'pesar' && !S.rol) || (S.tela === 'contar' && !S.cnt) || (S.tela === 'gdCont' && !S.gdP)) S.tela = 'forn';
   if (S.tela === 'hist' && !S.hm) S.hm = S.est.hoje.slice(0, 7);
   if (S.tela === 'abrir') { AC.abrir(S.ped, null, true); return; }
   render(); window.scrollTo(0, 0);
@@ -819,7 +930,26 @@ const AC = {
   precoEd() { S.precoEd = true; render(); const x = document.getElementById('prIn'); if (x) { x.focus(); x.select(); } },
   precoOk() { const v = parseFloat(String(document.getElementById('prIn').value).replace(',', '.')); if (!(v > 0) || v > 100) { S.erro = 'Preço do kg inválido.'; render(); return; } S.erro = ''; S.preco = Math.round(v * 100) / 100; S.precoEd = false; render(); },
   xpes(k) { S.pes.splice(+k, 1); render(); },
-  async lancarKg() { const v = rolVal(), ps = S.pes.concat(v ? [v] : []); if (await chamar('receb_lancar', { fornecedor: S.forn, pesagens: ps, custo: S.preco, custo_ant: S.precoBase })) navVoltar(null, { tela: 'forn' }); },
+  gdEsc(k) { S.gdModo = k; S.erro = ''; S.tela = 'gdEsc'; render(); window.scrollTo(0, 0); },
+  gdP(k) { if (prodC(k).un) { S.gdP = k; S.cq = 0; S.precoBase = S.preco = gdPreco(k); S.precoEd = false; S.motivo = 'Murchou'; S.erro = ''; S.tela = 'gdCont'; render(); window.scrollTo(0, 0); return; } S.gdP = k; S.rol = [0, 0, 0, 0, 0]; S.pes = []; S.precoBase = S.preco = gdPreco(k); S.precoEd = false; S.motivo = 'Murchou'; S.erro = ''; S.tela = 'pesar'; render(); window.scrollTo(0, 0); },
+  async gdX(k) { await chamar('gd_excluir', { id: k }); render(); },
+  async gdXp(k) { await chamar('gd_excluir', { id: k }); render(); },
+  gdAcerto() { const u = gdUlt(); S.gdDesc = !(u && u.desc > 0); S.erro = ''; S.tela = 'gdAc'; render(); window.scrollTo(0, 0); },
+  gdDesc(k) { S.gdDesc = k === '1'; render(); },
+  gdHist() { S.tela = 'gdHist'; render(); window.scrollTo(0, 0); },
+  gdRel(k) { const c = k ? (S.est.gdAc || []).find(a => a.id === k) : Object.assign({ em: S.est.hoje + ' ' + new Date(Date.now() - 4 * 3600000).toISOString().slice(11, 16), por: S.est.quem.nome }, gdConta(S.gdDesc)); const h = gdRelHtml(c); window.__ultimoRel = h;
+    const w = window.open('', '_blank'); if (w) { w.document.write(h.replace('</body>', '<script>setTimeout(function(){print()},400)<\/script></body>')); w.document.close(); } else { S.erro = 'O celular bloqueou a janela do relatório.'; render(); } },
+  gdZap() { const c = gdConta(S.gdDesc), t = '*Mercado Pauvan · acerto das verduras (' + apel() + ')*\n' + dataLonga(S.est.hoje) + ' · entregas de ' + dm(c.dias[0]) + ' a ' + dm(c.dias[c.dias.length - 1]) + '\n\n' + c.linhas.map(x => x.nome + ': ' + qTxt(x.codigo, x.kg) + ' × ' + brl(x.c) + ' = ' + brl(x.v)).join('\n') + '\n\nTotal: ' + brl(c.total) + '\nFunrural 1,5%: − ' + brl(c.fun) + '\nPercas: − ' + brl(c.per) + '\nEmissão da nota: ' + (c.desc ? '− ' + brl(c.desc) : 'não cobrada') + '\n\n*Valor final: ' + brl(c.final) + '*';
+    window.__ultimoZap = t; try { navigator.clipboard.writeText(t); } catch (e) {} window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); },
+  cq(k) { S.cq = k === '0' ? 0 : Math.max(0, Math.min(999, S.cq + (+k))); render(); },
+  async gdContOk() { const per = S.gdModo === 'per';
+    if (await chamar(per ? 'gd_perca' : 'gd_lancar', { fornecedor: S.forn, codigo: S.gdP, pesagens: [S.cq], kg: S.cq, custo: S.preco, custo_ant: S.precoBase, motivo: S.motivo })) { S.gdP = null;
+      if (navProf() >= 2) { NAV_OVER = { tela: 'forn' }; history.go(-2); } else { S.tela = 'forn'; NAV_REPLACE = true; render(); window.scrollTo(0, 0); } } },
+  async gdPago() { if (await chamar('gd_acerto', { fornecedor: S.forn, desc: !!S.gdDesc })) { S.tela = 'gdHist'; NAV_REPLACE = true; render(); window.scrollTo(0, 0); } },
+  async lancarKg() { if (S.gdP && fornAtual().gd) { const v = rolVal(), ps = S.pes.concat(v ? [v] : []), per = S.gdModo === 'per';
+      if (await chamar(per ? 'gd_perca' : 'gd_lancar', { fornecedor: S.forn, codigo: S.gdP, pesagens: ps, kg: ps.reduce((a, b) => a + b, 0), custo: S.preco, custo_ant: S.precoBase, motivo: S.motivo })) { S.gdP = null;
+        if (navProf() >= 2) { NAV_OVER = { tela: 'forn' }; history.go(-2); } else { S.tela = 'forn'; NAV_REPLACE = true; render(); window.scrollTo(0, 0); } }
+      return; } const v = rolVal(), ps = S.pes.concat(v ? [v] : []); if (await chamar('receb_lancar', { fornecedor: S.forn, pesagens: ps, custo: S.preco, custo_ant: S.precoBase })) navVoltar(null, { tela: 'forn' }); },
   async xreceb(k) { if (confirm('Excluir este recebimento?')) { await chamar('receb_excluir', { id: k }); render(); } },
   quer(k) { S.quer = S.quer || {}; S.quer[k] = !S.quer[k]; render(); },
   zapQuer() {
