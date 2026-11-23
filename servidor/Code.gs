@@ -164,7 +164,7 @@ function estado_(quem) {
   var meu = quem.tipo === 'fornecedor' ? quem.fornecedor : null;
   var forn = ler_('FORNECEDORES').filter(function (f) { return sim_(f.ativo) && (!meu || txt_(f.id) === meu) && podeVer_(f, quem); }).map(function (f) {
     var tp = txt_(f.tipo).toUpperCase();
-    var o = { id: txt_(f.id), nome: txt_(f.nome), grupo: txt_(f.grupo), tem_pedido: sim_(f.tem_pedido), taxa: num_(f.taxa_coleta), fechamento: txt_(f.fechamento), kg: tp === 'KG' || tp === 'UN' || tp === 'AC', un: tp === 'UN' };
+    var o = { id: txt_(f.id), nome: txt_(f.nome), grupo: txt_(f.grupo), tem_pedido: sim_(f.tem_pedido), taxa: num_(f.taxa_coleta), fechamento: txt_(f.fechamento), kg: tp === 'KG' || tp === 'UN' || tp === 'AC', un: tp === 'UN', mensal: tp === 'UN' && txt_(f.fechamento).toUpperCase() === 'MENSAL' };
     if (tp === 'AC') { o.gd = true; o.ap = o.nome.split(' · ')[0]; o.sub = 'Produtor rural · ' + (SUB_AC[o.fechamento.toUpperCase()] || 'acerto acumulado') + ' · nota fiscal depois'; }
     if (!meu) { o.whatsapp = txt_(f.whatsapp).replace(/\D/g, ''); o.contador = txt_(f.contador).replace(/\D/g, ''); o.token = txt_(f.token); }
     return o;

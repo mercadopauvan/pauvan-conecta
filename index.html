@@ -624,6 +624,30 @@ function rolIniciar() {
 }
 const unTot = r => r.itens.reduce((a, i) => a + i.qtd, 0), unVal = r => r.itens.reduce((a, i) => a + i.qtd * i.custo, 0);
 const precoUn = (f, c) => { const rs = (S.est.un || []).filter(r => r.fornecedor === f.id).sort((a, b) => a.em < b.em ? 1 : -1); for (const r of rs) { const i = r.itens.find(x => x.codigo === c); if (i) return i.custo; } return (S.est.produtos.find(p => p.codigo === c) || {}).custo || 0; };
+function telaMes(f) {
+  const ac = veAcerto(), h = S.est.hoje, mes = S.mesD || h.slice(0, 7), todos = (S.est.un || []).filter(r => r.fornecedor === f.id);
+  const rs = todos.filter(r => r.dia.slice(0, 7) === mes).sort((a, b) => a.em < b.em ? 1 : -1), hj = rs.filter(r => r.dia === h);
+  const tq = rs.reduce((a, r) => a + unTot(r), 0), tv = rs.reduce((a, r) => a + unVal(r), 0), nome = MES[+mes.slice(5, 7) - 1] + ' de ' + mes.slice(0, 4);
+  let o = hdr(f.nome, 'Entrega no mercado · nota fiscal no fim do mês', ['forns', 'Fornecedores']) + '<div class="w">';
+  if (DEMO) o += '<div class="seg">' + [['Ney', 'Como quem recebe (Ney)'], ['Ana Paula', 'Como Ana Paula']].map(v => '<button class="' + (S.est.quem.nome === v[0] ? 'on' : '') + '" data-a="comoKg" data-k="' + v[0] + '">' + v[1] + '</button>').join('') + '</div>';
+  if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (!ac) o += '<div class="card" style="gap:8px">' + prods().map(p => '<div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 48) + '<div style="flex:1"><b>' + esc(p.nome) + '</b><div class="s">' + brl(precoUn(f, p.codigo)) + ' a unidade</div></div></div>').join('') + '<div class="s">Eles perguntam quanto vai querer, você fala e confere o que chegou. Perca é trocada na hora.</div></div>';
+  o += '<button class="btn" data-a="contar">REGISTRAR RECEBIMENTO</button>';
+  if (ac) {
+    o += '<div class="card" style="gap:6px"><div style="display:flex;align-items:center;justify-content:space-between"><button class="lnk" data-a="mesAnt" style="font-size:22px">‹</button><b style="font-size:17px">' + nome + '</b><button class="lnk" data-a="mesProx" style="font-size:22px"' + (mes >= h.slice(0, 7) ? ' disabled' : '') + '>›</button></div>' +
+      '<div class="kv"><span>Entregas no mês</span><b>' + rs.length + '</b></div><div class="kv"><span>Pães recebidos</span><b>' + tq + ' un</b></div>' +
+      '<div class="kv" style="border-top:1px solid var(--ln);padding-top:8px"><b style="text-align:left;font-size:17px">Total do mês</b><b style="font-size:24px;color:var(--g)">' + brl(tv) + '</b></div></div>';
+    o += notaHtml(f.id, mes) || '<div class="card" style="gap:6px;border-left:4px solid var(--am)"><div class="kv"><b style="text-align:left">Nota fiscal do mês</b><b style="color:var(--am)">AGUARDANDO</b></div><div class="s">Quando a nota cair no Plenus, o Conecta confere com o total acima e avisa se bateu.</div></div>';
+    o += '<button class="btn zap" data-a="mesZap">ENVIAR O FECHAMENTO PARA A ' + esc(f.nome.split(' ')[0].toUpperCase()) + '</button>';
+  }
+  const lista = ac ? rs : hj;
+  o += '<div class="lab">' + (ac ? 'ENTREGAS DO MÊS' : 'RECEBIDO HOJE') + '</div>';
+  if (!lista.length) o += '<div class="card"><div class="s">' + (ac ? 'Nenhuma entrega neste mês.' : 'Nada recebido hoje ainda.') + '</div></div>';
+  lista.forEach(r => { o += '<div class="card" style="gap:6px"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(r.dia) + '</b><b>' + unTot(r) + ' un' + (ac ? ' · ' + brl(unVal(r)) : '') + '</b></div>' +
+    r.itens.map(i => '<div class="kv"><span style="display:flex;align-items:center;gap:8px">' + des((S.est.produtos.find(p => p.codigo === i.codigo && p.fornecedor === f.id) || {}).desenho, 28) + esc(i.nome) + '</span><span>' + i.qtd + ' un' + (ac ? ' × ' + brl(i.custo) : '') + '</span></div>').join('') +
+    '<div class="s">Recebido por ' + esc(r.por) + ' às ' + esc(r.em.slice(11)) + '</div>' + (r.dia === h ? '<button class="btn pg" data-a="xun" data-k="' + esc(r.id) + '">Excluir este recebimento</button>' : '') + '</div>'; });
+  return o + '</div>';
+}
 function telaUn(f) {
   const ac = veAcerto(), rs = (S.est.un || []).filter(r => r.fornecedor === f.id).sort((a, b) => a.em < b.em ? 1 : -1);
   const hj = rs.filter(r => r.dia === S.est.hoje), ap = rs.filter(r => !r.pago_por);
@@ -658,9 +682,9 @@ function telaUn(f) {
 }
 function telaContar() {
   const f = fornAtual(), ps = prods(), tot = ps.reduce((a, p) => a + (S.cnt[p.codigo] || 0), 0);
-  let o = hdr('Receber alface', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  let o = hdr(f.id === 'milton' ? 'Receber alface' : 'Receber ' + prods().map(p => p.nome.toLowerCase()).join(' e '), f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
-  o += '<div class="s">Conte os pés de alface que chegaram. Use +5 e +10 para contar mais rápido.</div>';
+  o += '<div class="s">' + (f.id === 'milton' ? 'Conte os pés de alface que chegaram.' : 'Conte o que chegou.') + ' Use +5 e +10 para contar mais rápido.</div>';
   ps.forEach(p => { const q = S.cnt[p.codigo] || 0, base = precoUn(f, p.codigo), pr = S.pcu[p.codigo], mud = pr !== base;
     o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:10px"><div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 52) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(base) + ' → ' + brl(pr) + ' a unidade</b>' : brl(pr) + ' a unidade') + '</div></div></div>';
     o += '<div class="cnt"><button class="sq" data-a="cnt" data-k="' + p.codigo + '|-1"' + (q ? '' : ' disabled') + '>−1</button><b class="cn' + (q ? '' : ' z') + '">' + q + '</b><button class="sq" data-a="cnt" data-k="' + p.codigo + '|1">+1</button></div>';
@@ -695,6 +719,7 @@ function telaHist() {
 function telaForn() {
   const f = fornAtual(), merc = sou() === 'mercado', ab = abertos();
   if (f.gd) return telaGd(f);
+  if (f.mensal) return telaMes(f);
   if (f.un) return telaUn(f);
   if (f.kg) return telaKg(f);
   let o = merc ? hdr(f.nome, semPed(f) ? 'Entrega própria · sem taxa de coleta' : '', ['forns', 'Fornecedores']) : marca(f.nome + ' · ' + dataLonga(S.est.hoje));
@@ -909,6 +934,11 @@ const AC = {
   },
   hist() { S.hm = S.est.hoje.slice(0, 7); S.tela = 'hist'; render(); window.scrollTo(0, 0); },
   hmes(k) { const [y, m] = S.hm.split('-').map(Number), d = new Date(Date.UTC(y, m - 1 + (+k), 1)); S.hm = d.toISOString().slice(0, 7); render(); },
+  mesAnt() { const m = S.mesD || S.est.hoje.slice(0, 7); const d = new Date(+m.slice(0, 4), +m.slice(5, 7) - 2, 1); S.mesD = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); render(); },
+  mesProx() { const m = S.mesD || S.est.hoje.slice(0, 7); const d = new Date(+m.slice(0, 4), +m.slice(5, 7), 1); S.mesD = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); render(); },
+  mesZap() { const f = fornAtual(), m = S.mesD || S.est.hoje.slice(0, 7), rs = (S.est.un || []).filter(r => r.fornecedor === f.id && r.dia.slice(0, 7) === m).sort((a, b) => a.dia < b.dia ? -1 : 1);
+    const t = '*Mercado Pauvan · fechamento de ' + MES[+m.slice(5, 7) - 1] + '*\n\n' + rs.map(r => dm(r.dia) + ': ' + r.itens.map(i => i.qtd + ' ' + i.nome.toLowerCase()).join(', ')).join('\n') + '\n\nTotal: ' + rs.reduce((a, r) => a + unTot(r), 0) + ' un · *' + brl(rs.reduce((a, r) => a + unVal(r), 0)) + '*\n\nPode emitir a nota fiscal do mês, por favor.';
+    window.__ultimoZap = t; const w = String(f.whatsapp || '').replace(/\D/g, ''); window.open('https://wa.me/' + (w ? (w.length <= 11 ? '55' + w : w) : '') + '?text=' + encodeURIComponent(t), '_blank'); },
   contar() { const f = fornAtual(); S.cnt = {}; S.pcu = {}; prods().forEach(p => { S.pcu[p.codigo] = precoUn(f, p.codigo); }); S.pEd = null; S.erro = ''; S.tela = 'contar'; render(); window.scrollTo(0, 0); },
   cnt(k) { const [c, n] = k.split('|'); const v = +n; S.cnt[c] = v === 0 ? 0 : Math.max(0, Math.min(999, (S.cnt[c] || 0) + v)); const y = window.scrollY; render(); window.scrollTo(0, y); },
   pUnEd(k) { S.pEd = k; const y = window.scrollY; render(); window.scrollTo(0, y); const x = document.getElementById('prIn'); if (x) { x.focus(); x.select(); } },
