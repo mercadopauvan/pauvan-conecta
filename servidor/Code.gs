@@ -249,7 +249,7 @@ function acumulado_(forn) {
   ler_('PERCAS').forEach(function (r) {
     var fid = txt_(r.fornecedor);
     if (!ids[fid] || txt_(r.acerto)) return;
-    out.gdPer.push({ id: txt_(r.id), fornecedor: fid, dia: txt_(r.data).slice(0, 10), codigo: txt_(r.codigo), kg: num_(r.qtd), custo: num_(r.custo), motivo: txt_(r.motivo), por: txt_(r.lancado_por), ac: '' });
+    out.gdPer.push({ id: txt_(r.id), fornecedor: fid, dia: txt_(r.data).slice(0, 10), em: txt_(r.lancado_em), codigo: txt_(r.codigo), kg: num_(r.qtd), custo: num_(r.custo), motivo: txt_(r.motivo), por: txt_(r.lancado_por), ac: '' });
   });
   var cont = {};
   ler_('ACERTOS').slice().reverse().forEach(function (a) {
@@ -262,6 +262,15 @@ function acumulado_(forn) {
     out.gdAc.push(d);
   });
   return out;
+}
+/* Data da entrega (produtor rural): hoje por padrão; retroativa só no mês atual ou no anterior. */
+function diaRetro_(req) {
+  var dg = hoje_(), rdg = txt_(req.dia).slice(0, 10);
+  if (!rdg || rdg === dg) return dg;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(rdg) || rdg > dg) throw new Error('Data inválida.');
+  var ym = dg.slice(0, 7).split('-').map(Number), minD = ym[1] === 1 ? (ym[0] - 1) + '-12-01' : ym[0] + '-' + ('0' + (ym[1] - 1)).slice(-2) + '-01';
+  if (rdg < minD) throw new Error('Só dá para lançar no mês atual ou no mês anterior.');
+  return rdg;
 }
 function r2_(v) { return Math.round(v * 100) / 100; }
 function contaAc_(f, desc) {
@@ -382,6 +391,7 @@ function agir_(a, req, quem) {
   } else if (a === 'receb_lancar' || a === 'un_lancar') {
     soMercado_(quem);
     var fr = fornVisivel_(req.fornecedor, quem), tr = txt_(fr.tipo).toUpperCase(), agr = agora_(), idr = novoId_('R'), lr = [];
+    var dr = txt_(fr.grupo).toUpperCase() === 'PRODUTORES RURAIS' ? diaRetro_(req) : hoje_();
     var prs = ler_('PRODUTOS').filter(function (p) { return sim_(p.ativo) && txt_(p.fornecedor) === txt_(fr.id); });
     var preco_ = function (v) { var n = Math.round(num_(v) * 100) / 100; if (!(n > 0) || n > 100) throw new Error('Preço inválido.'); return n; };
     if (a === 'receb_lancar') {
@@ -389,14 +399,14 @@ function agir_(a, req, quem) {
       var ps = (req.pesagens || []).map(function (v) { return Math.round(num_(v) * 1000) / 1000; }).filter(function (v) { return v > 0 && v < 100; });
       if (!ps.length) throw new Error('Gire a roleta até o peso da balança.');
       var p0 = prs[0], kg = ps.reduce(function (s, v) { return s + v; }, 0);
-      lr.push({ id: idr, fornecedor: txt_(fr.id), dia: hoje_(), em: agr, por: quem.nome, codigo: txt_(p0.codigo), nome: txt_(p0.nome), qtd: Math.round(kg * 1000) / 1000, custo: preco_(req.custo), custo_ant: preco_(req.custo_ant || req.custo), pesagens: ps.map(function (v) { return String(v).replace('.', ','); }).join(';') });
+      lr.push({ id: idr, fornecedor: txt_(fr.id), dia: dr, em: agr, por: quem.nome, codigo: txt_(p0.codigo), nome: txt_(p0.nome), qtd: Math.round(kg * 1000) / 1000, custo: preco_(req.custo), custo_ant: preco_(req.custo_ant || req.custo), pesagens: ps.map(function (v) { return String(v).replace('.', ','); }).join(';') });
     } else {
       if (tr !== 'UN') throw new Error('Este fornecedor não é por unidade.');
       (req.itens || []).forEach(function (i) {
         var p = prs.filter(function (x) { return txt_(x.codigo) === String(i.codigo); })[0], q = Math.floor(num_(i.qtd));
         if (!p || !(q > 0)) return;
         if (q > 999) throw new Error('Quantidade inválida.');
-        lr.push({ id: idr, fornecedor: txt_(fr.id), dia: hoje_(), em: agr, por: quem.nome, codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: q, custo: preco_(i.custo), custo_ant: preco_(i.custo_ant || i.custo) });
+        lr.push({ id: idr, fornecedor: txt_(fr.id), dia: dr, em: agr, por: quem.nome, codigo: txt_(p.codigo), nome: txt_(p.nome), qtd: q, custo: preco_(i.custo), custo_ant: preco_(i.custo_ant || i.custo) });
       });
       if (!lr.length) throw new Error('Conte pelo menos um produto.');
     }
@@ -412,7 +422,7 @@ function agir_(a, req, quem) {
       linhas.forEach(function (r) { if (!txt_(r.pago_por)) gravar_('RECEBIMENTOS', r._lin, { pago_por: quem.nome, pago_em: ag2 }); });
     } else {
       if (txt_(linhas[0].pago_por) || txt_(linhas[0].nf)) throw new Error('Recebimento já pago ou com nota não pode ser excluído.');
-      if (txt_(linhas[0].dia).slice(0, 10) !== hoje_()) throw new Error('Só dá para excluir o recebimento de hoje.');
+      if (txt_(linhas[0].em).slice(0, 10) !== hoje_()) throw new Error('Só dá para excluir o que foi lançado hoje.');
       var sh = aba_('RECEBIMENTOS');
       linhas.map(function (r) { return r._lin; }).sort(function (x, y) { return y - x; }).forEach(function (l) { sh.deleteRow(l); });
       sujo_('RECEBIMENTOS');
@@ -433,11 +443,12 @@ function agir_(a, req, quem) {
     }
     var cg = Math.round(num_(req.custo) * 100) / 100;
     if (!(cg > 0) || cg > 200) throw new Error('Preço inválido.');
+    var dg = diaRetro_(req);
     if (a === 'gd_lancar') {
       var cag = Math.round(num_(req.custo_ant || req.custo) * 100) / 100;
-      incluir_('RECEBIMENTOS', [{ id: novoId_('G'), fornecedor: txt_(fg.id), dia: hoje_(), em: agora_(), por: quem.nome, codigo: txt_(pg.codigo), nome: txt_(pg.nome), qtd: qg, custo: cg, custo_ant: cag > 0 ? cag : cg, pesagens: ps2.map(function (v) { return String(v).replace('.', ','); }).join(';') }]);
+      incluir_('RECEBIMENTOS', [{ id: novoId_('G'), fornecedor: txt_(fg.id), dia: dg, em: agora_(), por: quem.nome, codigo: txt_(pg.codigo), nome: txt_(pg.nome), qtd: qg, custo: cg, custo_ant: cag > 0 ? cag : cg, pesagens: ps2.map(function (v) { return String(v).replace('.', ','); }).join(';') }]);
     } else {
-      incluir_('PERCAS', [{ id: novoId_('X'), data: hoje_(), fornecedor: txt_(fg.id), codigo: txt_(pg.codigo), nome: txt_(pg.nome), qtd: qg, custo: cg, motivo: String(req.motivo || 'Estragou').slice(0, 30), lancado_por: quem.nome, lancado_em: agora_(), troca: '' }]);
+      incluir_('PERCAS', [{ id: novoId_('X'), data: dg, fornecedor: txt_(fg.id), codigo: txt_(pg.codigo), nome: txt_(pg.nome), qtd: qg, custo: cg, motivo: String(req.motivo || 'Estragou').slice(0, 30), lancado_por: quem.nome, lancado_em: agora_(), troca: '' }]);
     }
   } else if (a === 'gd_excluir') {
     soMercado_(quem);
@@ -447,7 +458,7 @@ function agir_(a, req, quem) {
     var fx = fornVisivel_(txt_(xg.fornecedor), quem);
     if (txt_(fx.tipo).toUpperCase() !== 'AC') throw new Error('Lançamento de outro tipo de fornecedor.');
     if (txt_(xg.acerto)) throw new Error('Já entrou num acerto, não dá para excluir.');
-    if (txt_(aba === 'PERCAS' ? xg.data : xg.dia).slice(0, 10) !== hoje_()) throw new Error('Só dá para excluir o lançamento de hoje.');
+    if (txt_(aba === 'PERCAS' ? xg.lancado_em : xg.em).slice(0, 10) !== hoje_()) throw new Error('Só dá para excluir o que foi lançado hoje.');
     aba_(aba).deleteRow(xg._lin);
     sujo_(aba);
   } else if (a === 'gd_acerto') {

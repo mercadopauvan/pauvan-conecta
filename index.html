@@ -465,27 +465,37 @@ function telaGd(f) {
     o += '<div class="card" style="background:var(--amb);gap:6px"><div class="lab" style="color:var(--am)">EM ABERTO' + (u ? ' DESDE O ACERTO DE ' + dm(u.em) : '') + '</div><div class="kv" style="font-size:17px"><b style="text-align:left">' + c.dias.length + (c.dias.length === 1 ? ' entrega' : ' entregas') + '</b><b>' + somaQ2(ab) + '</b></div><div class="kv"><span>Valor das entregas</span><b style="font-size:22px">' + brl(c.total) + '</b></div>' + (pa.length ? '<div class="s">' + pa.length + (pa.length === 1 ? ' perca lançada' : ' percas lançadas') + ' · ' + brl(c.per) + '</div>' : '') + '<button class="btn" data-a="gdAcerto"' + (ab.length ? '' : ' disabled') + '>FAZER O ACERTO</button></div>'; }
   o += '<button class="btn' + (ac ? ' b2' : '') + '" data-a="gdEsc" data-k="rec">REGISTRAR RECEBIMENTO</button><button class="btn b2" data-a="gdEsc" data-k="per">LANÇAR PERCA</button>';
   if (ac) o += '<button class="btn b2" data-a="gdHist">ACERTOS ANTERIORES</button>';
-  const lista = ac ? ab : ab.filter(r => r.dia === S.est.hoje), dias = lista.map(r => r.dia).filter((x, i, a) => a.indexOf(x) === i).sort().reverse();
+  const lhj = r => (r.em || '').slice(0, 10) === S.est.hoje, lista = ac ? ab : ab.filter(r => r.dia === S.est.hoje || lhj(r)), dias = lista.map(r => r.dia).filter((x, i, a) => a.indexOf(x) === i).sort().reverse();
   o += '<div class="lab">' + (ac ? 'ENTREGAS EM ABERTO' : 'RECEBIDO HOJE') + '</div>';
   if (!dias.length) o += '<div class="card"><div class="s">' + (ac ? 'Nenhuma entrega em aberto.' : 'Nada recebido hoje ainda.') + '</div></div>';
   dias.forEach(d => { const rs = lista.filter(r => r.dia === d);
     o += '<div class="card" style="gap:6px"><div class="kv"><b style="text-align:left;font-size:17px">' + diaTxt(d) + '</b><b>' + somaQ2(rs) + '</b></div>' +
-      rs.map(r => '<div class="kv"><span style="display:flex;align-items:center;gap:8px">' + des(prodC(r.codigo).desenho, 28) + esc(prodC(r.codigo).nome) + '</span><span>' + qTxt(r.codigo, r.kg) + (ac ? ' · ' + brl(r.kg * r.custo) : '') + (r.dia === S.est.hoje ? ' <button class="lnk" data-a="gdX" data-k="' + esc(r.id) + '" aria-label="Excluir">✕</button>' : '') + '</span></div>' + (ac && r.custo_ant && r.custo !== r.custo_ant ? '<div class="faixa">PREÇO ALTERADO: ' + brl(r.custo_ant) + ' → ' + brl(r.custo) + ' · por ' + esc(r.por) + '</div>' : '')).join('') +
-      '<div class="s">Recebido por ' + rs.map(r => r.por).filter((x, i, a) => a.indexOf(x) === i).join(', ') + '</div></div>'; });
+      rs.map(r => '<div class="kv"><span style="display:flex;align-items:center;gap:8px">' + des(prodC(r.codigo).desenho, 28) + esc(prodC(r.codigo).nome) + '</span><span>' + qTxt(r.codigo, r.kg) + (ac ? ' · ' + brl(r.kg * r.custo) : '') + (lhj(r) ? ' <button class="lnk" data-a="gdX" data-k="' + esc(r.id) + '" aria-label="Excluir">✕</button>' : '') + '</span></div>' + (ac && r.custo_ant && r.custo !== r.custo_ant ? '<div class="faixa">PREÇO ALTERADO: ' + brl(r.custo_ant) + ' → ' + brl(r.custo) + ' · por ' + esc(r.por) + '</div>' : '')).join('') +
+      '<div class="s">' + (rs.some(r => lhj(r) && r.dia !== S.est.hoje) ? 'Lançado hoje (retroativo) · ' : '') + 'Recebido por ' + rs.map(r => r.por).filter((x, i, a) => a.indexOf(x) === i).join(', ') + '</div></div>'; });
   if (pa.length) { o += '<div class="lab" style="color:#b3261e">PERCAS EM ABERTO</div>';
-    pa.forEach(x => { o += '<div class="card" style="gap:4px;border-left:4px solid #b3261e"><div class="kv"><b style="text-align:left">' + des(prodC(x.codigo).desenho, 24) + ' ' + esc(prodC(x.codigo).nome) + '</b><b>' + qTxt(x.codigo, x.kg) + (ac ? ' · ' + brl(x.kg * x.custo) : '') + '</b></div><div class="s">' + dm(x.dia) + ' · ' + esc(x.motivo) + ' · por ' + esc(x.por) + (x.dia === S.est.hoje ? ' · <button class="lnk" data-a="gdXp" data-k="' + esc(x.id) + '">excluir</button>' : '') + '</div></div>'; }); }
+    pa.forEach(x => { o += '<div class="card" style="gap:4px;border-left:4px solid #b3261e"><div class="kv"><b style="text-align:left">' + des(prodC(x.codigo).desenho, 24) + ' ' + esc(prodC(x.codigo).nome) + '</b><b>' + qTxt(x.codigo, x.kg) + (ac ? ' · ' + brl(x.kg * x.custo) : '') + '</b></div><div class="s">' + dm(x.dia) + ' · ' + esc(x.motivo) + ' · por ' + esc(x.por) + (lhj(x) ? ' · <button class="lnk" data-a="gdXp" data-k="' + esc(x.id) + '">excluir</button>' : '') + '</div></div>'; }); }
   return o + '</div>';
 }
+const gdMin = () => { const [y, m] = S.est.hoje.split('-').map(Number); return m === 1 ? (y - 1) + '-12-01' : y + '-' + String(m - 1).padStart(2, '0') + '-01'; };
+const rural = f => f.grupo === 'PRODUTORES RURAIS';
+const dataCard = per => { const h = S.est.hoje, d = S.gdDia || h, ret = d !== h;
+  return '<div class="card' + (ret ? ' alt' : '') + '" style="gap:8px"><div class="lab">' + (per ? 'DATA DA PERCA' : 'DATA DA ENTREGA') + '</div>' +
+    '<input type="date" id="gdDiaIn" value="' + d + '" min="' + gdMin() + '" max="' + h + '" style="font-size:18px;padding:12px;border:1px solid #ccc;border-radius:10px;width:100%;box-sizing:border-box">' +
+    (ret ? '<div class="faixa" style="margin:4px 0 0;border-radius:8px">LANÇAMENTO RETROATIVO · ' + diaTxt(d).toUpperCase() + '</div>' : '') + '</div>'; };
 function telaGdEsc() {
   const per = S.gdModo === 'per', f = fornAtual();
-  let o = hdr(per ? 'Lançar perca' : 'Registrar recebimento', f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w"><div style="font-size:17px;font-weight:700">' + (per ? 'Qual produto estragou?' : 'Qual produto chegou?') + '</div><div class="grid">';
+  const d = S.gdDia || S.est.hoje;
+  let o = hdr(per ? 'Lançar perca' : 'Registrar recebimento', f.nome + ' · ' + diaTxt(d).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  o += dataCard(per);
+  o += '<div style="font-size:17px;font-weight:700">' + (per ? 'Qual produto estragou?' : 'Qual produto chegou?') + '</div><div class="grid">';
   prods().forEach(p => { o += '<button class="fb" data-a="gdP" data-k="' + esc(p.codigo) + '">' + des(p.desenho, 56) + '<span>' + esc(p.nome) + '</span><span class="s">' + brl(gdPreco(p.codigo)) + (p.un ? ' a unidade' : ' kg') + '</span></button>'; });
   return o + '</div></div>';
 }
 function telaGdCont() {
   const f = fornAtual(), p = prodC(S.gdP), per = S.gdModo === 'per', mud = S.preco !== S.precoBase;
-  let o = hdr((per ? 'Perca de ' : 'Receber ') + p.nome.toLowerCase(), f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  let o = hdr((per ? 'Perca de ' : 'Receber ') + p.nome.toLowerCase(), f.nome + ' · ' + diaTxt(S.gdDia || S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (S.gdDia && S.gdDia !== S.est.hoje) o += '<div class="faixa">LANÇAMENTO RETROATIVO · ' + diaTxt(S.gdDia).toUpperCase() + '</div>';
   o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:8px"><div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(S.precoBase) + ' → ' + brl(S.preco) + ' a unidade</b>' : brl(S.preco) + ' a unidade') + '</div></div></div>';
   if (per) o += '<div class="lab">MOTIVO</div><div class="seg" style="margin:0">' + ['Murchou', 'Estragou', 'Amassado'].map(m => '<button class="' + (S.motivo === m ? 'on' : '') + '" data-a="motivo" data-k="' + m + '">' + m + '</button>').join('') + '</div>';
   else if (S.precoEd) o += '<div class="pr"><span class="s">Novo preço da unidade R$</span><input id="prIn" inputmode="decimal" value="' + dinheiro(S.preco) + '"><button class="btn" style="min-height:44px;width:auto;padding:0 16px" data-a="precoOk">OK</button></div><div class="s">Só troque se o ' + esc(f.ap) + ' avisou que o preço mudou.</div>';
@@ -565,7 +575,7 @@ function telaKg(f) {
   if (ac) { const nh = notaHtml(f.id); if (nh) o += '<div class="lab">NOTAS FISCAIS</div><div class="card" style="gap:8px">' + nh + '</div>'; }
   o += '<button class="btn" data-a="pesar">REGISTRAR RECEBIMENTO</button>';
   if (ac) o += '<button class="btn b2" data-a="hist">HISTÓRICO DE ENTREGAS</button>';
-  const lista = ac ? pend : pend.filter(r => r.dia === S.est.hoje), hj = pend.filter(r => r.dia === S.est.hoje);
+  const lista = ac ? pend : pend.filter(r => r.dia === S.est.hoje || (r.em || '').slice(0, 10) === S.est.hoje), hj = pend.filter(r => r.dia === S.est.hoje);
   if (hj.length) o += '<div class="card" style="gap:8px"><div class="kv" style="font-size:17px"><b style="text-align:left">Acerto do dia</b><b>' + kgTxt(hj.reduce((a, r) => a + kgDe(r), 0)) + ' kg</b></div><div class="s">Manda para o Claudinei o resumo dos pesos de hoje, para ele conferir e fazer a nota depois.</div><button class="btn zap" data-a="zapKg">ENVIAR NO WHATSAPP</button></div>';
   o += '<div class="lab">' + (ac ? 'RECEBIMENTOS SEM NOTA' : 'RECEBIDO HOJE') + '</div>';
   if (!lista.length) o += '<div class="card"><div class="s">' + (ac ? 'Nenhum recebimento aguardando nota.' : 'Nada recebido hoje ainda.') + '</div></div>';
@@ -587,8 +597,11 @@ const precoAtual = f => { const rs = (S.est.receb || []).filter(r => r.fornecedo
 const dinheiro = v => Number(v).toFixed(2).replace('.', ',');
 function telaPesar() {
   const f = fornAtual(), p = S.gdP ? prodC(S.gdP) : prods()[0], per = S.gdP && S.gdModo === 'per', v = rolVal(), soma = S.pes.reduce((a, b) => a + b, 0) + v, mud = S.preco !== S.precoBase;
-  let o = hdr((per ? 'Perca de ' : 'Receber ') + p.nome.toLowerCase(), f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  const gdd = rural(f) ? (S.gdDia || S.est.hoje) : S.est.hoje;
+  let o = hdr((per ? 'Perca de ' : 'Receber ') + p.nome.toLowerCase(), f.nome + ' · ' + diaTxt(gdd).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (f.gd && gdd !== S.est.hoje) o += '<div class="faixa">LANÇAMENTO RETROATIVO · ' + diaTxt(gdd).toUpperCase() + '</div>';
+  if (!f.gd && rural(f)) o += dataCard(false);
   o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:8px"><div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 56) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(S.precoBase) + ' → ' + brl(S.preco) + ' kg</b>' : brl(S.preco) + ' kg') + '</div></div></div>';
   if (per) o += '<div class="lab">MOTIVO</div><div class="seg" style="margin:0">' + ['Murchou', 'Estragou', 'Amassado'].map(m => '<button class="' + (S.motivo === m ? 'on' : '') + '" data-a="motivo" data-k="' + m + '">' + m + '</button>').join('') + '</div>';
   else if (S.precoEd) o += '<div class="pr"><span class="s">Novo preço do kg R$</span><input id="prIn" inputmode="decimal" value="' + dinheiro(S.preco) + '"><button class="btn" style="min-height:44px;width:auto;padding:0 16px" data-a="precoOk">OK</button></div><div class="s">Só troque se o ' + (f.gd ? f.ap : 'Claudinei') + ' avisou que o preço mudou.</div>';
@@ -650,7 +663,7 @@ function telaMes(f) {
 }
 function telaUn(f) {
   const ac = veAcerto(), rs = (S.est.un || []).filter(r => r.fornecedor === f.id).sort((a, b) => a.em < b.em ? 1 : -1);
-  const hj = rs.filter(r => r.dia === S.est.hoje), ap = rs.filter(r => !r.pago_por);
+  const hj = rs.filter(r => r.dia === S.est.hoje || (r.em || '').slice(0, 10) === S.est.hoje), ap = rs.filter(r => !r.pago_por);
   let o = hdr(f.nome, 'Produtor rural · sem nota fiscal · pagamento no dia', ['forns', 'Fornecedores']) + '<div class="w">';
   if (DEMO) o += '<div class="seg">' + [['Regiane', 'Como quem recebe'], ['Ana Paula', 'Como Ana Paula']].map(v => '<button class="' + (S.est.quem.nome === v[0] ? 'on' : '') + '" data-a="comoKg" data-k="' + v[0] + '">' + v[1] + '</button>').join('') + '</div>';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
@@ -667,7 +680,7 @@ function telaUn(f) {
       r.itens.map(i => '<div class="kv"><span>' + esc(i.nome) + '</span><span>' + i.qtd + ' un' + (ac ? ' × ' + brl(i.custo) : '') + '</span></div>').join('') +
       (ac ? '<div class="kv"><span class="s">Recebido por ' + esc(r.por) + ' às ' + esc(r.em.slice(11)) + '</span><b>' + brl(unVal(r)) + '</b></div>' + (r.pago_por ? '<div class="s" style="color:var(--g);font-weight:700">✓ PAGO por ' + esc(r.pago_por) + ' às ' + esc(r.pago_em.slice(11)) + '</div>' : '') : '<div class="s">Recebido por ' + esc(r.por) + ' às ' + esc(r.em.slice(11)) + '</div>') +
       (ac && !r.pago_por ? '<button class="btn" data-a="unPago" data-k="' + esc(r.id) + '">PAGO ' + brl(unVal(r)) + '</button>' : '') +
-      (r.dia === S.est.hoje && !r.pago_por ? '<button class="btn pg" data-a="xun" data-k="' + esc(r.id) + '">Excluir este recebimento</button>' : '') + '</div>'; };
+      ((r.em || '').slice(0, 10) === S.est.hoje && !r.pago_por ? '<button class="btn pg" data-a="xun" data-k="' + esc(r.id) + '">Excluir este recebimento</button>' : '') + '</div>'; };
   if (ac) {
     if (ap.length) { o += '<div class="lab" style="color:var(--am)">A PAGAR AO SR. MILTON · ' + brl(ap.reduce((a, r) => a + unVal(r), 0)) + '</div>'; ap.forEach(r => { o += cartao(r); }); }
     const pg = rs.filter(r => r.pago_por);
@@ -682,8 +695,9 @@ function telaUn(f) {
 }
 function telaContar() {
   const f = fornAtual(), ps = prods(), tot = ps.reduce((a, p) => a + (S.cnt[p.codigo] || 0), 0);
-  let o = hdr(f.id === 'milton' ? 'Receber alface' : 'Receber ' + prods().map(p => p.nome.toLowerCase()).join(' e '), f.nome + ' · ' + diaTxt(S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
+  let o = hdr(f.id === 'milton' ? 'Receber alface' : 'Receber ' + prods().map(p => p.nome.toLowerCase()).join(' e '), f.nome + ' · ' + diaTxt(rural(f) ? (S.gdDia || S.est.hoje) : S.est.hoje).toLowerCase(), ['voltar', 'Voltar']) + '<div class="w">';
   if (S.erro) o += '<div class="err">' + esc(S.erro) + '</div>';
+  if (rural(f)) o += dataCard(false);
   o += '<div class="s">' + (f.id === 'milton' ? 'Conte os pés de alface que chegaram.' : 'Conte o que chegou.') + ' Use +5 e +10 para contar mais rápido.</div>';
   ps.forEach(p => { const q = S.cnt[p.codigo] || 0, base = precoUn(f, p.codigo), pr = S.pcu[p.codigo], mud = pr !== base;
     o += '<div class="card' + (mud ? ' alt' : '') + '" style="gap:10px"><div style="display:flex;align-items:center;gap:12px">' + des(p.desenho, 52) + '<div style="flex:1"><b style="font-size:16px">' + esc(p.nome) + '</b><div class="s">' + (mud ? '<b style="color:var(--am)">Preço alterado: ' + brl(base) + ' → ' + brl(pr) + ' a unidade</b>' : brl(pr) + ' a unidade') + '</div></div></div>';
@@ -939,11 +953,11 @@ const AC = {
   mesZap() { const f = fornAtual(), m = S.mesD || S.est.hoje.slice(0, 7), rs = (S.est.un || []).filter(r => r.fornecedor === f.id && r.dia.slice(0, 7) === m).sort((a, b) => a.dia < b.dia ? -1 : 1);
     const t = '*Mercado Pauvan · fechamento de ' + MES[+m.slice(5, 7) - 1] + '*\n\n' + rs.map(r => dm(r.dia) + ': ' + r.itens.map(i => i.qtd + ' ' + i.nome.toLowerCase()).join(', ')).join('\n') + '\n\nTotal: ' + rs.reduce((a, r) => a + unTot(r), 0) + ' un · *' + brl(rs.reduce((a, r) => a + unVal(r), 0)) + '*\n\nPode emitir a nota fiscal do mês, por favor.';
     window.__ultimoZap = t; const w = String(f.whatsapp || '').replace(/\D/g, ''); window.open('https://wa.me/' + (w ? (w.length <= 11 ? '55' + w : w) : '') + '?text=' + encodeURIComponent(t), '_blank'); },
-  contar() { const f = fornAtual(); S.cnt = {}; S.pcu = {}; prods().forEach(p => { S.pcu[p.codigo] = precoUn(f, p.codigo); }); S.pEd = null; S.erro = ''; S.tela = 'contar'; render(); window.scrollTo(0, 0); },
+  contar() { const f = fornAtual(); S.gdDia = S.est.hoje; S.cnt = {}; S.pcu = {}; prods().forEach(p => { S.pcu[p.codigo] = precoUn(f, p.codigo); }); S.pEd = null; S.erro = ''; S.tela = 'contar'; render(); window.scrollTo(0, 0); },
   cnt(k) { const [c, n] = k.split('|'); const v = +n; S.cnt[c] = v === 0 ? 0 : Math.max(0, Math.min(999, (S.cnt[c] || 0) + v)); const y = window.scrollY; render(); window.scrollTo(0, y); },
   pUnEd(k) { S.pEd = k; const y = window.scrollY; render(); window.scrollTo(0, y); const x = document.getElementById('prIn'); if (x) { x.focus(); x.select(); } },
   pUnOk(k) { const v = parseFloat(String(document.getElementById('prIn').value).replace(',', '.')); if (!(v > 0) || v > 100) { S.erro = 'Preço inválido.'; render(); return; } S.erro = ''; S.pcu[k] = Math.round(v * 100) / 100; S.pEd = null; const y = window.scrollY; render(); window.scrollTo(0, y); },
-  async lancarUn() { const f = fornAtual(); const it = prods().filter(p => S.cnt[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, qtd: S.cnt[p.codigo], custo: S.pcu[p.codigo], custo_ant: precoUn(f, p.codigo) })); if (await chamar('un_lancar', { fornecedor: S.forn, itens: it })) navVoltar(null, { tela: 'forn' }); },
+  async lancarUn() { const f = fornAtual(); const it = prods().filter(p => S.cnt[p.codigo] > 0).map(p => ({ codigo: p.codigo, nome: p.nome, qtd: S.cnt[p.codigo], custo: S.pcu[p.codigo], custo_ant: precoUn(f, p.codigo) })); if (await chamar('un_lancar', { fornecedor: S.forn, itens: it, dia: S.gdDia || S.est.hoje })) navVoltar(null, { tela: 'forn' }); },
   async unPago(k) { await chamar('un_pago', { id: k }); render(); },
   async xun(k) { if (confirm('Excluir este recebimento?')) { await chamar('un_excluir', { id: k }); render(); } },
   zapUn() {
@@ -955,12 +969,12 @@ const AC = {
     window.__ultimoZap = t; window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
   },
   comoKg(k) { window.__como = k; S.est.quem.nome = k; render(); },
-  pesar() { S.rol = [0, 0, 0, 0, 0]; S.pes = []; S.precoBase = S.preco = precoAtual(fornAtual()); S.precoEd = false; S.erro = ''; S.tela = 'pesar'; render(); window.scrollTo(0, 0); },
+  pesar() { S.gdDia = S.est.hoje; S.rol = [0, 0, 0, 0, 0]; S.pes = []; S.precoBase = S.preco = precoAtual(fornAtual()); S.precoEd = false; S.erro = ''; S.tela = 'pesar'; render(); window.scrollTo(0, 0); },
   outraPes() { const v = rolVal(); if (!v) return; S.pes.push(v); S.rol = [0, 0, 0, 0, 0]; render(); },
   precoEd() { S.precoEd = true; render(); const x = document.getElementById('prIn'); if (x) { x.focus(); x.select(); } },
   precoOk() { const v = parseFloat(String(document.getElementById('prIn').value).replace(',', '.')); if (!(v > 0) || v > 100) { S.erro = 'Preço do kg inválido.'; render(); return; } S.erro = ''; S.preco = Math.round(v * 100) / 100; S.precoEd = false; render(); },
   xpes(k) { S.pes.splice(+k, 1); render(); },
-  gdEsc(k) { S.gdModo = k; S.erro = ''; S.tela = 'gdEsc'; render(); window.scrollTo(0, 0); },
+  gdEsc(k) { S.gdModo = k; S.gdDia = S.est.hoje; S.erro = ''; S.tela = 'gdEsc'; render(); window.scrollTo(0, 0); },
   gdP(k) { if (prodC(k).un) { S.gdP = k; S.cq = 0; S.precoBase = S.preco = gdPreco(k); S.precoEd = false; S.motivo = 'Murchou'; S.erro = ''; S.tela = 'gdCont'; render(); window.scrollTo(0, 0); return; } S.gdP = k; S.rol = [0, 0, 0, 0, 0]; S.pes = []; S.precoBase = S.preco = gdPreco(k); S.precoEd = false; S.motivo = 'Murchou'; S.erro = ''; S.tela = 'pesar'; render(); window.scrollTo(0, 0); },
   async gdX(k) { await chamar('gd_excluir', { id: k }); render(); },
   async gdXp(k) { await chamar('gd_excluir', { id: k }); render(); },
@@ -973,13 +987,13 @@ const AC = {
     window.__ultimoZap = t; try { navigator.clipboard.writeText(t); } catch (e) {} window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); },
   cq(k) { S.cq = k === '0' ? 0 : Math.max(0, Math.min(999, S.cq + (+k))); render(); },
   async gdContOk() { const per = S.gdModo === 'per';
-    if (await chamar(per ? 'gd_perca' : 'gd_lancar', { fornecedor: S.forn, codigo: S.gdP, pesagens: [S.cq], kg: S.cq, custo: S.preco, custo_ant: S.precoBase, motivo: S.motivo })) { S.gdP = null;
+    if (await chamar(per ? 'gd_perca' : 'gd_lancar', { fornecedor: S.forn, codigo: S.gdP, pesagens: [S.cq], kg: S.cq, custo: S.preco, custo_ant: S.precoBase, motivo: S.motivo, dia: S.gdDia || S.est.hoje })) { S.gdP = null;
       if (navProf() >= 2) { NAV_OVER = { tela: 'forn' }; history.go(-2); } else { S.tela = 'forn'; NAV_REPLACE = true; render(); window.scrollTo(0, 0); } } },
   async gdPago() { if (await chamar('gd_acerto', { fornecedor: S.forn, desc: !!S.gdDesc })) { S.tela = 'gdHist'; NAV_REPLACE = true; render(); window.scrollTo(0, 0); } },
   async lancarKg() { if (S.gdP && fornAtual().gd) { const v = rolVal(), ps = S.pes.concat(v ? [v] : []), per = S.gdModo === 'per';
-      if (await chamar(per ? 'gd_perca' : 'gd_lancar', { fornecedor: S.forn, codigo: S.gdP, pesagens: ps, kg: ps.reduce((a, b) => a + b, 0), custo: S.preco, custo_ant: S.precoBase, motivo: S.motivo })) { S.gdP = null;
+      if (await chamar(per ? 'gd_perca' : 'gd_lancar', { fornecedor: S.forn, codigo: S.gdP, pesagens: ps, kg: ps.reduce((a, b) => a + b, 0), custo: S.preco, custo_ant: S.precoBase, motivo: S.motivo, dia: S.gdDia || S.est.hoje })) { S.gdP = null;
         if (navProf() >= 2) { NAV_OVER = { tela: 'forn' }; history.go(-2); } else { S.tela = 'forn'; NAV_REPLACE = true; render(); window.scrollTo(0, 0); } }
-      return; } const v = rolVal(), ps = S.pes.concat(v ? [v] : []); if (await chamar('receb_lancar', { fornecedor: S.forn, pesagens: ps, custo: S.preco, custo_ant: S.precoBase })) navVoltar(null, { tela: 'forn' }); },
+      return; } const v = rolVal(), ps = S.pes.concat(v ? [v] : []); if (await chamar('receb_lancar', { fornecedor: S.forn, pesagens: ps, custo: S.preco, custo_ant: S.precoBase, dia: S.gdDia || S.est.hoje })) navVoltar(null, { tela: 'forn' }); },
   async xreceb(k) { if (confirm('Excluir este recebimento?')) { await chamar('receb_excluir', { id: k }); render(); } },
   quer(k) { S.quer = S.quer || {}; S.quer[k] = !S.quer[k]; render(); },
   zapQuer() {
@@ -1006,7 +1020,7 @@ const AC = {
   async xperca(k) { if (confirm('Excluir esta perca?')) { await chamar('perca_excluir', { id: k }); render(); } },
   zerar() { if (confirm('Apagar os lançamentos de teste deste aparelho?')) { try { localStorage.removeItem('conecta_demo_soares'); } catch (e) {} window.__db = null; if (S.est) entrar(); } }
 };
-el.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.v) S.val[t.dataset.v] = t.value; });
+el.addEventListener('change', e => { const t = e.target; if (t.id === 'gdDiaIn') { const h = S.est.hoje; S.gdDia = t.value && t.value <= h && t.value >= gdMin() ? t.value : h; render(); return; } if (t.dataset && t.dataset.v) S.val[t.dataset.v] = t.value; });
 el.addEventListener('click', e => {
   const b = e.target.closest('[data-a]');
   if (b && !b.disabled && AC[b.dataset.a]) AC[b.dataset.a](b.dataset.k, b);
